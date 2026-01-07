@@ -1,0 +1,316 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//////////////////////
+// USER
+//////////////////////
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  telephone String?
+  name      String?
+
+  strains   Strain[]
+  seeds     Seed[]
+  plants    Plant[]
+  harvests  Harvest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+//////////////////////
+// STRAINS (CATALOG)
+//////////////////////
+
+model Strain {
+  id            Int        @id @default(autoincrement())
+  name          String
+  type          StrainType
+  genetics      String
+  thc           String
+  cbd           String
+  floweringTime String
+  description   String
+  dateAdded     DateTime
+
+  origin        String?
+  breeder       String?
+  difficulty    GrowDifficulty?
+  yield         YieldLevel?
+  preferredEnv  String?
+  resistance    String?
+  growthPattern String?
+
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  seeds         Seed[]
+  plants        Plant[]
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([userId])
+  @@unique([userId, name])
+}
+
+//////////////////////
+// SEEDS
+//////////////////////
+
+model Seed {
+  id                Int      @id @default(autoincrement())
+  name              String
+  nombreCultivar    String
+  country           String
+  harvestYear       String
+  codigoInscripcion String
+  flavour           String
+  daysTillHarvest   String
+  dateAdded         DateTime
+  germinated        Int
+  totalSeeds        Int
+
+  supplier           String?
+  batchNumber        String?
+  feminized          Boolean?
+  autoflowering      Boolean?
+  viabilityTest      String?
+  storageConditions  String?
+  expirationDate     DateTime?
+  parentGeneration   String?
+  collectionMethod   String?
+  processingDate     DateTime?
+
+  strainId          Int
+  strain            Strain   @relation(fields: [strainId], references: [id])
+
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+  @@index([strainId])
+}
+
+//////////////////////
+// HARVESTS (GROW CYCLES / BATCHES)
+//////////////////////
+
+model Harvest {
+  id           String         @id
+  name         String
+
+  // Lifecycle
+  startDate    DateTime
+  endDate      DateTime?
+  status       HarvestStatus
+  harvestType  HarvestType
+  notes        String?
+
+  // Processing details
+  harvestMethod     String?
+  dryingMethod      String?
+  dryingLocation    String?
+  curingMethod      String?
+  qualityGrade      QualityGrade?
+
+  // Environmental conditions
+  dryingTemperature String?
+  dryingHumidity    String?
+  moistureContent   String?
+  trimLoss          String?
+
+  // Ownership
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relations
+  plants        Plant[]
+  timeline      HarvestTimeline[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([userId])
+}
+
+
+//////////////////////
+// PLANTS
+//////////////////////
+
+model Plant {
+  id               String        @id
+  status           PlantStatus
+  plantedDate      DateTime
+  floweringDate    DateTime?
+  expectedHarvest  DateTime
+  height           String
+  health           PlantHealth
+  location         String
+  notes            String?
+  image            String?
+
+  // Growth state
+  age               Int?
+  currentWeek       String?
+  lightCycle        String?
+  nutrients         String?
+  ph                String?
+  ec                String?
+  temperature       String?
+  humidity          String?
+  training          String?
+  lastWatered       DateTime?
+  nextWatering      DateTime?
+  expectedFlowering DateTime?
+  potSize           String?
+
+  // Harvest outcome (belongs to the plant)
+  wetWeight         String?
+  dryWeight         String?
+  quality           QualityGrade?
+
+  // Relations
+  strainId          Int
+  strain            Strain        @relation(fields: [strainId], references: [id])
+
+  harvestId         String
+  harvest           Harvest       @relation(fields: [harvestId], references: [id], onDelete: Cascade)
+
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  growthLogs        PlantGrowthLog[]
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([strainId])
+  @@index([harvestId])
+}
+
+model PlantGrowthLog {
+  id        Int        @id @default(autoincrement())
+  date      DateTime
+  height    String
+  notes     String?
+  phase     PlantPhase
+
+  plantId   String
+  plant     Plant      @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@index([plantId])
+}
+
+//////////////////////
+// HARVEST TIMELINE
+//////////////////////
+
+model HarvestTimeline {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  event       HarvestTimelineEvent
+  description String?
+
+  harvestId   String
+  harvest     Harvest  @relation(fields: [harvestId], references: [id], onDelete: Cascade)
+
+  @@index([harvestId])
+}
+
+//////////////////////
+// ENUMS
+//////////////////////
+
+enum PlantStatus {
+  Seedling
+  Vegetative
+  Flowering
+  Ready_to_Harvest
+  Harvested
+}
+
+enum PlantHealth {
+  Excellent
+  Good
+  Fair
+  Poor
+}
+
+enum PlantPhase {
+  Seedling
+  Vegetative
+  Flowering
+}
+
+enum StrainType {
+  Indica
+  Sativa
+  Hybrid
+  Indica_Dominant
+  Sativa_Dominant
+}
+
+enum HarvestStatus {
+  completed
+  in_progress
+}
+
+enum HarvestType {
+  foto_periodica
+  automatica
+}
+
+enum QualityGrade {
+  Premium
+  Excellent
+  Good
+  Fair
+  Poor
+}
+
+enum GrowDifficulty {
+  Easy
+  Moderate
+  Difficult
+}
+
+enum YieldLevel {
+  Low
+  Medium
+  High
+}
+
+enum HarvestTimelineEvent {
+  // Pre-harvest / growing
+  Seed_Planted
+  Planted_in_Pot
+  Moved_to_Soil
+  Vegetative_Started
+  Flowering_Started
+
+  // Harvest phase
+  Harvest_Started
+
+  // Processing
+  Wet_Trim_Complete
+  Drying_Started
+  Drying_Complete
+  Dry_Trim
+  Curing_Started
+  Curing_Complete
+}
