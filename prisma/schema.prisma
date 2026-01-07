@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -24,6 +24,10 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+
+  @@index([id])
+  @@index([active])
 }
 
 
@@ -51,16 +55,18 @@ model Strain {
   growthPattern String?
 
   userId        String
-  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User       @relation(fields: [userId], references: [id])
 
   seeds         Seed[]
   plants        Plant[]
 
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  active        Boolean  @default(true)
 
   @@index([userId])
   @@unique([userId, name])
+  @@index([userId, active])
 }
 
 //////////////////////
@@ -95,13 +101,15 @@ model Seed {
   strain            Strain   @relation(fields: [strainId], references: [id])
 
   userId            String
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User     @relation(fields: [userId], references: [id])
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  active            Boolean  @default(true)
 
   @@index([userId])
   @@index([strainId])
+  @@index([userId, active])
 }
 
 //////////////////////
@@ -125,6 +133,7 @@ model Harvest {
   dryingLocation    String?
   curingMethod      String?
   qualityGrade      QualityGrade?
+  totalYield        String?
 
   // Environmental conditions
   dryingTemperature String?
@@ -134,7 +143,7 @@ model Harvest {
 
   // Ownership
   userId        String
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User           @relation(fields: [userId], references: [id])
 
   // Relations
   plants        Plant[]
@@ -142,8 +151,10 @@ model Harvest {
 
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  active        Boolean  @default(true)
 
   @@index([userId])
+  @@index([userId, active, createdAt])
 }
 
 
@@ -188,19 +199,21 @@ model Plant {
   strain            Strain        @relation(fields: [strainId], references: [id])
 
   harvestId         String
-  harvest           Harvest       @relation(fields: [harvestId], references: [id], onDelete: Cascade)
+  harvest           Harvest       @relation(fields: [harvestId], references: [id])
 
   userId            String
-  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User          @relation(fields: [userId], references: [id])
 
   growthLogs        PlantGrowthLog[]
 
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
+  active            Boolean  @default(true)
 
   @@index([userId])
   @@index([strainId])
   @@index([harvestId])
+  @@index([userId, active])
 }
 
 model PlantGrowthLog {
@@ -211,7 +224,7 @@ model PlantGrowthLog {
   phase     PlantPhase
 
   plantId   String
-  plant     Plant      @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plant     Plant      @relation(fields: [plantId], references: [id])
 
   @@index([plantId])
 }
@@ -227,7 +240,7 @@ model HarvestTimeline {
   description String?
 
   harvestId   String
-  harvest     Harvest  @relation(fields: [harvestId], references: [id], onDelete: Cascade)
+  harvest     Harvest  @relation(fields: [harvestId], references: [id])
 
   @@index([harvestId])
 }
