@@ -67,20 +67,33 @@ export class HarvestRepository implements IHarvestRepository {
 
         return { data, total };
     }
-    
-    findOne(id: string): Promise<Harvest> {
-        return this.prisma.harvest.findUnique({ where: { id, active: true } })
+
+    findOne(userId: string, id: string): Promise<Harvest> {
+        return this.prisma.harvest.findUnique({ where: { id, userId, active: true } })
     }
 
     create(data: Harvest): Promise<Harvest> {
         return this.prisma.harvest.create({ data })
     }
 
-    update(id: string, data: Harvest): Promise<Harvest> {
-        return this.prisma.harvest.update({ where: { id, active: true }, data })
+    update(
+        userId: string,
+        id: string,
+        data: Prisma.HarvestUpdateInput
+    ) {
+        return this.prisma.harvest.update({
+            where: {
+                id_userId: {
+                    id,
+                    userId
+                },
+                active: true
+            },
+            data
+        });
     }
 
-    softDelete(id: string): Promise<Harvest> {
-        return this.prisma.harvest.update({ where: { id, active: true }, data: { active: false } })
+    softDelete(userId: string, id: string): Promise<Harvest> {
+        return this.prisma.harvest.update({ where: { id, userId, active: true }, data: { active: false } })
     }
 }

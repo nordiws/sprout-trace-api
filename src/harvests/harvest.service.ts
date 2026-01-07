@@ -1,14 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { IHarvestService } from "./interface/harvest-service.interface";
-import { HarvestRepository } from "./harvest.repository";
-import { CreateHarvestDTO } from "./dto/create-harvest.dto";
-import { HarvestDetailsDTO } from "./dto/harvest-details.dto";
-import { HarvestFiltersDTO } from "./dto/harvest-filter.dto";
-import { HarvestResponseDTO } from "./dto/harvest-response.dto";
-import { UpdateHarvestDTO } from "./dto/update-harvest.dto";
-import { PaginationDTO } from "src/common/dto/pagination.dto";
-import { HarvestDTO } from "./dto/harvest.dto";
-import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto";
+import { Injectable, NotFoundException } from "@nestjs/common"
+import { IHarvestService } from "./interface/harvest-service.interface"
+import { HarvestRepository } from "./harvest.repository"
+import { CreateHarvestDTO } from "./dto/create-harvest.dto"
+import { HarvestDetailsDTO } from "./dto/harvest-details.dto"
+import { HarvestFiltersDTO } from "./dto/harvest-filter.dto"
+import { HarvestResponseDTO } from "./dto/harvest-response.dto"
+import { UpdateHarvestDTO } from "./dto/update-harvest.dto"
+import { PaginationDTO } from "src/common/dto/pagination.dto"
+import { HarvestDTO } from "./dto/harvest.dto"
+import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto"
+import { Harvest } from "prisma/generated/client"
 
 
 @Injectable()
@@ -22,35 +23,54 @@ export class HarvestService implements IHarvestService {
     ): Promise<HarvestResponseDTO> {
 
         const { total, data } =
-            await this.harvestRepository.findAll(userId, filters);
+            await this.harvestRepository.findAll(userId, filters)
 
         const pagination = PaginationDTO.mapper(
             filters.page,
             filters.limit,
             total
-        );
+        )
 
         return HarvestResponseDTO.mapper(
             data.map(HarvestDTO.fromEntity),
             pagination
-        );
+        )
     }
 
-    findOne(userId: string, id: string): Promise<HarvestDetailsDTO> {
-        throw new Error("Method not implemented.");
-    }
-    create(userId: string, data: CreateHarvestDTO): Promise<HarvestDetailsDTO> {
-        throw new Error("Method not implemented.");
-    }
-    update(userId: string, id: string, data: UpdateHarvestDTO): Promise<HarvestDetailsDTO> {
-        throw new Error("Method not implemented.");
-    }
-    softDelete(userId: string, id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async findOne(userId: string, id: string): Promise<HarvestDetailsDTO> {
+        const harvest = await this.getHarvest(userId, id)
+        return HarvestDetailsDTO.fromEntity(harvest)
     }
 
-    addTimelineEvent(userId: string, harvestId: string, dto: CreateHarvestTimelineDTO){
-        throw new Error("Method not implemented.");
+    async create(userId: string, data: CreateHarvestDTO): Promise<HarvestDetailsDTO> {
+        const createdHarvest = await this.harvestRepository.create(data.toEntity(userId))
+        return HarvestDetailsDTO.fromEntity(createdHarvest)
+    }
+
+    async update(userId: string, id: string, data: UpdateHarvestDTO): Promise<HarvestDetailsDTO> {
+        await this.getHarvest(userId, id)
+        const updatedHarvest = await this.harvestRepository.update(userId, id, data)
+        return HarvestDetailsDTO.fromEntity(updatedHarvest)
+    }
+
+    async softDelete(userId: string, id: string): Promise<void> {
+        await this.getHarvest(userId, id)
+        await this.harvestRepository.softDelete(userId, id)
+    }
+
+    async addTimelineEvent(userId: string, harvestId: string, dto: CreateHarvestTimelineDTO) {
+        throw new Error("Method not implemented.")
+    }
+
+    private async getHarvest(
+        userId: string,
+        id: string
+    ): Promise<Harvest> {
+        const harvest = await this.harvestRepository.findOne(userId, id)
+        if (!harvest) {
+            throw new NotFoundException(`Harvest with ID ${id} not found`);
+        }
+        return harvest
     }
 
 }

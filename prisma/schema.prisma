@@ -65,6 +65,7 @@ model Strain {
   active        Boolean  @default(true)
 
   @@index([userId])
+  @@unique([id, userId])
   @@unique([userId, name])
   @@index([userId, active])
 }
@@ -107,6 +108,7 @@ model Seed {
   updatedAt         DateTime @updatedAt
   active            Boolean  @default(true)
 
+  @@unique([id, userId])
   @@index([userId])
   @@index([strainId])
   @@index([userId, active])
@@ -153,6 +155,7 @@ model Harvest {
   updatedAt     DateTime       @updatedAt
   active        Boolean  @default(true)
 
+  @@unique([id, userId])
   @@index([userId])
   @@index([userId, active, createdAt])
 }
@@ -210,6 +213,7 @@ model Plant {
   updatedAt         DateTime      @updatedAt
   active            Boolean  @default(true)
 
+  @@unique([id, userId])
   @@index([userId])
   @@index([strainId])
   @@index([harvestId])

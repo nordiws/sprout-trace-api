@@ -27,8 +27,7 @@ export class GoogleAuthGuard implements CanActivate {
 
       request.user = {
         id: payload.sub,
-        email: payload.email,
-        telephone: payload.phone
+        email: payload.email
       };
 
       return true;
