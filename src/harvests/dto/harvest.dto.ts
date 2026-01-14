@@ -4,6 +4,7 @@ import { HarvestWithPlants } from "../harvest.repository.types"
 export class HarvestDTO {
   
   id: string
+  code: string
   name: string
   startDate: string
   status: HarvestStatus
@@ -15,6 +16,7 @@ export class HarvestDTO {
   static fromEntity(entity: HarvestWithPlants): HarvestDTO {
     return {
       id: entity.id,
+      code: entity.code,
       name: entity.name,
       startDate: entity.startDate.toISOString(),
 

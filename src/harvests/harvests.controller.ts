@@ -8,7 +8,8 @@ import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 
 @Controller('harvests')
 export class HarvestsController {
-  constructor(private readonly harvestService: HarvestService) {}
+
+  constructor(private readonly harvestService: HarvestService) { }
 
   @Get()
   findAll(
@@ -51,7 +52,6 @@ export class HarvestsController {
     return this.harvestService.softDelete(user.id, id);
   }
 
-  // Timeline
   @Post(':id/timeline')
   addTimelineEvent(
     @CurrentUser() user: { id: string },
@@ -60,4 +60,5 @@ export class HarvestsController {
   ) {
     return this.harvestService.addTimelineEvent(user.id, harvestId, dto);
   }
+  
 }

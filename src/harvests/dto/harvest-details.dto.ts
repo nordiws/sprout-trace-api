@@ -4,7 +4,7 @@ import { HarvestStatus, HarvestType, QualityGrade } from "prisma/generated/enums
 export class HarvestDetailsDTO {
   id: string
   name: string
-
+  code: string
   startDate: string
   endDate?: string
 
@@ -32,7 +32,7 @@ static fromEntity(entity: Harvest): HarvestDetailsDTO {
   return {
     id: entity.id,
     name: entity.name,
-
+    code: entity.code,
     startDate: entity.startDate.toISOString(),
     endDate: entity.endDate?.toISOString(),
 

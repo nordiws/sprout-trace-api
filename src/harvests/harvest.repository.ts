@@ -7,6 +7,7 @@ import { HarvestWithPlants } from "./harvest.repository.types"
 
 @Injectable()
 export class HarvestRepository implements IHarvestRepository {
+
     constructor(private readonly prisma: PrismaService) { }
 
     async findAll(
@@ -68,30 +69,31 @@ export class HarvestRepository implements IHarvestRepository {
         return { data, total };
     }
 
-    findOne(userId: string, id: string): Promise<Harvest> {
-        return this.prisma.harvest.findUnique({ where: { id, userId, active: true } })
+    findOne(userId: string, id: string): Promise<Harvest | null> {
+        return this.prisma.harvest.findFirst({
+            where: {
+                id,
+                userId,
+                active: true
+            }
+        });
     }
 
-    create(data: Harvest): Promise<Harvest> {
+
+    create(data: Prisma.HarvestCreateInput): Promise<Harvest> {
         return this.prisma.harvest.create({ data })
     }
 
     update(
-        userId: string,
         id: string,
         data: Prisma.HarvestUpdateInput
-    ) {
+    ): Promise<Harvest> {
         return this.prisma.harvest.update({
-            where: {
-                id_userId: {
-                    id,
-                    userId
-                },
-                active: true
-            },
+            where: { id },
             data
         });
     }
+
 
     softDelete(userId: string, id: string): Promise<Harvest> {
         return this.prisma.harvest.update({ where: { id, userId, active: true }, data: { active: false } })

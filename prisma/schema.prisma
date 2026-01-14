@@ -36,7 +36,8 @@ model User {
 //////////////////////
 
 model Strain {
-  id            Int        @id @default(autoincrement())
+  id            String @id @default(uuid())
+  code          String @unique                // EXTERNAL (ST-001-0001)
   name          String
   type          StrainType
   genetics      String
@@ -64,8 +65,8 @@ model Strain {
   updatedAt     DateTime   @updatedAt
   active        Boolean  @default(true)
 
+  @@index([code])
   @@index([userId])
-  @@unique([id, userId])
   @@unique([userId, name])
   @@index([userId, active])
 }
@@ -75,7 +76,8 @@ model Strain {
 //////////////////////
 
 model Seed {
-  id                Int      @id @default(autoincrement())
+  id                String @id @default(uuid())
+  code              String @unique                // EXTERNAL (SD-001-0001)
   name              String
   nombreCultivar    String
   country           String
@@ -98,7 +100,7 @@ model Seed {
   collectionMethod   String?
   processingDate     DateTime?
 
-  strainId          Int
+  strainId          String
   strain            Strain   @relation(fields: [strainId], references: [id])
 
   userId            String
@@ -108,7 +110,7 @@ model Seed {
   updatedAt         DateTime @updatedAt
   active            Boolean  @default(true)
 
-  @@unique([id, userId])
+  @@index([code])
   @@index([userId])
   @@index([strainId])
   @@index([userId, active])
@@ -119,7 +121,8 @@ model Seed {
 //////////////////////
 
 model Harvest {
-  id           String         @id
+  id           String @id @default(uuid())
+  code         String @unique                // EXTERNAL (HV-001-0001)
   name         String
 
   // Lifecycle
@@ -155,7 +158,7 @@ model Harvest {
   updatedAt     DateTime       @updatedAt
   active        Boolean  @default(true)
 
-  @@unique([id, userId])
+  @@index([code])
   @@index([userId])
   @@index([userId, active, createdAt])
 }
@@ -166,7 +169,8 @@ model Harvest {
 //////////////////////
 
 model Plant {
-  id               String        @id
+  id               String @id @default(uuid())
+  code             String @unique                // EXTERNAL (PL-001-0001)
   status           PlantStatus
   plantedDate      DateTime
   floweringDate    DateTime?
@@ -198,7 +202,7 @@ model Plant {
   quality           QualityGrade?
 
   // Relations
-  strainId          Int
+  strainId          String
   strain            Strain        @relation(fields: [strainId], references: [id])
 
   harvestId         String
@@ -213,7 +217,7 @@ model Plant {
   updatedAt         DateTime      @updatedAt
   active            Boolean  @default(true)
 
-  @@unique([id, userId])
+  @@index([code])
   @@index([userId])
   @@index([strainId])
   @@index([harvestId])
@@ -221,7 +225,7 @@ model Plant {
 }
 
 model PlantGrowthLog {
-  id        Int        @id @default(autoincrement())
+  id        String @id @default(uuid())
   date      DateTime
   height    String
   notes     String?
@@ -238,7 +242,7 @@ model PlantGrowthLog {
 //////////////////////
 
 model HarvestTimeline {
-  id          Int      @id @default(autoincrement())
+  id          String @id @default(uuid())
   date        DateTime
   event       HarvestTimelineEvent
   description String?
@@ -254,80 +258,80 @@ model HarvestTimeline {
 //////////////////////
 
 enum PlantStatus {
-  Seedling
-  Vegetative
-  Flowering
-  Ready_to_Harvest
-  Harvested
+  SEEDLING
+  VEGETATIVE
+  FLOWERING
+  READY_TO_HARVEST
+  HARVESTED
 }
 
 enum PlantHealth {
-  Excellent
-  Good
-  Fair
-  Poor
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
 }
 
 enum PlantPhase {
-  Seedling
-  Vegetative
-  Flowering
+  SEEDLING
+  VEGETATIVE
+  FLOWERING
 }
 
 enum StrainType {
-  Indica
-  Sativa
-  Hybrid
-  Indica_Dominant
-  Sativa_Dominant
+  INDICA
+  SATIVA
+  HYBRID
+  INDICA_DOMINANT
+  SATIVA_DOMINANT
 }
 
 enum HarvestStatus {
-  completed
-  in_progress
+  COMPLETED
+  IN_PROGRESS
 }
 
 enum HarvestType {
-  foto_periodica
-  automatica
+  FOTO_PERIODICA
+  AUTOMATICA
 }
 
 enum QualityGrade {
-  Premium
-  Excellent
-  Good
-  Fair
-  Poor
+  PREMIUM
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
 }
 
 enum GrowDifficulty {
-  Easy
-  Moderate
-  Difficult
+  EASY
+  MODERATE
+  DIFFICULT
 }
 
 enum YieldLevel {
-  Low
-  Medium
-  High
+  LOW
+  MEDIUM
+  HIGH
 }
 
 enum HarvestTimelineEvent {
   // Pre-harvest / growing
-  Seed_Planted
-  Planted_in_Pot
-  Moved_to_Soil
-  Vegetative_Started
-  Flowering_Started
+  SEED_PLANTED
+  PLANTED_IN_POT
+  MOVED_TO_SOIL
+  VEGETATIVE_STARTED
+  FLOWERING_STARTED
 
   // Harvest phase
-  Harvest_Started
+  HARVEST_STARTED
 
   // Processing
-  Wet_Trim_Complete
-  Drying_Started
-  Drying_Complete
-  Dry_Trim
-  Curing_Started
-  Curing_Complete
+  WET_TRIM_COMPLETE
+  DRYING_STARTED
+  DRYING_COMPLETE
+  DRY_TRIM
+  CURING_STARTED
+  CURING_COMPLETE
 }

@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { IHarvestService } from "./interface/harvest-service.interface"
 import { HarvestRepository } from "./harvest.repository"
 import { CreateHarvestDTO } from "./dto/create-harvest.dto"
 import { HarvestDetailsDTO } from "./dto/harvest-details.dto"
@@ -9,13 +8,17 @@ import { UpdateHarvestDTO } from "./dto/update-harvest.dto"
 import { PaginationDTO } from "src/common/dto/pagination.dto"
 import { HarvestDTO } from "./dto/harvest.dto"
 import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto"
-import { Harvest } from "prisma/generated/client"
+import { Harvest, HarvestTimelineEvent } from "prisma/generated/client"
+import { HarvestTimelineRepository } from "./harvest-timeline.repository"
 
 
 @Injectable()
-export class HarvestService implements IHarvestService {
+export class HarvestService {
 
-    constructor(private readonly harvestRepository: HarvestRepository) { }
+    constructor(
+        private readonly harvestRepository: HarvestRepository,
+        private readonly harvestTimelineRepository: HarvestTimelineRepository
+    ) { }
 
     async findAll(
         userId: string,
@@ -49,7 +52,7 @@ export class HarvestService implements IHarvestService {
 
     async update(userId: string, id: string, data: UpdateHarvestDTO): Promise<HarvestDetailsDTO> {
         await this.getHarvest(userId, id)
-        const updatedHarvest = await this.harvestRepository.update(userId, id, data)
+        const updatedHarvest = await this.harvestRepository.update(id, data)
         return HarvestDetailsDTO.fromEntity(updatedHarvest)
     }
 
@@ -58,10 +61,11 @@ export class HarvestService implements IHarvestService {
         await this.harvestRepository.softDelete(userId, id)
     }
 
-    async addTimelineEvent(userId: string, harvestId: string, dto: CreateHarvestTimelineDTO) {
-        throw new Error("Method not implemented.")
+    async addTimelineEvent(userId: string, harvestId: string, data: CreateHarvestTimelineDTO) {
+        const harvest = await this.getHarvest(userId, harvestId)
+        return this.harvestTimelineRepository.addEvent(data.toEntity(harvest.id))
     }
-
+    
     private async getHarvest(
         userId: string,
         id: string

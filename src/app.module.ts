@@ -6,9 +6,11 @@ import { SeedsModule } from './seeds/seeds.module';
 import { StrainsModule } from './strains/strains.module';
 import { HarvestsModule } from './harvests/harvests.module';
 import { PrismaService } from './prisma/prisma.service';
+import { MetadataModule } from './metadata/metadata.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [PlantsModule, SeedsModule, StrainsModule, HarvestsModule],
+  imports: [PlantsModule, SeedsModule, StrainsModule, HarvestsModule, MetadataModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

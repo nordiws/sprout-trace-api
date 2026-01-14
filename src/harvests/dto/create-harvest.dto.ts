@@ -1,6 +1,9 @@
 import { IsDateString, IsEnum, IsOptional, IsString } from "class-validator";
-import { Harvest } from "prisma/generated/client";
+import { connect } from "http2";
+import { Harvest, Prisma } from "prisma/generated/client";
 import { HarvestStatus, HarvestType, QualityGrade } from "prisma/generated/enums";
+import { EntityCodePrefix } from "src/common/enums/entity-code-prefix.enum";
+import { generateCode } from "src/common/utils/string.util";
 
 export class CreateHarvestDTO {
   @IsString()
@@ -65,10 +68,9 @@ export class CreateHarvestDTO {
   trimLoss?: string;
 
 
-  toEntity(userId: string): Harvest {
+  toEntity(userId: string): Prisma.HarvestCreateInput {
     return {
-      userId,
-      id: this.id,
+      code: generateCode(EntityCodePrefix.HARVEST),
       name: this.name,
       startDate: new Date(this.startDate),
       endDate: this.endDate ? new Date(this.endDate) : null,
@@ -88,6 +90,7 @@ export class CreateHarvestDTO {
       updatedAt: new Date(),
       active: true,
       totalYield: "0 Kg",
+      user: { connect: { id: userId } },
     };
   }
 }
