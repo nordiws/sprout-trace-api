@@ -175,7 +175,7 @@ model Plant {
   plantedDate      DateTime
   floweringDate    DateTime?
   expectedHarvest  DateTime
-  height           String
+  height           Int?
   health           PlantHealth
   location         String
   notes            String?

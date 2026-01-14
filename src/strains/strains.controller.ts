@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestj
 import { CreateStrainDTO } from './dto/create-strain.dto';
 import { UpdateStrainDTO } from './dto/update-strain.dto';
 import { StrainFiltersDTO } from './dto/strain-filter.dto';
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import type { CurrentUserContext } from "src/auth/types/current-user.type";
 
 @Controller('strains')
 export class StrainsController {
@@ -9,7 +11,7 @@ export class StrainsController {
 
   @Get()
   findAll(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Query() filters: StrainFiltersDTO
   ) {
     return this.strainsService.findAll(user.id, filters);
@@ -17,7 +19,7 @@ export class StrainsController {
 
   @Get(':id')
   findOne(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: number
   ) {
     return this.strainsService.findOne(user.id, id);
@@ -25,7 +27,7 @@ export class StrainsController {
 
   @Post()
   create(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Body() dto: CreateStrainDTO
   ) {
     return this.strainsService.create(user.id, dto);
@@ -33,7 +35,7 @@ export class StrainsController {
 
   @Patch(':id')
   update(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: number,
     @Body() dto: UpdateStrainDTO
   ) {
@@ -42,7 +44,7 @@ export class StrainsController {
 
   @Delete(':id')
   remove(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: number
   ) {
     return this.strainsService.remove(user.id, id);

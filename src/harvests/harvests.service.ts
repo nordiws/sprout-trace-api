@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { HarvestRepository } from "./harvest.repository"
+import { HarvestRepository } from "./repository/harvest.repository"
 import { CreateHarvestDTO } from "./dto/create-harvest.dto"
 import { HarvestDetailsDTO } from "./dto/harvest-details.dto"
 import { HarvestFiltersDTO } from "./dto/harvest-filter.dto"
@@ -8,8 +8,8 @@ import { UpdateHarvestDTO } from "./dto/update-harvest.dto"
 import { PaginationDTO } from "src/common/dto/pagination.dto"
 import { HarvestDTO } from "./dto/harvest.dto"
 import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto"
-import { Harvest, HarvestTimelineEvent } from "prisma/generated/client"
-import { HarvestTimelineRepository } from "./harvest-timeline.repository"
+import { Harvest } from "prisma/generated/client"
+import { HarvestTimelineRepository } from "./repository/harvest-timeline.repository"
 
 
 @Injectable()

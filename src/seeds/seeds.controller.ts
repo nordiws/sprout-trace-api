@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestj
 import { SeedFiltersDTO } from "./dto/seed-filter.dto";
 import { CreateSeedDTO } from "./dto/create-seed.dto";
 import { UpdateSeedDTO } from "./dto/update-seed.dto";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import type { CurrentUserContext } from "src/auth/types/current-user.type";
 
 @Controller('seeds')
 export class SeedsController {
@@ -9,7 +11,7 @@ export class SeedsController {
 
   @Get()
   findAll(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Query() filters: SeedFiltersDTO
   ) {
     return this.seedsService.findAll(user.id, filters);
@@ -17,7 +19,7 @@ export class SeedsController {
 
   @Get(':id')
   findOne(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: number
   ) {
     return this.seedsService.findOne(user.id, id);
@@ -25,7 +27,7 @@ export class SeedsController {
 
   @Post()
   create(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Body() dto: CreateSeedDTO
   ) {
     return this.seedsService.create(user.id, dto);
@@ -33,7 +35,7 @@ export class SeedsController {
 
   @Patch(':id')
   update(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: number,
     @Body() dto: UpdateSeedDTO
   ) {
@@ -42,7 +44,7 @@ export class SeedsController {
 
   @Delete(':id')
   remove(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: number
   ) {
     return this.seedsService.remove(user.id, id);

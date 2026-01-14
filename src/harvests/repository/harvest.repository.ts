@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common"
-import { IHarvestRepository } from "./interface/harvest-repository.interface"
+import { IHarvestRepository } from "../interface/harvest-repository.interface"
 import { Harvest, Prisma } from "prisma/generated/client"
 import { PrismaService } from "src/prisma/prisma.service"
-import { HarvestFiltersDTO } from "./dto/harvest-filter.dto"
+import { HarvestFiltersDTO } from "../dto/harvest-filter.dto"
 import { HarvestWithPlants } from "./harvest.repository.types"
 
 @Injectable()

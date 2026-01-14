@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { HarvestsController } from './harvests.controller';
-import { HarvestService } from './harvest.service';
-import { HarvestRepository } from './harvest.repository';
-import { HarvestTimelineRepository } from './harvest-timeline.repository';
+import { HarvestService } from './harvests.service';
+import { HarvestRepository } from './repository/harvest.repository';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { HarvestTimelineRepository } from './repository/harvest-timeline.repository';
 
 @Module({
     imports: [PrismaModule],

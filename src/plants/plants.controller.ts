@@ -3,6 +3,9 @@ import { PlantFiltersDTO } from "./dto/plant-filter.dto";
 import { CreatePlantDTO } from "./dto/create-plant.dto";
 import { UpdatePlantDTO } from "./dto/update-plant.dto";
 import { CreatePlantGrowthLogDTO } from "./dto/create-plant-growth.dto";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import type { CurrentUserContext } from "src/auth/types/current-user.type";
+import { PlantsService } from "./plants.service";
 
 @Controller('plants')
 export class PlantsController {
@@ -10,7 +13,7 @@ export class PlantsController {
 
   @Get()
   findAll(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Query() filters: PlantFiltersDTO
   ) {
     return this.plantsService.findAll(user.id, filters);
@@ -18,7 +21,7 @@ export class PlantsController {
 
   @Get(':id')
   findOne(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: string
   ) {
     return this.plantsService.findOne(user.id, id);
@@ -26,7 +29,7 @@ export class PlantsController {
 
   @Post()
   create(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Body() dto: CreatePlantDTO
   ) {
     return this.plantsService.create(user.id, dto);
@@ -34,7 +37,7 @@ export class PlantsController {
 
   @Patch(':id')
   update(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: string,
     @Body() dto: UpdatePlantDTO
   ) {
@@ -43,7 +46,7 @@ export class PlantsController {
 
   @Delete(':id')
   remove(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') id: string
   ) {
     return this.plantsService.remove(user.id, id);
@@ -52,7 +55,7 @@ export class PlantsController {
   // Growth log
   @Post(':id/growth-log')
   addGrowthLog(
-    @CurrentUser() user: { id: string },
+    @CurrentUser() user: CurrentUserContext,
     @Param('id') plantId: string,
     @Body() dto: CreatePlantGrowthLogDTO
   ) {
