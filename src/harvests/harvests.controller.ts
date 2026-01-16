@@ -3,21 +3,21 @@ import { HarvestFiltersDTO } from "./dto/harvest-filter.dto";
 import { CreateHarvestDTO } from "./dto/create-harvest.dto";
 import { UpdateHarvestDTO } from "./dto/update-harvest.dto";
 import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto";
-import { HarvestService } from "./harvests.service";
+import { HarvestsService } from "./harvests.service";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import type { CurrentUserContext } from "src/auth/types/current-user.type";
 
 @Controller('harvests')
 export class HarvestsController {
 
-  constructor(private readonly harvestService: HarvestService) { }
+  constructor(private readonly harvestsService: HarvestsService) { }
 
   @Get()
   findAll(
     @CurrentUser() user: CurrentUserContext,
     @Query() filters: HarvestFiltersDTO
   ) {
-    return this.harvestService.findAll(user.id, filters);
+    return this.harvestsService.findAll(user.id, filters);
   }
 
   @Get(':id')
@@ -25,7 +25,7 @@ export class HarvestsController {
     @CurrentUser() user: CurrentUserContext,
     @Param('id') id: string
   ) {
-    return this.harvestService.findOne(user.id, id);
+    return this.harvestsService.findOne(user.id, id);
   }
 
   @Post()
@@ -33,7 +33,7 @@ export class HarvestsController {
     @CurrentUser() user: CurrentUserContext,
     @Body() dto: CreateHarvestDTO
   ) {
-    return this.harvestService.create(user.id, dto);
+    return this.harvestsService.create(user.id, dto);
   }
 
   @Patch(':id')
@@ -42,7 +42,7 @@ export class HarvestsController {
     @Param('id') id: string,
     @Body() dto: UpdateHarvestDTO
   ) {
-    return this.harvestService.update(user.id, id, dto);
+    return this.harvestsService.update(user.id, id, dto);
   }
 
   @Delete(':id')
@@ -50,7 +50,7 @@ export class HarvestsController {
     @CurrentUser() user: CurrentUserContext,
     @Param('id') id: string
   ) {
-    return this.harvestService.softDelete(user.id, id);
+    return this.harvestsService.softDelete(user.id, id);
   }
 
   @Post(':id/timeline')
@@ -59,7 +59,7 @@ export class HarvestsController {
     @Param('id') harvestId: string,
     @Body() dto: CreateHarvestTimelineDTO
   ) {
-    return this.harvestService.addTimelineEvent(user.id, harvestId, dto);
+    return this.harvestsService.addTimelineEvent(user.id, harvestId, dto);
   }
   
 }

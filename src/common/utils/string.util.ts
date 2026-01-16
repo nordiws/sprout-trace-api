@@ -1,11 +1,12 @@
 import { randomInt } from 'crypto';
+import { EntityCodePrefix } from '../enums/entity-code-prefix.enum';
 
 function pad(value: number, length: number): string {
   return value.toString().padStart(length, '0');
 }
 
 export function generateCode(
-  prefix: 'HV' | 'PL' | 'SD' | 'ST'
+  prefix: EntityCodePrefix = EntityCodePrefix.HARVEST
 ): string {
   const now = new Date();
 

@@ -1,7 +1,7 @@
-import { PlantStatus } from "prisma/generated/client"
-import { PlantWithStrain } from "../repository/plants.repository.types"
+import { PlantPhase, PlantStatus } from "prisma/generated/client"
+import { PlantWithStrainAndLogs } from "../repository/plants.repository.types"
 
-export class PlantDTO {
+export class PlantDetailsDTO {
   
   id: string
   code: string
@@ -12,9 +12,10 @@ export class PlantDTO {
   health?: string
   location?: string
   expectedHarvestDate?: string
+  plantPhase?: PlantPhase
 
 
-  static fromEntity(entity: PlantWithStrain): PlantDTO {
+  static fromEntity(entity: PlantWithStrainAndLogs): PlantDetailsDTO {
     return {
       id: entity.id,
       code: entity.code,
@@ -22,9 +23,10 @@ export class PlantDTO {
       status: entity.status,
       createdAt: entity.createdAt.toISOString(),
       height: entity.height ?? undefined,
-      health: entity.health,
+      health: entity.health ?? undefined,
       location: entity.location ?? undefined,
       expectedHarvestDate: entity.expectedHarvest.toISOString(),
+      plantPhase: entity.growthLogs[0]?.phase ?? undefined,
     }
   }
 

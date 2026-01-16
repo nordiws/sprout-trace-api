@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common"
-import { IHarvestRepository } from "../interface/harvest-repository.interface"
+import { IHarvestsRepository } from "../interface/harvests-repository.interface"
 import { Harvest, Prisma } from "prisma/generated/client"
 import { PrismaService } from "src/prisma/prisma.service"
 import { HarvestFiltersDTO } from "../dto/harvest-filter.dto"
-import { HarvestWithPlants } from "./harvest.repository.types"
+import { HarvestWithPlants } from "./harvests.repository.types"
 
 @Injectable()
-export class HarvestRepository implements IHarvestRepository {
+export class HarvestsRepository implements IHarvestsRepository {
 
     constructor(private readonly prisma: PrismaService) { }
 
@@ -89,7 +89,10 @@ export class HarvestRepository implements IHarvestRepository {
         data: Prisma.HarvestUpdateInput
     ): Promise<Harvest> {
         return this.prisma.harvest.update({
-            where: { id },
+            where: { 
+                id,
+                active: true
+            },
             data
         });
     }

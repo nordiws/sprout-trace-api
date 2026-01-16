@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { HarvestsController } from './harvests.controller';
-import { HarvestService } from './harvests.service';
-import { HarvestRepository } from './repository/harvest.repository';
+import { HarvestsService } from './harvests.service';
+import { HarvestsRepository } from './repository/harvests.repository';
 import { PrismaModule } from 'src/prisma/prisma.module';
-import { HarvestTimelineRepository } from './repository/harvest-timeline.repository';
+import { HarvestTimelineRepository } from './repository/harvests-timeline.repository';
 
 @Module({
     imports: [PrismaModule],
     controllers: [HarvestsController],
-    providers: [HarvestService, HarvestRepository, HarvestTimelineRepository]
+    providers: [HarvestsService, HarvestsRepository, HarvestTimelineRepository]
 })
 export class HarvestsModule {}

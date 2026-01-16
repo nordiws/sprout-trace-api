@@ -54,6 +54,10 @@ model Strain {
   preferredEnv  String?
   resistance    String?
   growthPattern String?
+  gennetics     String?
+  effects       String?
+  terpenes      String?
+  medicalUses   String?
 
   userId        String
   user          User       @relation(fields: [userId], references: [id])

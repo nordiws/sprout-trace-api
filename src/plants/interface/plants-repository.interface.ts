@@ -1,7 +1,7 @@
 import { Plant } from "prisma/generated/client";
 import { PlantFiltersDTO } from "../dto/plant-filter.dto";
 
-export interface IPlantRepository {
+export interface IPlantsRepository {
     findAll(userId: string, filters: PlantFiltersDTO): Promise<{ data: Plant[]; total: number }> 
     findOne(id: string): Promise<Plant>
     create(data: Plant): Promise<Plant>

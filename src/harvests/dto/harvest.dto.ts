@@ -1,5 +1,5 @@
 import { HarvestStatus, HarvestType } from "prisma/generated/enums"
-import { HarvestWithPlants } from "../repository/harvest.repository.types"
+import { HarvestWithPlants } from "../repository/harvests.repository.types"
 
 export class HarvestDTO {
   

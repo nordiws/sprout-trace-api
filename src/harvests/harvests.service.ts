@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { HarvestRepository } from "./repository/harvest.repository"
+import { HarvestsRepository } from "./repository/harvests.repository"
 import { CreateHarvestDTO } from "./dto/create-harvest.dto"
 import { HarvestDetailsDTO } from "./dto/harvest-details.dto"
 import { HarvestFiltersDTO } from "./dto/harvest-filter.dto"
@@ -9,14 +9,14 @@ import { PaginationDTO } from "src/common/dto/pagination.dto"
 import { HarvestDTO } from "./dto/harvest.dto"
 import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto"
 import { Harvest } from "prisma/generated/client"
-import { HarvestTimelineRepository } from "./repository/harvest-timeline.repository"
+import { HarvestTimelineRepository } from "./repository/harvests-timeline.repository"
 
 
 @Injectable()
-export class HarvestService {
+export class HarvestsService {
 
     constructor(
-        private readonly harvestRepository: HarvestRepository,
+        private readonly harvestsRepository: HarvestsRepository,
         private readonly harvestTimelineRepository: HarvestTimelineRepository
     ) { }
 
@@ -26,7 +26,7 @@ export class HarvestService {
     ): Promise<HarvestResponseDTO> {
 
         const { total, data } =
-            await this.harvestRepository.findAll(userId, filters)
+            await this.harvestsRepository.findAll(userId, filters)
 
         const pagination = PaginationDTO.mapper(
             filters.page,
@@ -46,19 +46,19 @@ export class HarvestService {
     }
 
     async create(userId: string, data: CreateHarvestDTO): Promise<HarvestDetailsDTO> {
-        const createdHarvest = await this.harvestRepository.create(data.toEntity(userId))
+        const createdHarvest = await this.harvestsRepository.create(data.toEntity(userId))
         return HarvestDetailsDTO.fromEntity(createdHarvest)
     }
 
     async update(userId: string, id: string, data: UpdateHarvestDTO): Promise<HarvestDetailsDTO> {
         await this.getHarvest(userId, id)
-        const updatedHarvest = await this.harvestRepository.update(id, data)
+        const updatedHarvest = await this.harvestsRepository.update(id, data)
         return HarvestDetailsDTO.fromEntity(updatedHarvest)
     }
 
     async softDelete(userId: string, id: string): Promise<void> {
         await this.getHarvest(userId, id)
-        await this.harvestRepository.softDelete(userId, id)
+        await this.harvestsRepository.softDelete(userId, id)
     }
 
     async addTimelineEvent(userId: string, harvestId: string, data: CreateHarvestTimelineDTO) {
@@ -70,7 +70,7 @@ export class HarvestService {
         userId: string,
         id: string
     ): Promise<Harvest> {
-        const harvest = await this.harvestRepository.findOne(userId, id)
+        const harvest = await this.harvestsRepository.findOne(userId, id)
         if (!harvest) {
             throw new NotFoundException(`Harvest with ID ${id} not found`);
         }

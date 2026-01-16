@@ -4,6 +4,7 @@ import { UpdateStrainDTO } from './dto/update-strain.dto';
 import { StrainFiltersDTO } from './dto/strain-filter.dto';
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import type { CurrentUserContext } from "src/auth/types/current-user.type";
+import { StrainsService } from "./strains.service";
 
 @Controller('strains')
 export class StrainsController {
@@ -20,7 +21,7 @@ export class StrainsController {
   @Get(':id')
   findOne(
     @CurrentUser() user: CurrentUserContext,
-    @Param('id') id: number
+    @Param('id') id: string
   ) {
     return this.strainsService.findOne(user.id, id);
   }
@@ -36,7 +37,7 @@ export class StrainsController {
   @Patch(':id')
   update(
     @CurrentUser() user: CurrentUserContext,
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() dto: UpdateStrainDTO
   ) {
     return this.strainsService.update(user.id, id, dto);
@@ -45,8 +46,8 @@ export class StrainsController {
   @Delete(':id')
   remove(
     @CurrentUser() user: CurrentUserContext,
-    @Param('id') id: number
+    @Param('id') id: string
   ) {
-    return this.strainsService.remove(user.id, id);
+    return this.strainsService.softDelete(user.id, id);
   }
 }

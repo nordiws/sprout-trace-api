@@ -1,18 +1,23 @@
 import { Injectable } from "@nestjs/common";
-import { PlantRepository } from "./plant.repository";
+import { PlantsRepository } from "./repository/plants.repository";
+import { PlantDetailsDTO } from "./dto/plant-details.dto";
 
 @Injectable()
 export class PlantsService {
 
     constructor(
-        private readonly plantRepository: PlantRepository
+        private readonly plantsRepository: PlantsRepository
     ) {}
 
     findAll(userId: string, filters: any) {
         // Implementation here
     }
-    findOne(userId: string, id: string) {
-        // Implementation here
+    async findOne(userId: string, id: string) {
+        const response = await this.plantsRepository.findByIdWithLastLog(userId, id);
+        if (!response) {
+            throw new Error('Plant not found');
+        }
+        return PlantDetailsDTO.fromEntity(response);
     }
     create(userId: string, dto: any) {
         // Implementation here
@@ -28,7 +33,7 @@ export class PlantsService {
     }
 
     private async getPlant(userId: string, id: string) {
-        const plant = await this.plantRepository.findOne(id);
+        const plant = await this.plantsRepository.findOne(id);
         if (!plant) {
             throw new Error('Plant not found');
         }
