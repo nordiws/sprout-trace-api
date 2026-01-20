@@ -8,9 +8,10 @@ import { HarvestsModule } from './harvests/harvests.module';
 import { PrismaService } from './prisma/prisma.service';
 import { MetadataModule } from './metadata/metadata.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PlantsModule, SeedsModule, StrainsModule, HarvestsModule, MetadataModule, PrismaModule],
+  imports: [PlantsModule, SeedsModule, StrainsModule, HarvestsModule, MetadataModule, PrismaModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

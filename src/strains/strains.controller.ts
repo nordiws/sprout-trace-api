@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { CreateStrainDTO } from './dto/create-strain.dto';
 import { UpdateStrainDTO } from './dto/update-strain.dto';
 import { StrainFiltersDTO } from './dto/strain-filter.dto';
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import type { CurrentUserContext } from "src/auth/types/current-user.type";
+import type { CurrentUserContext } from "src/auth/types/auth.type";
 import { StrainsService } from "./strains.service";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller('strains')
 export class StrainsController {
   constructor(private readonly strainsService: StrainsService) {}

@@ -1,7 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { HarvestTimelineEvent } from 'prisma/generated/enums';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('metadata')
+@UseGuards(JwtAuthGuard)
 export class MetadataController {
 
   @Get('harvest-timeline-events')

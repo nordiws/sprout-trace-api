@@ -1,13 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { HarvestFiltersDTO } from "./dto/harvest-filter.dto";
 import { CreateHarvestDTO } from "./dto/create-harvest.dto";
 import { UpdateHarvestDTO } from "./dto/update-harvest.dto";
 import { CreateHarvestTimelineDTO } from "./dto/create-harvest-timeline.dto";
 import { HarvestsService } from "./harvests.service";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import type { CurrentUserContext } from "src/auth/types/current-user.type";
+import type { CurrentUserContext } from "src/auth/types/auth.type";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
 @Controller('harvests')
+@UseGuards(JwtAuthGuard)
 export class HarvestsController {
 
   constructor(private readonly harvestsService: HarvestsService) { }

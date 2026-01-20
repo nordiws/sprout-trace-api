@@ -3,7 +3,6 @@ import { CurrentUserData } from '../interface/current-user.interface';
 
 export const CurrentUser = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): CurrentUserData => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.user;
+    return ctx.switchToHttp().getRequest().user;
   }
 );

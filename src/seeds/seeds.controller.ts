@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { SeedFiltersDTO } from "./dto/seed-filter.dto";
 import { CreateSeedDTO } from "./dto/create-seed.dto";
 import { UpdateSeedDTO } from "./dto/update-seed.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import type { CurrentUserContext } from "src/auth/types/current-user.type";
 import { SeedsService } from "./seeds.service";
+import type { CurrentUserContext } from "src/auth/types/auth.type";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
 @Controller('seeds')
+@UseGuards(JwtAuthGuard)
 export class SeedsController {
   constructor(private readonly seedsService: SeedsService) {}
 

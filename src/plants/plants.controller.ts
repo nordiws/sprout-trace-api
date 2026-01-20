@@ -1,14 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { PlantFiltersDTO } from "./dto/plant-filter.dto";
 import { CreatePlantDTO } from "./dto/create-plant.dto";
 import { UpdatePlantDTO } from "./dto/update-plant.dto";
 import { CreatePlantGrowthLogDTO } from "./dto/create-plant-growth.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import type { CurrentUserContext } from "src/auth/types/current-user.type";
 import { PlantsService } from "./plants.service";
 import { PlantGrowthLogDTOFactory } from "./dto/plant-growth-log.dto.factory";
+import type { CurrentUserContext } from "src/auth/types/auth.type";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
 @Controller('plants')
+@UseGuards(JwtAuthGuard)
 export class PlantsController {
   constructor(private readonly plantsService: PlantsService) { }
 
