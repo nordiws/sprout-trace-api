@@ -13,9 +13,8 @@ export class PlantFiltersDTO extends PaginationFilterDTO {
   health?: PlantHealth;
 
   @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  strainId?: number;
+  @IsString()
+  strainId?: string;
 
   @IsOptional()
   @IsString()

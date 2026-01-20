@@ -42,7 +42,7 @@ export class StrainsService {
     
     async update(userId: string, id: string, dto: UpdateStrainDTO) {
         await this.getStrain(userId, id)
-        const updatedStrain = await this.strainsRepository.update(id, dto)
+        const updatedStrain = await this.strainsRepository.update(userId, id, dto)
         return StrainDTO.fromEntity(updatedStrain)
     }
 

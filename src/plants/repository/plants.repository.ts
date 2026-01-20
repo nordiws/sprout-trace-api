@@ -1,29 +1,111 @@
 import { Injectable } from "@nestjs/common";
-import { Plant } from "prisma/generated/client";
+import { Plant, Prisma } from "prisma/generated/client";
 import { IPlantsRepository } from "../interface/plants-repository.interface";
 import { PlantFiltersDTO } from "../dto/plant-filter.dto";
 import { PrismaService } from "src/prisma/prisma.service"
 import { PlantWithStrainAndLogs } from "./plants.repository.types";
+import { PlantCreateInput, PlantUpdateInput } from "prisma/generated/models";
 
 @Injectable()
 export class PlantsRepository implements IPlantsRepository {
 
-    constructor(private readonly prisma: PrismaService) {}
-    
-    findAll(userId: string, filters: PlantFiltersDTO): Promise<{ data: Plant[]; total: number; }> {
-        throw new Error("Method not implemented.");
+    constructor(private readonly prisma: PrismaService) { }
+
+    async findAll(userId: string, filters: PlantFiltersDTO): Promise<{ data: Plant[]; total: number; }> {
+        const {
+            page = 1,
+            limit = 10,
+            status,
+            health,
+            strainId,
+            harvestId,
+            search
+        } = filters;
+
+        const where: Prisma.PlantWhereInput = {
+            userId,
+            active: true,
+            ...(status && { status }),
+            ...(health && { health }),
+            ...(strainId && { strainId }),
+            ...(harvestId && { harvestId }),
+            ...(search && {
+                OR: [
+                    {
+                        code: {
+                            contains: search,
+                            mode: "insensitive"
+                        }
+                    },
+                    {
+                        notes: {
+                            contains: search,
+                            mode: "insensitive"
+                        }
+                    },
+                    {
+                        location: {
+                            contains: search,
+                            mode: "insensitive"
+                        }
+                    }
+                ]
+            })
+        }
+
+        const [total, data] = await this.prisma.$transaction([
+            this.prisma.plant.count({ where }),
+            this.prisma.plant.findMany({
+                where,
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            })
+        ])
+
+        return { total, data };
     }
-    findOne(id: string): Promise<Plant> {
-        throw new Error("Method not implemented.");
+
+    findOne(userId: string, id: string): Promise<Plant | null> {
+        return this.prisma.plant.findFirst({
+            where: {
+                id,
+                userId,
+                active: true
+            }
+        });
     }
-    create(data: Plant): Promise<Plant> {
-        throw new Error("Method not implemented.");
+
+    create(data: PlantCreateInput): Promise<Plant> {
+        return this.prisma.plant.create({
+            data
+        });
     }
-    update(id: string, data: Plant): Promise<Plant> {
-        throw new Error("Method not implemented.");
+
+    update(userId: string, id: string, data: PlantUpdateInput): Promise<Plant> {
+        return this.prisma.plant.update({
+            where: {
+                id,
+                userId,
+                active: true
+            },
+            data
+        });
     }
-    softDelete(id: string): Promise<Plant> {
-        throw new Error("Method not implemented.");
+
+    softDelete(userId: string, id: string): Promise<Plant> {
+        return this.prisma.plant.update({
+            where: {
+                id,
+                userId,
+                active: true
+            },
+            data: {
+                active: false
+            }
+        });
     }
 
     findByIdWithLastLog(userId: string, id: string): Promise<PlantWithStrainAndLogs | null> {

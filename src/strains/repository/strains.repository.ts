@@ -1,5 +1,5 @@
 import { PrismaService } from "src/prisma/prisma.service";
-import { IStrainsRepository } from "../interfaces/strains-repository.interface";
+import { IStrainsRepository } from "../interface/strains-repository.interface";
 import { Prisma, Strain } from "prisma/generated/client";
 import { StrainCreateInput, StrainUpdateInput } from "prisma/generated/models";
 import { StrainFiltersDTO } from "../dto/strain-filter.dto";
@@ -56,32 +56,37 @@ export class StrainsRepository implements IStrainsRepository {
         ])
 
         return { total, data };
-
     }
-    async findOne(userId: string, id: string): Promise<Strain | null> {
-        return await this.prisma.strain.findFirst({
+
+    findOne(userId: string, id: string): Promise<Strain | null> {
+        return this.prisma.strain.findFirst({
             where: {
                 id,
+                userId,
                 active: true
             }
         });
     }
+    
     create(data: StrainCreateInput): Promise<Strain> {
         return this.prisma.strain.create({
             data
         });
     }
-    update(id: string, data: StrainUpdateInput): Promise<Strain> {
+
+    update(userId: string, id: string, data: StrainUpdateInput): Promise<Strain> {
         return this.prisma.strain.update({
             where: {
                 id,
+                userId,
                 active: true
             },
             data
         });
     }
-    async softDelete(userId: string, id: string): Promise<Strain> {
-        return await this.prisma.strain.update({
+
+    softDelete(userId: string, id: string): Promise<Strain> {
+        return this.prisma.strain.update({
             where: {
                 id,
                 userId,

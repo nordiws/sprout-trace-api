@@ -80,19 +80,19 @@ model Strain {
 //////////////////////
 
 model Seed {
-  id                String @id @default(uuid())
-  code              String @unique                // EXTERNAL (SD-001-0001)
-  name              String
-  nombreCultivar    String
-  country           String
-  harvestYear       String
-  codigoInscripcion String
-  flavour           String
-  daysTillHarvest   String
-  dateAdded         DateTime
-  germinated        Int
-  totalSeeds        Int
+  id                 String @id @default(uuid())
+  code               String @unique                // EXTERNAL (SD-001-0001)
+  name               String
+  nombreCultivar     String
+  country            String
+  harvestYear        String
+  inscriptionCode    String
+  flavour            String
+  daysTillHarvest    String
+  dateAdded          DateTime
+  totalSeeds         Int
 
+  germinationRate    String?
   supplier           String?
   batchNumber        String?
   feminized          Boolean?
@@ -103,6 +103,7 @@ model Seed {
   parentGeneration   String?
   collectionMethod   String?
   processingDate     DateTime?
+  flavorProfile      String?
 
   strainId          String
   strain            Strain   @relation(fields: [strainId], references: [id])
@@ -167,6 +168,23 @@ model Harvest {
   @@index([userId, active, createdAt])
 }
 
+//////////////////////
+// HARVEST TIMELINE
+//////////////////////
+
+model HarvestTimeline {
+  id          String @id @default(uuid())
+  date        DateTime
+  event       HarvestTimelineEvent
+  description String?
+
+  harvestId   String
+  harvest     Harvest  @relation(fields: [harvestId], references: [id])
+
+  @@index([harvestId])
+}
+
+
 
 //////////////////////
 // PLANTS
@@ -228,38 +246,160 @@ model Plant {
   @@index([userId, active])
 }
 
+//////////////////////
+// PLANT GROWTH LOGS
+//////////////////////
+
 model PlantGrowthLog {
-  id        String @id @default(uuid())
-  date      DateTime
-  height    String
-  notes     String?
-  phase     PlantPhase
-
-  plantId   String
-  plant     Plant      @relation(fields: [plantId], references: [id])
-
-  @@index([plantId])
-}
-
-//////////////////////
-// HARVEST TIMELINE
-//////////////////////
-
-model HarvestTimeline {
   id          String @id @default(uuid())
   date        DateTime
-  event       HarvestTimelineEvent
-  description String?
+  type        PlantGrowthLogType
+  phase       PlantPhase
 
-  harvestId   String
-  harvest     Harvest  @relation(fields: [harvestId], references: [id])
+  notes       String?
 
-  @@index([harvestId])
+  plantId     String
+  plant       Plant @relation(fields: [plantId], references: [id])
+
+  nutrientLog   NutrientLog?
+  treatmentLog  TreatmentLog?
+  pestLog       PestLog?
+  trainingLog   TrainingLog?
+  measurement   GrowthMeasurement?
+
+  createdAt   DateTime @default(now())
+
+  @@index([plantId])
+  @@index([type])
+  @@index([date])
+}
+
+model GrowthMeasurement {
+  id              String @id @default(uuid())
+  heightCm        Int?
+  widthCm         Int?
+  nodeCount       Int?
+  leafColor       String?
+  vigorScore      Int? // 1–10
+
+  temperature     String?
+  humidity        String?
+  ph              String?
+  ec              String?
+
+  logId           String @unique
+  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+}
+
+model NutrientLog {
+  id              String @id @default(uuid())
+  nutrientName    String
+  brand           String?
+  dosage          String
+  method          NutrientApplicationMethod
+  phAdjusted      Boolean?
+  ecValue         String?
+  runoffObserved  Boolean?
+
+  logId           String @unique
+  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+}
+
+model TreatmentLog {
+  id              String @id @default(uuid())
+  treatmentType   TreatmentType
+  productName     String?
+  reason          String
+  dosage          String?
+  appliedBy       String?
+
+  logId           String @unique
+  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+}
+
+model PestLog {
+  id              String @id @default(uuid())
+  pestType        PestType
+  severity        PestSeverity
+  affectedArea    String?
+  symptoms        String
+  actionTaken     String?
+
+  resolved        Boolean @default(false)
+
+  logId           String @unique
+  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+}
+
+model TrainingLog {
+  id              String @id @default(uuid())
+  technique        TrainingTechnique
+  intensity        TrainingIntensity?
+  description      String?
+
+  logId            String @unique
+  log              PlantGrowthLog @relation(fields: [logId], references: [id])
 }
 
 //////////////////////
 // ENUMS
 //////////////////////
+
+enum NutrientApplicationMethod {
+  SOIL
+  FOLIAR
+  HYDROPONIC
+}
+
+enum TrainingTechnique {
+  TOPPING
+  FIM
+  LST
+  HST
+  SCROG
+  DEFOLIATION
+}
+
+enum TrainingIntensity {
+  LIGHT
+  MODERATE
+  AGGRESSIVE
+}
+
+enum PestType {
+  MITES
+  THRIPS
+  APHIDS
+  FUNGUS_GNATS
+  MOLD
+  MILDEW
+  UNKNOWN
+}
+
+enum PestSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TreatmentType {
+  ROOT_STIMULANT
+  FUNGICIDE
+  INSECTICIDE
+  HORMONE
+  STRESS_RECOVERY
+  DEFICIENCY_CORRECTION
+}
+
+enum PlantGrowthLogType {
+  MEASUREMENT
+  NUTRIENTS
+  SPECIAL_TREATMENT
+  PEST_ISSUE
+  TRAINING
+}
+
 
 enum PlantStatus {
   SEEDLING

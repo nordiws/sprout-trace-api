@@ -6,10 +6,11 @@ import { CreatePlantGrowthLogDTO } from "./dto/create-plant-growth.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import type { CurrentUserContext } from "src/auth/types/current-user.type";
 import { PlantsService } from "./plants.service";
+import { PlantGrowthLogDTOFactory } from "./dto/plant-growth-log.dto.factory";
 
 @Controller('plants')
 export class PlantsController {
-  constructor(private readonly plantsService: PlantsService) {}
+  constructor(private readonly plantsService: PlantsService) { }
 
   @Get()
   findAll(
@@ -49,16 +50,17 @@ export class PlantsController {
     @CurrentUser() user: CurrentUserContext,
     @Param('id') id: string
   ) {
-    return this.plantsService.remove(user.id, id);
+    return this.plantsService.softDelete(user.id, id);
   }
 
-  // Growth log
   @Post(':id/growth-log')
   addGrowthLog(
     @CurrentUser() user: CurrentUserContext,
     @Param('id') plantId: string,
     @Body() dto: CreatePlantGrowthLogDTO
   ) {
-    return this.plantsService.addGrowthLog(user.id, plantId, dto);
+    const domainDto = PlantGrowthLogDTOFactory.createFromDTO(dto);
+    return this.plantsService.addGrowthLog(user.id, plantId, domainDto);
   }
+
 }

@@ -4,6 +4,7 @@ import { CreateSeedDTO } from "./dto/create-seed.dto";
 import { UpdateSeedDTO } from "./dto/update-seed.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import type { CurrentUserContext } from "src/auth/types/current-user.type";
+import { SeedsService } from "./seeds.service";
 
 @Controller('seeds')
 export class SeedsController {
@@ -20,7 +21,7 @@ export class SeedsController {
   @Get(':id')
   findOne(
     @CurrentUser() user: CurrentUserContext,
-    @Param('id') id: number
+    @Param('id') id: string
   ) {
     return this.seedsService.findOne(user.id, id);
   }
@@ -36,7 +37,7 @@ export class SeedsController {
   @Patch(':id')
   update(
     @CurrentUser() user: CurrentUserContext,
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() dto: UpdateSeedDTO
   ) {
     return this.seedsService.update(user.id, id, dto);
@@ -45,8 +46,8 @@ export class SeedsController {
   @Delete(':id')
   remove(
     @CurrentUser() user: CurrentUserContext,
-    @Param('id') id: number
+    @Param('id') id: string
   ) {
-    return this.seedsService.remove(user.id, id);
+    return this.seedsService.softDelete(user.id, id);
   }
 }
