@@ -4,9 +4,8 @@ import { PaginationFilterDTO } from "src/common/dto/pagination-filter.dto";
 
 export class SeedFiltersDTO extends PaginationFilterDTO {
   @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  strainId?: number;
+  @IsString()
+  strainId?: string;
 
   @IsOptional()
   @IsString()

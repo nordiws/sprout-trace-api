@@ -5,6 +5,8 @@ import { SeedFiltersDTO } from "./dto/seed-filter.dto"
 import { SeedItemDTO } from "./dto/seed-item.dto"
 import { SeedResponseDTO } from "./dto/seed-response.dto"
 import { SeedDetailsDTO } from "./dto/seed-details.dto"
+import { SeedDTO } from "./dto/seed.dto"
+import { SeedUpdateInput } from "prisma/generated/models"
 
 @Injectable()
 export class SeedsService {
@@ -25,15 +27,28 @@ export class SeedsService {
             pagination
         )
     }
+
     async findOne(userId: string, id: string): Promise<SeedDetailsDTO> {
-        const seed = await this.seedsRepository.findOne(userId, id)
+        const seed = await this.seedsRepository.findByIdWithStrain(userId, id)
         if (!seed) {
             throw new Error('Seed not found')
         }
         return SeedDetailsDTO.fromEntity(seed)
     }
-    create(userId: string, dto: any) {}
-    update(userId: string, id: string, dto: any) {}
-    softDelete(userId: string, id: string) {}
+
+    async create(userId: string, dto: any): Promise<SeedDTO> {
+        const seed = await this.seedsRepository.create(dto.toEntity(userId))
+        return SeedDTO.fromEntity(seed)
+    }
+
+    async update(userId: string, id: string, dto: SeedUpdateInput): Promise<SeedDTO> {
+        const seed = await this.seedsRepository.update(userId, id, dto)
+        return SeedDTO.fromEntity(seed)
+    }
+
+    async softDelete(userId: string, id: string): Promise<void> {
+        const seed = await this.seedsRepository.softDelete(userId, id)
+        SeedDTO.fromEntity(seed)
+    }
 
 }

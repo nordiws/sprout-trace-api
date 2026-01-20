@@ -1,12 +1,11 @@
-import { SeedWithStrain } from "../repository/seeds.repository.types"
+import { Seed } from "prisma/generated/client"
 
-export class SeedDetailsDTO {
+export class SeedDTO {
 
     id: string
     code: string
     name: string
     cultivarName: string
-    strain: string
     totalSeeds: number
     germinationRate: string | null
     viabilityTest: string | null
@@ -25,13 +24,12 @@ export class SeedDetailsDTO {
     expirationDate: Date | null
     storageConditions: string | null
 
-    static fromEntity(entity: SeedWithStrain): SeedDetailsDTO {
+    static fromEntity(entity: Seed): SeedDTO {
         return {
             id: entity.id,
             code: entity.code,
             name: entity.name,
             cultivarName: entity.nombreCultivar,
-            strain: entity.strain.name,
             totalSeeds: entity.totalSeeds,
             germinationRate: entity.germinationRate,
             viabilityTest: entity.viabilityTest,

@@ -111,6 +111,8 @@ model Seed {
   userId            String
   user              User     @relation(fields: [userId], references: [id])
 
+  plants             Plant[]
+
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   active            Boolean  @default(true)
@@ -233,6 +235,9 @@ model Plant {
   userId            String
   user              User          @relation(fields: [userId], references: [id])
 
+  seedId           String
+  seed             Seed @relation(fields: [seedId], references: [id])
+
   growthLogs        PlantGrowthLog[]
 
   createdAt         DateTime      @default(now())
@@ -241,6 +246,7 @@ model Plant {
 
   @@index([code])
   @@index([userId])
+  @@index([seedId])
   @@index([strainId])
   @@index([harvestId])
   @@index([userId, active])
