@@ -85,8 +85,8 @@ export class HarvestsRepository implements IHarvestsRepository {
     })
   }
 
-  softDelete(userId: string, id: string): Promise<Harvest> {
-    return this.prisma.harvest.update({
+  async softDelete(userId: string, id: string): Promise<void> {
+    await this.prisma.harvest.update({
       where: { id, userId, active: true },
       data: { active: false },
     })

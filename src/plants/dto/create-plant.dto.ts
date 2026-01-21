@@ -23,8 +23,8 @@ export class CreatePlantDTO {
   @IsDateString()
   expectedHarvest: string
 
-  @IsString()
-  height: string
+  @IsInt()
+  height: number
 
   @IsEnum(PlantHealth)
   health: PlantHealth

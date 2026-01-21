@@ -100,8 +100,8 @@ export class PlantsRepository implements IPlantsRepository {
     })
   }
 
-  softDelete(userId: string, id: string): Promise<Plant> {
-    return this.prisma.plant.update({
+  async softDelete(userId: string, id: string): Promise<void> {
+    await this.prisma.plant.update({
       where: {
         id,
         userId,

@@ -9,5 +9,5 @@ export interface IHarvestsRepository {
   findOne(userId: string, id: string): Promise<Harvest | null>
   create(data: Prisma.HarvestCreateInput): Promise<Harvest>
   update(id: string, data: Harvest): Promise<Harvest>
-  softDelete(userId: string, id: string): Promise<Harvest>
+  softDelete(userId: string, id: string): Promise<void>
 }

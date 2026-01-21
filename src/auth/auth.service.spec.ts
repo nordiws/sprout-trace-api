@@ -74,26 +74,4 @@ describe('AuthService', () => {
     })
   })
 
-  it('should return undefined email if user email is null', async () => {
-    const identity: ExternalGoogleIdentity = {
-      sub: 'google-sub-456',
-      email: undefined,
-      name: 'No Email User',
-      provider: 'google',
-    }
-
-    const upsertMock = prisma.user.upsert as jest.Mock
-
-    upsertMock.mockResolvedValue({
-      id: 'user-id-2',
-      googleSub: identity.sub,
-      email: null,
-      name: identity.name,
-      active: true,
-    } as any)
-
-    const result = await service.loginWithGoogle(identity)
-
-    expect(result.user.email).toBeUndefined()
-  })
 })

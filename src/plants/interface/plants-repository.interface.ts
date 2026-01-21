@@ -14,7 +14,7 @@ export interface IPlantsRepository {
     id: string,
     data: Prisma.PlantUpdateInput,
   ): Promise<Plant>
-  softDelete(userId: string, id: string): Promise<Plant>
+  softDelete(userId: string, id: string): Promise<void>
   findByIdWithLastLog(
     userId: string,
     id: string,

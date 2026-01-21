@@ -9,6 +9,7 @@ export class PlantDTO {
   health?: string
   location?: string
   expectedHarvestDate?: string
+  notes?: string
 
   static fromEntity(entity: Plant): PlantDTO {
     return {
@@ -20,6 +21,7 @@ export class PlantDTO {
       health: entity.health,
       location: entity.location ?? undefined,
       expectedHarvestDate: entity.expectedHarvest.toISOString(),
+      notes: entity.notes ?? undefined,
     }
   }
 }
