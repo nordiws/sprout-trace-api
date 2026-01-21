@@ -1,18 +1,16 @@
-import { IsDateString, IsEnum, IsOptional, IsString } from "class-validator";
-import { HarvestTimeline, Prisma } from "prisma/generated/client";
-import { HarvestTimelineEvent } from "prisma/generated/enums";
+import { HarvestTimelineEvent, Prisma } from '@prisma/client'
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator'
 
 export class CreateHarvestTimelineDTO {
-
   @IsDateString()
-  date: string;
+  date: string
 
   @IsEnum(HarvestTimelineEvent)
-  event: HarvestTimelineEvent;
+  event: HarvestTimelineEvent
 
   @IsOptional()
   @IsString()
-  description?: string;
+  description?: string
 
   toEntity(harvestId: string): Prisma.HarvestTimelineCreateInput {
     return {
@@ -20,9 +18,8 @@ export class CreateHarvestTimelineDTO {
       event: this.event,
       description: this.description || null,
       harvest: {
-        connect: { id: harvestId }
-      }
-    };
+        connect: { id: harvestId },
+      },
+    }
   }
-
 }

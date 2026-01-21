@@ -1,72 +1,74 @@
-import { IsDateString, IsEnum, IsOptional, IsString } from "class-validator";
-import { connect } from "http2";
-import { Harvest, Prisma } from "prisma/generated/client";
-import { HarvestStatus, HarvestType, QualityGrade } from "prisma/generated/enums";
-import { EntityCodePrefix } from "src/common/enums/entity-code-prefix.enum";
-import { generateCode } from "src/common/utils/string.util";
+import {
+  HarvestStatus,
+  HarvestType,
+  Prisma,
+  QualityGrade,
+} from '@prisma/client'
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator'
+import { EntityCodePrefix } from 'src/common/enums/entity-code-prefix.enum'
+import { generateCode } from 'src/common/utils/string.util'
 
 export class CreateHarvestDTO {
   @IsString()
-  id: string;
+  id: string
 
   @IsString()
-  name: string;
+  name: string
 
   @IsDateString()
-  startDate: string;
+  startDate: string
 
   @IsOptional()
   @IsDateString()
-  endDate?: string;
+  endDate?: string
 
   @IsEnum(HarvestStatus)
-  status: HarvestStatus;
+  status: HarvestStatus
 
   @IsEnum(HarvestType)
-  harvestType: HarvestType;
+  harvestType: HarvestType
 
   @IsOptional()
   @IsString()
-  notes?: string;
+  notes?: string
 
   // Processing
   @IsOptional()
   @IsString()
-  harvestMethod?: string;
+  harvestMethod?: string
 
   @IsOptional()
   @IsString()
-  dryingMethod?: string;
+  dryingMethod?: string
 
   @IsOptional()
   @IsString()
-  dryingLocation?: string;
+  dryingLocation?: string
 
   @IsOptional()
   @IsString()
-  curingMethod?: string;
+  curingMethod?: string
 
   @IsOptional()
   @IsEnum(QualityGrade)
-  qualityGrade?: QualityGrade;
+  qualityGrade?: QualityGrade
 
   // Environment
   @IsOptional()
   @IsString()
-  dryingTemperature?: string;
+  dryingTemperature?: string
 
   @IsOptional()
   @IsString()
-  dryingHumidity?: string;
+  dryingHumidity?: string
 
   @IsOptional()
   @IsString()
-  moistureContent?: string;
+  moistureContent?: string
 
   @IsOptional()
   @IsString()
-  trimLoss?: string;
-
+  trimLoss?: string
 
   toEntity(userId: string): Prisma.HarvestCreateInput {
     return {
@@ -89,8 +91,8 @@ export class CreateHarvestDTO {
       createdAt: new Date(),
       updatedAt: new Date(),
       active: true,
-      totalYield: "0 Kg",
+      totalYield: '0 Kg',
       user: { connect: { id: userId } },
-    };
+    }
   }
 }

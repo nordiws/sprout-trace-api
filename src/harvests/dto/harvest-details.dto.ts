@@ -1,5 +1,9 @@
-import { Harvest } from "prisma/generated/client"
-import { HarvestStatus, HarvestType, QualityGrade } from "prisma/generated/enums"
+import {
+  Harvest,
+  HarvestStatus,
+  HarvestType,
+  QualityGrade,
+} from '@prisma/client'
 
 export class HarvestDetailsDTO {
   id: string
@@ -28,33 +32,32 @@ export class HarvestDetailsDTO {
   createdAt: string
   updatedAt: string
 
-static fromEntity(entity: Harvest): HarvestDetailsDTO {
-  return {
-    id: entity.id,
-    name: entity.name,
-    code: entity.code,
-    startDate: entity.startDate.toISOString(),
-    endDate: entity.endDate?.toISOString(),
+  static fromEntity(entity: Harvest): HarvestDetailsDTO {
+    return {
+      id: entity.id,
+      name: entity.name,
+      code: entity.code,
+      startDate: entity.startDate.toISOString(),
+      endDate: entity.endDate?.toISOString(),
 
-    status: entity.status,
-    harvestType: entity.harvestType,
-    notes: entity.notes ?? undefined,
+      status: entity.status,
+      harvestType: entity.harvestType,
+      notes: entity.notes ?? undefined,
 
-    harvestMethod: entity.harvestMethod ?? undefined,
-    dryingMethod: entity.dryingMethod ?? undefined,
-    dryingLocation: entity.dryingLocation ?? undefined,
-    curingMethod: entity.curingMethod ?? undefined,
-    qualityGrade: entity.qualityGrade ?? undefined,
+      harvestMethod: entity.harvestMethod ?? undefined,
+      dryingMethod: entity.dryingMethod ?? undefined,
+      dryingLocation: entity.dryingLocation ?? undefined,
+      curingMethod: entity.curingMethod ?? undefined,
+      qualityGrade: entity.qualityGrade ?? undefined,
 
-    dryingTemperature: entity.dryingTemperature ?? undefined,
-    dryingHumidity: entity.dryingHumidity ?? undefined,
-    moistureContent: entity.moistureContent ?? undefined,
-    trimLoss: entity.trimLoss ?? undefined,
+      dryingTemperature: entity.dryingTemperature ?? undefined,
+      dryingHumidity: entity.dryingHumidity ?? undefined,
+      moistureContent: entity.moistureContent ?? undefined,
+      trimLoss: entity.trimLoss ?? undefined,
 
-    active: entity.active,
-    createdAt: entity.createdAt.toISOString(),
-    updatedAt: entity.updatedAt.toISOString(),
+      active: entity.active,
+      createdAt: entity.createdAt.toISOString(),
+      updatedAt: entity.updatedAt.toISOString(),
+    }
   }
-}
-
 }

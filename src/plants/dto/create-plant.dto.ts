@@ -1,43 +1,48 @@
-import { IsDateString, IsEnum, IsInt, IsOptional, IsString } from "class-validator";
-import { PlantHealth, PlantStatus } from "prisma/generated/enums";
-
+import {
+  IsDateString,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+} from 'class-validator'
+import { PlantHealth, PlantStatus } from '@prisma/client'
 export class CreatePlantDTO {
   @IsString()
-  id: string;
+  id: string
 
   @IsEnum(PlantStatus)
-  status: PlantStatus;
+  status: PlantStatus
 
   @IsDateString()
-  plantedDate: string;
+  plantedDate: string
 
   @IsOptional()
   @IsDateString()
-  floweringDate?: string;
+  floweringDate?: string
 
   @IsDateString()
-  expectedHarvest: string;
+  expectedHarvest: string
 
   @IsString()
-  height: string;
+  height: string
 
   @IsEnum(PlantHealth)
-  health: PlantHealth;
+  health: PlantHealth
 
   @IsString()
-  location: string;
-
-  @IsOptional()
-  @IsString()
-  notes?: string;
+  location: string
 
   @IsOptional()
   @IsString()
-  image?: string;
+  notes?: string
+
+  @IsOptional()
+  @IsString()
+  image?: string
 
   @IsInt()
-  strainId: number;
+  strainId: number
 
   @IsString()
-  harvestId: string;
+  harvestId: string
 }

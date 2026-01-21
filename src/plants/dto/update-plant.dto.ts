@@ -1,18 +1,18 @@
-import { PartialType } from "@nestjs/swagger";
-import { CreatePlantDTO } from "./create-plant.dto";
-import { IsEnum, IsOptional, IsString } from "class-validator";
-import { QualityGrade } from "prisma/generated/enums";
+import { PartialType } from '@nestjs/swagger'
+import { CreatePlantDTO } from './create-plant.dto'
+import { IsEnum, IsOptional, IsString } from 'class-validator'
+import { QualityGrade } from '@prisma/client'
 
 export class UpdatePlantDTO extends PartialType(CreatePlantDTO) {
   @IsOptional()
   @IsString()
-  wetWeight?: string;
+  wetWeight?: string
 
   @IsOptional()
   @IsString()
-  dryWeight?: string;
+  dryWeight?: string
 
   @IsOptional()
   @IsEnum(QualityGrade)
-  quality?: QualityGrade;
+  quality?: QualityGrade
 }

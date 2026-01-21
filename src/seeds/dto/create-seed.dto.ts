@@ -1,78 +1,85 @@
-import { IsBoolean, IsDateString, IsInt, IsOptional, IsString, Min } from "class-validator";
+import {
+  IsBoolean,
+  IsDateString,
+  IsInt,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator'
 
 export class CreateSeedDTO {
   @IsString()
-  name: string;
+  name: string
 
   @IsString()
-  nombreCultivar: string;
+  nombreCultivar: string
 
   @IsString()
-  country: string;
+  country: string
 
   @IsString()
-  harvestYear: string;
+  harvestYear: string
 
   @IsString()
-  codigoInscripcion: string;
+  codigoInscripcion: string
 
   @IsString()
-  flavour: string;
+  flavour: string
 
   @IsString()
-  daysTillHarvest: string;
+  daysTillHarvest: string
 
   @IsDateString()
-  dateAdded: string;
+  dateAdded: string
 
   @IsInt()
   @Min(0)
-  germinated: number;
+  germinated: number
 
   @IsInt()
   @Min(0)
-  totalSeeds: number;
+  totalSeeds: number
 
   @IsInt()
-  strainId: number;
+  strainId: number
 
   @IsOptional()
   @IsString()
-  supplier?: string;
+  supplier?: string
 
   @IsOptional()
   @IsString()
-  batchNumber?: string;
+  batchNumber?: string
 
   @IsOptional()
   @IsBoolean()
-  feminized?: boolean;
+  feminized?: boolean
 
   @IsOptional()
   @IsBoolean()
-  autoflowering?: boolean;
+  autoflowering?: boolean
 
   @IsOptional()
   @IsString()
-  viabilityTest?: string;
+  viabilityTest?: string
 
   @IsOptional()
   @IsString()
-  storageConditions?: string;
+  storageConditions?: string
 
   @IsOptional()
   @IsDateString()
-  expirationDate?: string;
+  expirationDate?: string
 
   @IsOptional()
   @IsString()
-  parentGeneration?: string;
+  parentGeneration?: string
 
   @IsOptional()
   @IsString()
-  collectionMethod?: string;
+  collectionMethod?: string
 
   @IsOptional()
   @IsDateString()
-  processingDate?: string;
+  processingDate?: string
 }

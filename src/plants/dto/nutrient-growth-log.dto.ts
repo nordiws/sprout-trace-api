@@ -1,19 +1,24 @@
-import { NutrientApplicationMethod, PlantGrowthLogType, Prisma } from "prisma/generated/client";
-import { PlantGrowthLogBaseDTO } from "./plant-growth-log-base.dto";
-import { IPlantGrowthLogDTO } from "../interface/plant-groth-log.dto.interface";
+import {
+  NutrientApplicationMethod,
+  PlantGrowthLogType,
+  Prisma,
+} from '@prisma/client'
+import { PlantGrowthLogBaseDTO } from './plant-growth-log-base.dto'
+import { IPlantGrowthLogDTO } from '../interface/plant-groth-log.dto.interface'
 
-export class NutrientGrowthLogDTO extends PlantGrowthLogBaseDTO implements IPlantGrowthLogDTO{
+export class NutrientGrowthLogDTO
+  extends PlantGrowthLogBaseDTO
+  implements IPlantGrowthLogDTO
+{
   nutrient!: {
-    nutrientName: string;
-    product: string;
-    dosage: string;
-    method: NutrientApplicationMethod;
-  };
+    nutrientName: string
+    product: string
+    dosage: string
+    method: NutrientApplicationMethod
+  }
 
-  toPrismaCreateInput(
-    plantId: string
-  ): Prisma.PlantGrowthLogCreateInput {
-    this.assertType(PlantGrowthLogType.NUTRIENTS);
+  toPrismaCreateInput(plantId: string): Prisma.PlantGrowthLogCreateInput {
+    this.assertType(PlantGrowthLogType.NUTRIENTS)
 
     return {
       ...this.baseCreateInput(plantId),
@@ -22,12 +27,12 @@ export class NutrientGrowthLogDTO extends PlantGrowthLogBaseDTO implements IPlan
           ...this.nutrient,
         },
       },
-    };
+    }
   }
 
   private assertType(expected: PlantGrowthLogType) {
     if (this.type !== expected) {
-      throw new Error(`Invalid type for nutrient log`);
+      throw new Error(`Invalid type for nutrient log`)
     }
   }
 }

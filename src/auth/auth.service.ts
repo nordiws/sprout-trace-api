@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { CurrentUserContext, ExternalGoogleIdentity } from "./types/auth.type";
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { CurrentUserContext, ExternalGoogleIdentity } from './types/auth.type'
 
 @Injectable()
 export class AuthService {
@@ -19,13 +19,13 @@ export class AuthService {
         name: identity.name,
         active: true,
       },
-    });
+    })
 
     return {
       user: {
         id: user.id,
         email: user.email ?? undefined,
       } satisfies CurrentUserContext,
-    };
+    }
   }
 }

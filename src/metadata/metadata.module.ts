@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { MetadataController } from './metadata.controller';
+import { Module } from '@nestjs/common'
+import { MetadataController } from './metadata.controller'
 
 @Module({
-  controllers: [MetadataController]
+  controllers: [MetadataController],
 })
 export class MetadataModule {}

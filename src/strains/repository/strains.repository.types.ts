@@ -1,5 +1,5 @@
-import { Strain } from "prisma/generated/client";
+import { Strain } from '@prisma/client'
 
 export type StrainWithPlants = Strain & {
-    plants: Array<import("prisma/generated/client").Plant>;
+  plants: Array<import('@prisma/client').Plant>
 }

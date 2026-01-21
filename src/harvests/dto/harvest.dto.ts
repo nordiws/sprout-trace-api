@@ -1,8 +1,7 @@
-import { HarvestStatus, HarvestType } from "prisma/generated/enums"
-import { HarvestWithPlants } from "../repository/harvests.repository.types"
+import { HarvestStatus, HarvestType } from '@prisma/client'
+import { HarvestWithPlants } from '../repository/harvests.repository.types'
 
 export class HarvestDTO {
-  
   id: string
   code: string
   name: string
@@ -25,8 +24,7 @@ export class HarvestDTO {
       notes: entity.notes ?? undefined,
       totalYield: entity.totalYield ?? undefined,
 
-      plants: entity.plants.map((plant) => plant.id)
+      plants: entity.plants.map((plant) => plant.id),
     }
   }
-
 }

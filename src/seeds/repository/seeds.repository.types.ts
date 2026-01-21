@@ -1,6 +1,5 @@
-import { Seed, Strain } from "prisma/generated/client";
-
+import { Seed, Strain } from '@prisma/client'
 
 export type SeedWithStrain = Seed & {
-  strain: Strain;
+  strain: Strain
 }

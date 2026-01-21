@@ -1,125 +1,138 @@
-import { Type } from "class-transformer";
-import { IsDateString, IsEnum, IsObject, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
-import { NutrientApplicationMethod, PestSeverity, PestType, PlantGrowthLogType, PlantPhase, TrainingIntensity, TrainingTechnique } from "prisma/generated/enums";
+import {
+  NutrientApplicationMethod,
+  PestSeverity,
+  PestType,
+  PlantGrowthLogType,
+  PlantPhase,
+  TrainingIntensity,
+  TrainingTechnique,
+} from '@prisma/client'
+import { Type } from 'class-transformer'
+import {
+  IsDateString,
+  IsEnum,
+  IsOptional,
+  IsString,
+  ValidateIf,
+  ValidateNested,
+} from 'class-validator'
 
 export class CreatePlantGrowthLogDTO {
   @IsDateString()
-  date!: string;
+  date!: string
 
   @IsEnum(PlantGrowthLogType)
-  type!: PlantGrowthLogType;
+  type!: PlantGrowthLogType
 
   @IsEnum(PlantPhase)
-  phase!: PlantPhase;
+  phase!: PlantPhase
 
   @IsOptional()
   @IsString()
-  notes?: string;
+  notes?: string
 
   /* -------------------- MEASUREMENT -------------------- */
 
   @ValidateIf((dto) => dto.type === PlantGrowthLogType.MEASUREMENT)
   @ValidateNested()
   @Type(() => MeasurementLogDTO)
-  measurementLog?: MeasurementLogDTO;
+  measurementLog?: MeasurementLogDTO
 
   /* -------------------- NUTRIENTS -------------------- */
 
   @ValidateIf((dto) => dto.type === PlantGrowthLogType.NUTRIENTS)
   @ValidateNested()
   @Type(() => NutrientLogDTO)
-  nutrientLog?: NutrientLogDTO;
+  nutrientLog?: NutrientLogDTO
 
   /* -------------------- PEST -------------------- */
 
   @ValidateIf((dto) => dto.type === PlantGrowthLogType.PEST_ISSUE)
   @ValidateNested()
   @Type(() => PestLogDTO)
-  pestLog?: PestLogDTO;
+  pestLog?: PestLogDTO
 
   /* -------------------- TRAINING -------------------- */
 
   @ValidateIf((dto) => dto.type === PlantGrowthLogType.TRAINING)
   @ValidateNested()
   @Type(() => TrainingLogDTO)
-  trainingLog?: TrainingLogDTO;
+  trainingLog?: TrainingLogDTO
 
   /* -------------------- SPECIAL TREATMENT -------------------- */
 
   @ValidateIf((dto) => dto.type === PlantGrowthLogType.SPECIAL_TREATMENT)
   @ValidateNested()
   @Type(() => TreatmentLogDTO)
-  treatmentLog?: TreatmentLogDTO;
-
+  treatmentLog?: TreatmentLogDTO
 }
 
 export class MeasurementLogDTO {
   @IsOptional()
   @IsString()
-  height?: string;
+  height?: string
 
   @IsOptional()
   @IsString()
-  temperature?: string;
+  temperature?: string
 
   @IsOptional()
   @IsString()
-  humidity?: string;
+  humidity?: string
 
   @IsOptional()
   @IsString()
-  ph?: string;
+  ph?: string
 
   @IsOptional()
   @IsString()
-  ec?: string;
+  ec?: string
 }
 
 export class NutrientLogDTO {
   @IsString()
-  nutrientName!: string;
+  nutrientName!: string
 
   @IsString()
-  product!: string;
+  product!: string
 
   @IsString()
-  dosage!: string;
+  dosage!: string
 
   @IsEnum(NutrientApplicationMethod)
-  method!: NutrientApplicationMethod;
+  method!: NutrientApplicationMethod
 }
 
 export class PestLogDTO {
   @IsEnum(PestType)
-  pestType!: PestType;
+  pestType!: PestType
 
   @IsEnum(PestSeverity)
   @IsOptional()
-  severity!: PestSeverity;
+  severity!: PestSeverity
 
   @IsOptional()
   @IsString()
-  actionTaken?: string;
+  actionTaken?: string
 
   @IsString()
-  symptoms: string;
+  symptoms: string
 }
 
 export class TrainingLogDTO {
-
   @IsEnum(TrainingTechnique)
-  technique!: TrainingTechnique;
+  technique!: TrainingTechnique
 
   @IsEnum(TrainingIntensity)
   @IsOptional()
-  intensity?: TrainingIntensity;
+  intensity?: TrainingIntensity
 }
 
 export class TreatmentLogDTO {
   @IsString()
-  description!: string;
+  description!: string
 
   @IsOptional()
   @IsString()
-  product?: string;
+  product?: string
 }

@@ -1,5 +1,5 @@
-import { Prisma } from "prisma/generated/client";
+import { Prisma } from '@prisma/client'
 
 export interface IHarvestsTimelineRepository {
-    addEvent(data: Prisma.HarvestTimelineCreateInput): Promise<any>
+  addEvent(data: Prisma.HarvestTimelineCreateInput): Promise<any>
 }

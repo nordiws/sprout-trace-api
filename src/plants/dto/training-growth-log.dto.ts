@@ -1,18 +1,23 @@
-import { PlantGrowthLogType, TrainingIntensity, TrainingTechnique } from "prisma/generated/enums";
-import { PlantGrowthLogBaseDTO } from "./plant-growth-log-base.dto";
-import { Prisma } from "prisma/generated/client";
-import { IPlantGrowthLogDTO } from "../interface/plant-groth-log.dto.interface";
+import {
+  PlantGrowthLogType,
+  TrainingIntensity,
+  TrainingTechnique,
+  Prisma,
+} from '@prisma/client'
+import { PlantGrowthLogBaseDTO } from './plant-growth-log-base.dto'
+import { IPlantGrowthLogDTO } from '../interface/plant-groth-log.dto.interface'
 
-export class TrainingGrowthLogDTO extends PlantGrowthLogBaseDTO implements IPlantGrowthLogDTO {
+export class TrainingGrowthLogDTO
+  extends PlantGrowthLogBaseDTO
+  implements IPlantGrowthLogDTO
+{
   training!: {
-    technique: TrainingTechnique;
-    intensity?: TrainingIntensity;
-  };
+    technique: TrainingTechnique
+    intensity?: TrainingIntensity
+  }
 
-  toPrismaCreateInput(
-    plantId: string
-  ): Prisma.PlantGrowthLogCreateInput {
-    this.assertType(PlantGrowthLogType.TRAINING);
+  toPrismaCreateInput(plantId: string): Prisma.PlantGrowthLogCreateInput {
+    this.assertType(PlantGrowthLogType.TRAINING)
 
     return {
       ...this.baseCreateInput(plantId),
@@ -21,12 +26,12 @@ export class TrainingGrowthLogDTO extends PlantGrowthLogBaseDTO implements IPlan
           ...this.training,
         },
       },
-    };
+    }
   }
 
   private assertType(expected: PlantGrowthLogType) {
     if (this.type !== expected) {
-      throw new Error(`Invalid type for training log`);
+      throw new Error(`Invalid type for training log`)
     }
   }
 }

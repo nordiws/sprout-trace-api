@@ -1,61 +1,60 @@
-import { IsDateString, IsEnum, IsOptional, IsString } from "class-validator";
-import { Prisma } from "prisma/generated/client";
-import { GrowDifficulty, StrainType, YieldLevel } from "prisma/generated/enums";
-import { EntityCodePrefix } from "src/common/enums/entity-code-prefix.enum";
-import { generateCode } from "src/common/utils/string.util";
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator'
+import { Prisma, GrowDifficulty, StrainType, YieldLevel } from '@prisma/client'
+import { EntityCodePrefix } from 'src/common/enums/entity-code-prefix.enum'
+import { generateCode } from 'src/common/utils/string.util'
 
 export class CreateStrainDTO {
   @IsString()
-  name: string;
+  name: string
 
   @IsEnum(StrainType)
-  type: StrainType;
+  type: StrainType
 
   @IsString()
-  genetics: string;
+  genetics: string
 
   @IsString()
-  thc: string;
+  thc: string
 
   @IsString()
-  cbd: string;
+  cbd: string
 
   @IsString()
-  floweringTime: string;
+  floweringTime: string
 
   @IsString()
-  description: string;
+  description: string
 
   @IsDateString()
-  dateAdded: string;
+  dateAdded: string
 
   @IsOptional()
   @IsString()
-  origin?: string;
+  origin?: string
 
   @IsOptional()
   @IsString()
-  breeder?: string;
+  breeder?: string
 
   @IsOptional()
   @IsEnum(GrowDifficulty)
-  difficulty?: GrowDifficulty;
+  difficulty?: GrowDifficulty
 
   @IsOptional()
   @IsEnum(YieldLevel)
-  yield?: YieldLevel;
+  yield?: YieldLevel
 
   @IsOptional()
   @IsString()
-  preferredEnv?: string;
+  preferredEnv?: string
 
   @IsOptional()
   @IsString()
-  resistance?: string;
+  resistance?: string
 
   @IsOptional()
   @IsString()
-  growthPattern?: string;
+  growthPattern?: string
 
   toEntity(userId: string): Prisma.StrainCreateInput {
     return {
@@ -75,7 +74,7 @@ export class CreateStrainDTO {
       preferredEnv: this.preferredEnv,
       resistance: this.resistance,
       growthPattern: this.growthPattern,
-      user: { connect: { id: userId } }
+      user: { connect: { id: userId } },
     }
   }
 }

@@ -1,16 +1,17 @@
-import { PaginationDTO } from "src/common/dto/pagination.dto";
-import { PlantItemDTO } from "./plant-item.dto";
+import { PaginationDTO } from 'src/common/dto/pagination.dto'
+import { PlantItemDTO } from './plant-item.dto'
 
-export class PlantResponseDTO{
+export class PlantResponseDTO {
+  pagination: PaginationDTO
+  plants: PlantItemDTO[]
 
-    pagination: PaginationDTO
-    plants: PlantItemDTO[]
-
-    static mapper(plants: PlantItemDTO[], pagination: PaginationDTO): PlantResponseDTO {
-        return {
-            pagination,
-            plants
-        }
+  static mapper(
+    plants: PlantItemDTO[],
+    pagination: PaginationDTO,
+  ): PlantResponseDTO {
+    return {
+      pagination,
+      plants,
     }
-
+  }
 }
