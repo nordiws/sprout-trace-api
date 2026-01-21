@@ -4,11 +4,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
-import { verifyGoogleToken } from '../google/google-jwt'
 import { ExternalGoogleIdentity } from '../types/auth.type'
+import type { GoogleTokenVerifier } from '../google/google-token-verifier.interface'
 
 @Injectable()
 export class GoogleAuthGuard implements CanActivate {
+
+  constructor(private readonly verifier: GoogleTokenVerifier) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
     const authHeader = request.headers.authorization
@@ -20,7 +23,7 @@ export class GoogleAuthGuard implements CanActivate {
     const token = authHeader.replace('Bearer ', '')
 
     try {
-      const payload = await verifyGoogleToken(token)
+      const payload = await this.verifier.verify(token)
 
       if (!payload.sub) {
         throw new UnauthorizedException('Invalid token: missing sub')
@@ -31,7 +34,6 @@ export class GoogleAuthGuard implements CanActivate {
         sub: payload.sub,
         email: payload.email,
         name: payload.name,
-        picture: payload.picture,
       } satisfies ExternalGoogleIdentity
 
       return true
