@@ -9,5 +9,5 @@ export interface IStrainsRepository {
   findOne(userId: string, id: string): Promise<Strain | null>
   create(data: Prisma.StrainCreateInput): Promise<Strain>
   update(userId: string, id: string, data: Strain): Promise<Strain>
-  softDelete(userId: string, id: string): Promise<Strain>
+  softDelete(userId: string, id: string): Promise<void>
 }

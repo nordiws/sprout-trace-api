@@ -7,8 +7,12 @@ import { CreateStrainDTO } from './dto/create-strain.dto'
 import { UpdateStrainDTO } from './dto/update-strain.dto'
 import { StrainDetailsDTO } from './dto/strain-details.dto'
 import { Strain } from '@prisma/client'
+import { Injectable } from '@nestjs/common'
+import { StrainItemDTO } from './dto/strain-item.dto'
 
+@Injectable()
 export class StrainsService {
+
   constructor(private readonly strainsRepository: StrainsRepository) {}
 
   async findAll(
@@ -22,7 +26,7 @@ export class StrainsService {
 
     const pagination = PaginationDTO.mapper(filters.page, filters.limit, total)
 
-    return StrainResponseDTO.mapper(data.map(StrainDTO.fromEntity), pagination)
+    return StrainResponseDTO.mapper(data.map(StrainItemDTO.fromEntity), pagination)
   }
 
   async findOne(userId: string, id: string) {
@@ -33,19 +37,18 @@ export class StrainsService {
     return StrainDetailsDTO.fromEntity(strain)
   }
 
-  async create(userId: string, dto: CreateStrainDTO) {
+  async create(userId: string, dto: CreateStrainDTO): Promise<StrainDTO> {
     const strain = await this.strainsRepository.create(dto.toEntity(userId))
     return StrainDTO.fromEntity(strain)
   }
 
-  async update(userId: string, id: string, dto: UpdateStrainDTO) {
+  async update(userId: string, id: string, dto: UpdateStrainDTO): Promise<StrainDTO> {
     await this.getStrain(userId, id)
     const updatedStrain = await this.strainsRepository.update(userId, id, dto)
     return StrainDTO.fromEntity(updatedStrain)
   }
 
-  async softDelete(userId: string, id: string) {
-    await this.getStrain(userId, id)
+  async softDelete(userId: string, id: string): Promise<void> {
     await this.strainsRepository.softDelete(userId, id)
   }
 

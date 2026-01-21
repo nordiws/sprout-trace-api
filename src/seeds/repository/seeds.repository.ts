@@ -10,7 +10,7 @@ export class SeedsRepository implements ISeedsRepository {
   async findAll(
     userId: string,
     filters: SeedFiltersDTO,
-  ): Promise<{ data: Seed[]; total: number }> {
+  ): Promise<{ data: SeedWithStrain[]; total: number }> {
     const {
       page = 1,
       limit = 10,
@@ -75,6 +75,9 @@ export class SeedsRepository implements ISeedsRepository {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          strain: true,
+        },
       }),
     ])
     return { total, data }
@@ -111,8 +114,8 @@ export class SeedsRepository implements ISeedsRepository {
     })
   }
 
-  softDelete(userId: string, id: string): Promise<Seed> {
-    return this.prisma.seed.update({
+  async softDelete(userId: string, id: string): Promise<void> {
+    await this.prisma.seed.update({
       where: {
         id,
         userId,

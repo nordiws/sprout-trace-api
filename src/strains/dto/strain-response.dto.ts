@@ -1,12 +1,12 @@
 import { PaginationDTO } from 'src/common/dto/pagination.dto'
-import { StrainDTO } from './strain.dto'
+import { StrainItemDTO } from './strain-item.dto'
 
 export class StrainResponseDTO {
   pagination: PaginationDTO
-  strains: StrainDTO[]
+  strains: StrainItemDTO[]
 
   static mapper(
-    strains: StrainDTO[],
+    strains: StrainItemDTO[],
     pagination: PaginationDTO,
   ): StrainResponseDTO {
     return {

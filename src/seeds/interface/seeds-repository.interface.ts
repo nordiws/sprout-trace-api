@@ -13,5 +13,5 @@ export interface ISeedsRepository {
     id: string,
     data: Prisma.SeedUpdateInput,
   ): Promise<Seed>
-  softDelete(userId: string, id: string): Promise<Seed>
+  softDelete(userId: string, id: string): Promise<void>
 }

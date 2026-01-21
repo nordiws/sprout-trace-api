@@ -26,7 +26,7 @@ export class CreateStrainDTO {
   description: string
 
   @IsDateString()
-  dateAdded: string
+  dateAdded: Date
 
   @IsOptional()
   @IsString()

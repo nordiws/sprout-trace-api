@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator'
-import { StrainType } from 'prisma/generated/enums'
+import { StrainType } from '@prisma/client'
 import { PaginationFilterDTO } from 'src/common/dto/pagination-filter.dto'
 
 export class StrainFiltersDTO extends PaginationFilterDTO {

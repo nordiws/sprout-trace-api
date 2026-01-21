@@ -9,7 +9,7 @@ export class StrainsRepository implements IStrainsRepository {
   async findAll(
     userId: string,
     filters: StrainFiltersDTO,
-  ): Promise<{ data: Strain[]; total: number }> {
+  ): Promise<{ data: StrainWithPlants[]; total: number }> {
     const { page = 1, limit = 10, type, search } = filters
 
     const where: Prisma.StrainWhereInput = {
@@ -85,8 +85,8 @@ export class StrainsRepository implements IStrainsRepository {
     })
   }
 
-  softDelete(userId: string, id: string): Promise<Strain> {
-    return this.prisma.strain.update({
+  async softDelete(userId: string, id: string): Promise<void> {
+    await this.prisma.strain.update({
       where: {
         id,
         userId,

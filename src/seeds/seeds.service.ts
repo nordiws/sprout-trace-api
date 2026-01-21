@@ -6,7 +6,7 @@ import { SeedItemDTO } from './dto/seed-item.dto'
 import { SeedResponseDTO } from './dto/seed-response.dto'
 import { SeedDetailsDTO } from './dto/seed-details.dto'
 import { SeedDTO } from './dto/seed.dto'
-import { SeedUpdateInput } from 'prisma/generated/models'
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class SeedsService {
@@ -37,14 +37,13 @@ export class SeedsService {
   async update(
     userId: string,
     id: string,
-    dto: SeedUpdateInput,
+    dto: Prisma.SeedUpdateInput,
   ): Promise<SeedDTO> {
     const seed = await this.seedsRepository.update(userId, id, dto)
     return SeedDTO.fromEntity(seed)
   }
 
   async softDelete(userId: string, id: string): Promise<void> {
-    const seed = await this.seedsRepository.softDelete(userId, id)
-    SeedDTO.fromEntity(seed)
+    await this.seedsRepository.softDelete(userId, id)
   }
 }
