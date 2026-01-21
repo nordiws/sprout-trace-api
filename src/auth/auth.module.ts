@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { JwtModule } from '@nestjs/jwt'
-import { PrismaService } from 'src/prisma/prisma.service'
 import { AuthController } from './auth.controller'
 import type { StringValue } from 'ms'
 
@@ -14,7 +13,7 @@ import type { StringValue } from 'ms'
       },
     }),
   ],
-  providers: [AuthService, PrismaService],
+  providers: [AuthService],
   controllers: [AuthController],
   exports: [JwtModule],
 })

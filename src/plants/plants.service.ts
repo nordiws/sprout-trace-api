@@ -8,7 +8,6 @@ import { PlantGrowthLogRepository } from './repository/plants-growth-log.reposit
 import { PlantFiltersDTO } from './dto/plant-filter.dto'
 import { PlantResponseDTO } from './dto/plant-response.dto'
 import { PlantGrowthLogBaseDTO } from './dto/plant-growth-log-base.dto'
-import { Prisma } from '@prisma/client'
 import { UpdatePlantDTO } from './dto/update-plant.dto'
 
 @Injectable()

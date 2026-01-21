@@ -7,7 +7,7 @@ export interface CurrentUserContext {
 export interface ExternalGoogleIdentity {
   provider: 'google'
   sub: string
-  email: string
+  email?: string
   name?: string
   picture?: string
 }
