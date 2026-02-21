@@ -15,9 +15,7 @@ import { StrainFiltersDTO } from './dto/strain-filter.dto'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
 import { StrainsService } from './strains.service'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
-@UseGuards(JwtAuthGuard)
 @Controller('strains')
 export class StrainsController {
   constructor(private readonly strainsService: StrainsService) {}

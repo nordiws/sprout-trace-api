@@ -2,7 +2,6 @@ import { randomUUID } from 'crypto'
 import { Test } from '@nestjs/testing'
 import { StrainsController } from './strains.controller'
 import { StrainsService } from './strains.service'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
 import type { StrainFiltersDTO } from './dto/strain-filter.dto'
 import type { CreateStrainDTO } from './dto/create-strain.dto'
@@ -47,8 +46,6 @@ describe('StrainsController', () => {
         },
       ],
     })
-      .overrideGuard(JwtAuthGuard)
-      .useValue({ canActivate: () => true })
       .compile()
 
     controller = module.get(StrainsController)

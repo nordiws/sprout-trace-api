@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { MetadataController } from './metadata.controller'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { HarvestTimelineEvent } from '@prisma/client'
 
 describe('MetadataController', () => {
@@ -10,10 +9,6 @@ describe('MetadataController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MetadataController],
     })
-      .overrideGuard(JwtAuthGuard)
-      .useValue({
-        canActivate: jest.fn(() => true),
-      })
       .compile()
 
     controller = module.get<MetadataController>(MetadataController)

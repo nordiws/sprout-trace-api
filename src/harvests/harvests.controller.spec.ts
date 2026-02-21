@@ -2,7 +2,6 @@ import { randomUUID } from 'crypto'
 import { Test } from '@nestjs/testing'
 import { HarvestsController } from './harvests.controller'
 import { HarvestsService } from './harvests.service'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
 import type { HarvestFiltersDTO } from './dto/harvest-filter.dto'
 import type { CreateHarvestDTO } from './dto/create-harvest.dto'
@@ -51,8 +50,6 @@ describe('HarvestsController', () => {
         },
       ],
     })
-      .overrideGuard(JwtAuthGuard)
-      .useValue({ canActivate: () => true })
       .compile()
 
     controller = module.get(HarvestsController)

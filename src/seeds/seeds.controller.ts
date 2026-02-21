@@ -15,10 +15,8 @@ import { UpdateSeedDTO } from './dto/update-seed.dto'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { SeedsService } from './seeds.service'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
 @Controller('seeds')
-@UseGuards(JwtAuthGuard)
 export class SeedsController {
   constructor(private readonly seedsService: SeedsService) {}
 

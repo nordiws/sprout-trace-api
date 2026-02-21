@@ -16,10 +16,8 @@ import { CreateHarvestTimelineDTO } from './dto/create-harvest-timeline.dto'
 import { HarvestsService } from './harvests.service'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
 @Controller('harvests')
-@UseGuards(JwtAuthGuard)
 export class HarvestsController {
   constructor(private readonly harvestsService: HarvestsService) {}
 

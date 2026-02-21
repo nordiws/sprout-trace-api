@@ -17,10 +17,8 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { PlantsService } from './plants.service'
 import { PlantGrowthLogDTOFactory } from './dto/plant-growth-log.dto.factory'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
 @Controller('plants')
-@UseGuards(JwtAuthGuard)
 export class PlantsController {
   constructor(private readonly plantsService: PlantsService) {}
 

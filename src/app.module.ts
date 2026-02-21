@@ -8,9 +8,10 @@ import { HarvestsModule } from './harvests/harvests.module'
 import { PrismaService } from './prisma/prisma.service'
 import { MetadataModule } from './metadata/metadata.module'
 import { PrismaModule } from './prisma/prisma.module'
-import { AuthModule } from './auth/auth.module'
-import { GoogleAuthGuard } from './auth/guards/google-auth.guard'
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
+import { APP_GUARD } from '@nestjs/core'
+import { CognitoAuthGuard } from './auth/guards/cognito-auth.guard'
+import { UserModule } from './users/user.module'
+
 
 @Module({
   imports: [
@@ -20,20 +21,16 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
     HarvestsModule,
     MetadataModule,
     PrismaModule,
-    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
-    AppService, 
+    AppService,
     PrismaService,
     {
-      provide: 'APP_GUARD',
-      useClass: GoogleAuthGuard,
+      provide: APP_GUARD,
+      useClass: CognitoAuthGuard,
     },
-    {
-      provide: 'APP_GUARD',
-      useClass: JwtAuthGuard,
-    }
   ],
 })
-export class AppModule {}
+export class AppModule { }

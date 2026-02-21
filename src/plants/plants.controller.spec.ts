@@ -2,7 +2,6 @@ import { randomUUID } from 'crypto'
 import { Test } from '@nestjs/testing'
 import { PlantsController } from './plants.controller'
 import { PlantsService } from './plants.service'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import type { CurrentUserContext } from 'src/auth/types/auth.type'
 import type { PlantFiltersDTO } from './dto/plant-filter.dto'
 import type { CreatePlantDTO } from './dto/create-plant.dto'
@@ -60,8 +59,6 @@ describe('PlantsController', () => {
                 },
             ],
         })
-            .overrideGuard(JwtAuthGuard)
-            .useValue({ canActivate: () => true })
             .compile()
 
         controller = module.get(PlantsController)
