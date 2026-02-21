@@ -6,8 +6,7 @@ import {
   Param,
   Patch,
   Post,
-  Query,
-  UseGuards,
+  Query
 } from '@nestjs/common'
 import { CreateStrainDTO } from './dto/create-strain.dto'
 import { UpdateStrainDTO } from './dto/update-strain.dto'

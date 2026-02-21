@@ -20,6 +20,11 @@ async function bootstrap() {
     },
   })
 
+  app.getHttpAdapter().get('/openapi.json', (_req, res) => {
+    res.type('application/json')
+    res.send(document)
+  })
+
   await app.listen(process.env.PORT ?? 3000)
 }
 
