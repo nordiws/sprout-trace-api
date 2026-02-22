@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import type { Request, Response } from 'express'
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
@@ -20,7 +21,7 @@ async function bootstrap() {
     },
   })
 
-  app.getHttpAdapter().get('/openapi.json', (_req, res) => {
+  app.getHttpAdapter().get('/openapi.json', (_req: Request, res: Response) => {
     res.type('application/json')
     res.send(document)
   })
@@ -28,4 +29,4 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000)
 }
 
-bootstrap()
+void bootstrap()

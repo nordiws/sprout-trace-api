@@ -12,7 +12,7 @@ export class SeedItemDTO {
   flavorProfile: string | null
   createdAt: Date
 
-  static fromEntity(entity: SeedWithStrain): SeedItemDTO {
+  static fromEntity(this: void, entity: SeedWithStrain): SeedItemDTO {
     return {
       id: entity.id,
       name: entity.name,

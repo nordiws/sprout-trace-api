@@ -13,25 +13,22 @@ const config: Config = {
   collectCoverageFrom: [
     '**/*.ts',
 
-    // infra / bootstrap
-    '!**/*.module.ts',
+    // bootstrap
     '!main.ts',
+    '!**/*.module.ts',
 
-    // repositories & guards
-    '!**/repository/**',
-    '!**/guards/**',
-
-    // interfaces & types
+    // types & interfaces
     '!**/*.interface.ts',
     '!**/*.type.ts',
+    '!**/*.types.ts',
+    '!**/@types/**',
 
-    // pure validation DTOs (optional but recommended)
-    '!**/dto/create-*.dto.ts',
-    '!**/dto/*-filter.dto.ts',
+    // validation-only DTOs
+    '!**/dto/**/*.dto.ts',
 
-    // decorators
+    // exclude simple decorators
     '!**/auth/decorators/**',
-    '!**/auth/google/**',
+
   ]
 }
 

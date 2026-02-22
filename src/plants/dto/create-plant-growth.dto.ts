@@ -17,7 +17,6 @@ import {
   ValidateNested,
 } from 'class-validator'
 
-
 export class MeasurementLogDTO {
   @IsOptional()
   @IsString()
@@ -104,37 +103,49 @@ export class CreatePlantGrowthLogDTO {
 
   /* -------------------- MEASUREMENT -------------------- */
 
-  @ValidateIf((dto) => dto.type === PlantGrowthLogType.MEASUREMENT)
+  @ValidateIf(
+    (dto: CreatePlantGrowthLogDTO) =>
+      dto.type === PlantGrowthLogType.MEASUREMENT,
+  )
   @ValidateNested()
   @Type(() => MeasurementLogDTO)
   measurementLog?: MeasurementLogDTO
 
   /* -------------------- NUTRIENTS -------------------- */
 
-  @ValidateIf((dto) => dto.type === PlantGrowthLogType.NUTRIENTS)
+  @ValidateIf(
+    (dto: CreatePlantGrowthLogDTO) => dto.type === PlantGrowthLogType.NUTRIENTS,
+  )
   @ValidateNested()
   @Type(() => NutrientLogDTO)
   nutrientLog?: NutrientLogDTO
 
   /* -------------------- PEST -------------------- */
 
-  @ValidateIf((dto) => dto.type === PlantGrowthLogType.PEST_ISSUE)
+  @ValidateIf(
+    (dto: CreatePlantGrowthLogDTO) =>
+      dto.type === PlantGrowthLogType.PEST_ISSUE,
+  )
   @ValidateNested()
   @Type(() => PestLogDTO)
   pestLog?: PestLogDTO
 
   /* -------------------- TRAINING -------------------- */
 
-  @ValidateIf((dto) => dto.type === PlantGrowthLogType.TRAINING)
+  @ValidateIf(
+    (dto: CreatePlantGrowthLogDTO) => dto.type === PlantGrowthLogType.TRAINING,
+  )
   @ValidateNested()
   @Type(() => TrainingLogDTO)
   trainingLog?: TrainingLogDTO
 
   /* -------------------- SPECIAL TREATMENT -------------------- */
 
-  @ValidateIf((dto) => dto.type === PlantGrowthLogType.SPECIAL_TREATMENT)
+  @ValidateIf(
+    (dto: CreatePlantGrowthLogDTO) =>
+      dto.type === PlantGrowthLogType.SPECIAL_TREATMENT,
+  )
   @ValidateNested()
   @Type(() => TreatmentLogDTO)
   treatmentLog?: TreatmentLogDTO
 }
-

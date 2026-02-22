@@ -49,7 +49,7 @@ describe('StrainsService', () => {
     dryWeight: null,
     quality: null,
     harvestId: '',
-    seedId: ''
+    seedId: '',
   }
 
   const strainWithPlantsEntity: StrainWithPlants = {
@@ -106,21 +106,21 @@ describe('StrainsService', () => {
     gennetics: null,
     effects: null,
     terpenes: null,
-    medicalUses: null
+    medicalUses: null,
   }
 
   const dto: CreateStrainDTO = {
-        name: 'Strain A',
-        type: StrainType.INDICA,
-        genetics: '',
-        thc: '',
-        cbd: '',
-        floweringTime: '',
-        description: '',
-        dateAdded: new Date(),
-        strainId: strainId,
-        toEntity: jest.fn().mockReturnValue(strainEntity),
-      } as CreateStrainDTO
+    name: 'Strain A',
+    type: StrainType.INDICA,
+    genetics: '',
+    thc: '',
+    cbd: '',
+    floweringTime: '',
+    description: '',
+    dateAdded: new Date(),
+    strainId: strainId,
+    toEntity: jest.fn().mockReturnValue(strainEntity),
+  } as CreateStrainDTO
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -174,9 +174,10 @@ describe('StrainsService', () => {
 
       const result = await service.findOne(userId, strainId)
 
-      expect(
-        strainsRepository.findByIdWithPlants,
-      ).toHaveBeenCalledWith(userId, strainId)
+      expect(strainsRepository.findByIdWithPlants).toHaveBeenCalledWith(
+        userId,
+        strainId,
+      )
       expect(result.id).toBe(strainId)
     })
 
@@ -191,8 +192,6 @@ describe('StrainsService', () => {
 
   describe('create', () => {
     it('should create and return strain DTO', async () => {
-
-
       strainsRepository.create.mockResolvedValue(strainEntity as any)
 
       const result = await service.create(userId, dto as any)
@@ -209,7 +208,7 @@ describe('StrainsService', () => {
       strainsRepository.update.mockResolvedValue({
         ...strainEntity,
         name: 'Updated Strain',
-      } as any)
+      })
 
       const result = await service.update(userId, strainId, dto as any)
 

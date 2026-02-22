@@ -7,7 +7,6 @@ import { PlantWithStrainAndLogs } from './plants.repository.types'
 
 @Injectable()
 export class PlantsRepository implements IPlantsRepository {
-  
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(

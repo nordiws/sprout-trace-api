@@ -45,8 +45,7 @@ describe('StrainsController', () => {
           useValue: mockService,
         },
       ],
-    })
-      .compile()
+    }).compile()
 
     controller = module.get(StrainsController)
     service = module.get(StrainsService)

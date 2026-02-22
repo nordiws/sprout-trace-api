@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import {
   IsBoolean,
   IsDateString,
@@ -6,6 +7,8 @@ import {
   IsString,
   Min,
 } from 'class-validator'
+import { generateCode } from 'src/common/utils/string.util'
+import { EntityCodePrefix } from 'src/common/enums/entity-code-prefix.enum'
 
 export class CreateSeedDTO {
   @IsString()
@@ -40,8 +43,8 @@ export class CreateSeedDTO {
   @Min(0)
   totalSeeds: number
 
-  @IsInt()
-  strainId: number
+  @IsString()
+  strainId: string
 
   @IsOptional()
   @IsString()
@@ -82,4 +85,36 @@ export class CreateSeedDTO {
   @IsOptional()
   @IsDateString()
   processingDate?: string
+
+  toEntity(userId: string): Prisma.SeedCreateInput {
+    return {
+      code: generateCode(EntityCodePrefix.SEED),
+      name: this.name,
+      nombreCultivar: this.nombreCultivar,
+      country: this.country,
+      harvestYear: this.harvestYear,
+      inscriptionCode: this.codigoInscripcion,
+      flavour: this.flavour,
+      daysTillHarvest: this.daysTillHarvest,
+      dateAdded: new Date(this.dateAdded),
+      germinated: this.germinated,
+      totalSeeds: this.totalSeeds,
+      supplier: this.supplier,
+      batchNumber: this.batchNumber,
+      feminized: this.feminized,
+      autoflowering: this.autoflowering,
+      viabilityTest: this.viabilityTest,
+      storageConditions: this.storageConditions,
+      expirationDate: this.expirationDate
+        ? new Date(this.expirationDate)
+        : undefined,
+      parentGeneration: this.parentGeneration,
+      collectionMethod: this.collectionMethod,
+      processingDate: this.processingDate
+        ? new Date(this.processingDate)
+        : undefined,
+      user: { connect: { id: userId } },
+      strain: { connect: { id: this.strainId } },
+    }
+  }
 }

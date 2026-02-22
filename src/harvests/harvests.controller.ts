@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common'
 import { HarvestFiltersDTO } from './dto/harvest-filter.dto'
 import { CreateHarvestDTO } from './dto/create-harvest.dto'

@@ -14,9 +14,7 @@ const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID!
 const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID!
 
 const ISSUER = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`
-const JWKS = createRemoteJWKSet(
-  new URL(`${ISSUER}/.well-known/jwks.json`)
-)
+const JWKS = createRemoteJWKSet(new URL(`${ISSUER}/.well-known/jwks.json`))
 
 @Injectable()
 export class CognitoAuthGuard implements CanActivate {
@@ -26,25 +24,32 @@ export class CognitoAuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(
-      'isPublic',
-      [context.getHandler(), context.getClass()],
-    )
+    const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
+      context.getHandler(),
+      context.getClass(),
+    ])
 
     if (isPublic) return true
 
     const request = context.switchToHttp().getRequest<Request>()
     const authHeader = request.headers.authorization
 
-    if (!authHeader?.startsWith('Bearer '))
-      throw new UnauthorizedException()
+    if (!authHeader?.startsWith('Bearer ')) throw new UnauthorizedException()
 
     const token = authHeader.replace('Bearer ', '')
 
-    const { payload } = await jwtVerify(token, JWKS, {
-      issuer: ISSUER,
-      audience: COGNITO_CLIENT_ID,
-    })
+    let payload: JWTPayload
+
+    try {
+      const result = await jwtVerify(token, JWKS, {
+        issuer: ISSUER,
+        audience: COGNITO_CLIENT_ID,
+      })
+
+      payload = result.payload
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token')
+    }
 
     if (payload.token_use !== 'access')
       throw new UnauthorizedException('Invalid token use')
@@ -58,8 +63,7 @@ export class CognitoAuthGuard implements CanActivate {
   private async resolveUserFromToken(payload: JWTPayload) {
     const externalId = payload.sub as string
 
-    const email =
-      typeof payload.email === 'string' ? payload.email : undefined
+    const email = typeof payload.email === 'string' ? payload.email : undefined
 
     const username =
       typeof payload['cognito:username'] === 'string'

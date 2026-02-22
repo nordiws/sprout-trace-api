@@ -15,69 +15,68 @@ describe('SeedsService', () => {
   const seedId = randomUUID()
 
   const seedEntity: Seed = {
-      name: 'Seed A',
-      id: seedId,
-      code: 'CODE123',
-      nombreCultivar: 'Cultivar X',
-      country: 'Country Y',
-      harvestYear: '2023',
-      inscriptionCode: 'INSCODE123',
-      flavour: 'Flavour A',
-      daysTillHarvest: '100',
-      dateAdded: new Date(),
-      totalSeeds: 100,
-      active: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      germinationRate: null,
-      supplier: null,
-      batchNumber: null,
-      feminized: null,
-      autoflowering: null,
-      viabilityTest: null,
-      storageConditions: null,
-      expirationDate: null,
-      parentGeneration: null,
-      collectionMethod: null,
-      processingDate: null,
-      flavorProfile: null,
-      strainId: '',
-      userId: ''
+    name: 'Seed A',
+    id: seedId,
+    code: 'CODE123',
+    nombreCultivar: 'Cultivar X',
+    country: 'Country Y',
+    harvestYear: '2023',
+    inscriptionCode: 'INSCODE123',
+    flavour: 'Flavour A',
+    daysTillHarvest: '100',
+    dateAdded: new Date(),
+    totalSeeds: 100,
+    active: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    germinationRate: null,
+    supplier: null,
+    batchNumber: null,
+    feminized: null,
+    autoflowering: null,
+    viabilityTest: null,
+    storageConditions: null,
+    expirationDate: null,
+    parentGeneration: null,
+    collectionMethod: null,
+    processingDate: null,
+    flavorProfile: null,
+    strainId: '',
+    userId: '',
   }
 
   const strainEntity: Strain = {
-      id: randomUUID(),
-      name: 'Strain A',
-      active: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      code: '',
-      dateAdded: new Date(),
-      userId: '',
-      type: 'INDICA',
-      genetics: '',
-      thc: '',
-      cbd: '',
-      floweringTime: '',
-      description: '',
-      origin: null,
-      breeder: null,
-      difficulty: null,
-      yield: null,
-      preferredEnv: null,
-      resistance: null,
-      growthPattern: null,
-      gennetics: null,
-      effects: null,
-      terpenes: null,
-      medicalUses: null
+    id: randomUUID(),
+    name: 'Strain A',
+    active: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    code: '',
+    dateAdded: new Date(),
+    userId: '',
+    type: 'INDICA',
+    genetics: '',
+    thc: '',
+    cbd: '',
+    floweringTime: '',
+    description: '',
+    origin: null,
+    breeder: null,
+    difficulty: null,
+    yield: null,
+    preferredEnv: null,
+    resistance: null,
+    growthPattern: null,
+    gennetics: null,
+    effects: null,
+    terpenes: null,
+    medicalUses: null,
   }
-
 
   const seedWithStrain: SeedWithStrain = {
     ...seedEntity,
-    strain: strainEntity
-}
+    strain: strainEntity,
+  }
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -128,9 +127,10 @@ describe('SeedsService', () => {
 
       const result = await service.findOne(userId, seedId)
 
-      expect(
-        seedsRepository.findByIdWithStrain,
-      ).toHaveBeenCalledWith(userId, seedId)
+      expect(seedsRepository.findByIdWithStrain).toHaveBeenCalledWith(
+        userId,
+        seedId,
+      )
       expect(result.id).toBe(seedId)
     })
 
@@ -164,13 +164,14 @@ describe('SeedsService', () => {
 
   describe('update', () => {
     it('should update seed and return DTO', async () => {
+      const name = 'Updated Seed'
       const updateDto = {
-        name: 'Updated Seed',
+        name: name,
       }
 
       seedsRepository.update.mockResolvedValue({
         ...seedEntity,
-        name: 'Updated Seed',
+        name: name,
       })
 
       const result = await service.update(userId, seedId, updateDto)
@@ -180,7 +181,7 @@ describe('SeedsService', () => {
         seedId,
         updateDto,
       )
-      expect(result.name).toBe('Updated Seed')
+      expect(result.name).toBe(name)
     })
   })
 

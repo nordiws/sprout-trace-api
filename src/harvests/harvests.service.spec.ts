@@ -36,7 +36,6 @@ describe('HarvestsService', () => {
     plants: [],
   }
 
-
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
@@ -100,9 +99,9 @@ describe('HarvestsService', () => {
     it('should throw NotFoundException when harvest does not exist', async () => {
       harvestsRepository.findOne.mockResolvedValue(null)
 
-      await expect(
-        service.findOne(userId, harvestId),
-      ).rejects.toThrow(NotFoundException)
+      await expect(service.findOne(userId, harvestId)).rejects.toThrow(
+        NotFoundException,
+      )
     })
   })
 
@@ -127,21 +126,22 @@ describe('HarvestsService', () => {
 
   describe('update', () => {
     it('should update harvest after existence check', async () => {
+      const name = 'Updated Harvest'
       const dto: UpdateHarvestDTO = {
-        name: 'Updated Harvest',
+        name: name,
       } as any
 
       harvestsRepository.findOne.mockResolvedValue(harvestEntity)
       harvestsRepository.update.mockResolvedValue({
         ...harvestEntity,
-        name: 'Updated Harvest',
+        name: name,
       })
 
       const result = await service.update(userId, harvestId, dto)
 
       expect(harvestsRepository.findOne).toHaveBeenCalledWith(userId, harvestId)
       expect(harvestsRepository.update).toHaveBeenCalledWith(harvestId, dto)
-      expect(result.name).toBe('Updated Harvest')
+      expect(result.name).toBe(name)
     })
   })
 
@@ -174,11 +174,7 @@ describe('HarvestsService', () => {
         id: timelineId,
       } as any)
 
-      const result = await service.addTimelineEvent(
-        userId,
-        harvestId,
-        dto,
-      )
+      const result = await service.addTimelineEvent(userId, harvestId, dto)
 
       expect(harvestsRepository.findOne).toHaveBeenCalledWith(userId, harvestId)
       expect(dto.toEntity).toHaveBeenCalledWith(harvestId)

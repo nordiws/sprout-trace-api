@@ -12,7 +12,6 @@ import { StrainItemDTO } from './dto/strain-item.dto'
 
 @Injectable()
 export class StrainsService {
-
   constructor(private readonly strainsRepository: StrainsRepository) {}
 
   async findAll(
@@ -26,7 +25,10 @@ export class StrainsService {
 
     const pagination = PaginationDTO.mapper(filters.page, filters.limit, total)
 
-    return StrainResponseDTO.mapper(data.map(StrainItemDTO.fromEntity), pagination)
+    return StrainResponseDTO.mapper(
+      data.map(StrainItemDTO.fromEntity),
+      pagination,
+    )
   }
 
   async findOne(userId: string, id: string) {
@@ -42,7 +44,11 @@ export class StrainsService {
     return StrainDTO.fromEntity(strain)
   }
 
-  async update(userId: string, id: string, dto: UpdateStrainDTO): Promise<StrainDTO> {
+  async update(
+    userId: string,
+    id: string,
+    dto: UpdateStrainDTO,
+  ): Promise<StrainDTO> {
     await this.getStrain(userId, id)
     const updatedStrain = await this.strainsRepository.update(userId, id, dto)
     return StrainDTO.fromEntity(updatedStrain)

@@ -7,6 +7,7 @@ import { SeedResponseDTO } from './dto/seed-response.dto'
 import { SeedDetailsDTO } from './dto/seed-details.dto'
 import { SeedDTO } from './dto/seed.dto'
 import { Prisma } from '@prisma/client'
+import { CreateSeedDTO } from './dto/create-seed.dto'
 
 @Injectable()
 export class SeedsService {
@@ -29,7 +30,7 @@ export class SeedsService {
     return SeedDetailsDTO.fromEntity(seed)
   }
 
-  async create(userId: string, dto: any): Promise<SeedDTO> {
+  async create(userId: string, dto: CreateSeedDTO): Promise<SeedDTO> {
     const seed = await this.seedsRepository.create(dto.toEntity(userId))
     return SeedDTO.fromEntity(seed)
   }

@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common'
 import { SeedFiltersDTO } from './dto/seed-filter.dto'
 import { CreateSeedDTO } from './dto/create-seed.dto'

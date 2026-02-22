@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common'
 import { PlantFiltersDTO } from './dto/plant-filter.dto'
 import { CreatePlantDTO } from './dto/create-plant.dto'

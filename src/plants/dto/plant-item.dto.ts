@@ -12,7 +12,7 @@ export class PlantItemDTO {
   location?: string
   expectedHarvestDate?: string
 
-  static fromEntity(entity: PlantWithStrain): PlantItemDTO {
+  static fromEntity(this: void, entity: PlantWithStrain): PlantItemDTO {
     return {
       id: entity.id,
       code: entity.code,

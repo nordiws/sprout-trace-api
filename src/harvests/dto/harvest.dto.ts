@@ -12,7 +12,7 @@ export class HarvestDTO {
   totalYield?: string
   plants: string[]
 
-  static fromEntity(entity: HarvestWithPlants): HarvestDTO {
+  static fromEntity(this: void, entity: HarvestWithPlants): HarvestDTO {
     return {
       id: entity.id,
       code: entity.code,

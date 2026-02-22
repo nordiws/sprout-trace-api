@@ -8,8 +8,7 @@ describe('MetadataController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MetadataController],
-    })
-      .compile()
+    }).compile()
 
     controller = module.get<MetadataController>(MetadataController)
   })
@@ -18,7 +17,7 @@ describe('MetadataController', () => {
     expect(controller).toBeDefined()
   })
 
-    it('should return all HarvestTimelineEvent enum values', () => {
+  it('should return all HarvestTimelineEvent enum values', () => {
     const result = controller.getHarvestTimelineEvents()
 
     expect(Array.isArray(result)).toBe(true)

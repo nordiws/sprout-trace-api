@@ -45,8 +45,7 @@ describe('SeedsController', () => {
           useValue: mockService,
         },
       ],
-    })
-      .compile()
+    }).compile()
 
     controller = module.get(SeedsController)
     service = module.get(SeedsService)

@@ -12,7 +12,6 @@ import { APP_GUARD } from '@nestjs/core'
 import { CognitoAuthGuard } from './auth/guards/cognito-auth.guard'
 import { UserModule } from './users/user.module'
 
-
 @Module({
   imports: [
     PlantsModule,
@@ -33,4 +32,4 @@ import { UserModule } from './users/user.module'
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

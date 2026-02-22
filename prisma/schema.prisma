@@ -95,6 +95,7 @@ model Seed {
   totalSeeds         Int
 
   germinationRate    String?
+  germinated         Int?
   supplier           String?
   batchNumber        String?
   feminized          Boolean?

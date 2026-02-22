@@ -49,8 +49,7 @@ describe('HarvestsController', () => {
           useValue: mockService,
         },
       ],
-    })
-      .compile()
+    }).compile()
 
     controller = module.get(HarvestsController)
     service = module.get(HarvestsService)
@@ -135,11 +134,7 @@ describe('HarvestsController', () => {
 
     service.addTimelineEvent.mockResolvedValue(expectedResult as any)
 
-    const result = await controller.addTimelineEvent(
-      user,
-      harvestId,
-      dto,
-    )
+    const result = await controller.addTimelineEvent(user, harvestId, dto)
 
     expect(service.addTimelineEvent).toHaveBeenCalledWith(
       userId,

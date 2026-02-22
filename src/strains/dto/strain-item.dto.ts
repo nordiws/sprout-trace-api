@@ -1,8 +1,7 @@
-import { StrainType } from "@prisma/client"
-import { StrainWithPlants } from "../repository/strains.repository.types"
+import { StrainType } from '@prisma/client'
+import { StrainWithPlants } from '../repository/strains.repository.types'
 
 export class StrainItemDTO {
-
   id: string
   name: string
   type: StrainType
@@ -13,8 +12,7 @@ export class StrainItemDTO {
   activePlants: number
   dateAdded: string
 
-
-  static fromEntity(entity: StrainWithPlants): StrainItemDTO {
+  static fromEntity(this: void, entity: StrainWithPlants): StrainItemDTO {
     const dto = new StrainItemDTO()
     dto.id = entity.id
     dto.name = entity.name

@@ -9,6 +9,7 @@ import { PlantFiltersDTO } from './dto/plant-filter.dto'
 import { PlantResponseDTO } from './dto/plant-response.dto'
 import { PlantGrowthLogBaseDTO } from './dto/plant-growth-log-base.dto'
 import { UpdatePlantDTO } from './dto/update-plant.dto'
+import { CreatePlantDTO } from './dto/create-plant.dto'
 
 @Injectable()
 export class PlantsService {
@@ -37,7 +38,7 @@ export class PlantsService {
     return PlantDetailsDTO.fromEntity(response)
   }
 
-  async create(userId: string, dto: any) {
+  async create(userId: string, dto: CreatePlantDTO) {
     const plant = await this.plantsRepository.create(dto.toEntity(userId))
     return PlantDTO.fromEntity(plant)
   }
