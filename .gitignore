@@ -61,3 +61,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Ignore coverage directories
 /coverage
 /src/coverage
+
+
+# Firebase service account key file
+sprout-trace-app-key.json

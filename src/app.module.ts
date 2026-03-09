@@ -9,8 +9,9 @@ import { PrismaService } from './prisma/prisma.service'
 import { MetadataModule } from './metadata/metadata.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { APP_GUARD } from '@nestjs/core'
-import { CognitoAuthGuard } from './auth/guards/cognito-auth.guard'
 import { UserModule } from './users/user.module'
+import { AuthModule } from './auth/auth.module';
+import { FirebaseAuthGuard } from './auth/guards/firebase-auth.guard'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './users/user.module'
     MetadataModule,
     PrismaModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -28,7 +30,7 @@ import { UserModule } from './users/user.module'
     PrismaService,
     {
       provide: APP_GUARD,
-      useClass: CognitoAuthGuard,
+      useClass: FirebaseAuthGuard,
     },
   ],
 })
