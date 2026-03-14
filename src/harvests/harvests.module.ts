@@ -3,8 +3,10 @@ import { HarvestsController } from './harvests.controller'
 import { HarvestsService } from './harvests.service'
 import { HarvestsRepository } from './repository/harvests.repository'
 import { HarvestTimelineRepository } from './repository/harvests-timeline.repository'
+import { PrismaModule } from 'src/prisma/prisma.module'
 
 @Module({
+  imports: [PrismaModule],
   controllers: [HarvestsController],
   providers: [HarvestsService, HarvestsRepository, HarvestTimelineRepository],
 })

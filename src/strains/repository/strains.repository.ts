@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service'
 import { IStrainsRepository } from '../interface/strains-repository.interface'
 import { Prisma, Strain } from '@prisma/client'
 import { StrainFiltersDTO } from '../dto/strain-filter.dto'
 import { StrainWithPlants } from './strains.repository.types'
 
+@Injectable()
 export class StrainsRepository implements IStrainsRepository {
   constructor(private readonly prisma: PrismaService) {}
   async findAll(

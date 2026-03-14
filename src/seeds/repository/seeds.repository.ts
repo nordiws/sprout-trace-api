@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { Prisma, Seed } from '@prisma/client'
 import { SeedFiltersDTO } from '../dto/seed-filter.dto'
 import { ISeedsRepository } from '../interface/seeds-repository.interface'
 import { SeedWithStrain } from './seeds.repository.types'
 import { PrismaService } from 'src/prisma/prisma.service'
 
+@Injectable()
 export class SeedsRepository implements ISeedsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
