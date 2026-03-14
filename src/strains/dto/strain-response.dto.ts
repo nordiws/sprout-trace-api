@@ -3,7 +3,7 @@ import { StrainItemDTO } from './strain-item.dto'
 
 export class StrainResponseDTO {
   pagination: PaginationDTO
-  strains: StrainItemDTO[]
+  data: StrainItemDTO[]
 
   static mapper(
     strains: StrainItemDTO[],
@@ -11,7 +11,7 @@ export class StrainResponseDTO {
   ): StrainResponseDTO {
     return {
       pagination,
-      strains,
+      data: strains,
     }
   }
 }

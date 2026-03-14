@@ -114,7 +114,7 @@ describe('SeedsService', () => {
       const result = await service.findAll(userId, filters)
 
       expect(seedsRepository.findAll).toHaveBeenCalledWith(userId, filters)
-      expect(result.seeds).toHaveLength(1)
+      expect(result.data).toHaveLength(1)
       expect(result.pagination).toEqual(
         PaginationDTO.mapper(filters.page, filters.limit, 1),
       )

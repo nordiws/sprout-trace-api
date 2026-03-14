@@ -3,7 +3,7 @@ import { SeedItemDTO } from './seed-item.dto'
 
 export class SeedResponseDTO {
   pagination: PaginationDTO
-  seeds: SeedItemDTO[]
+  data: SeedItemDTO[]
 
   static mapper(
     seeds: SeedItemDTO[],
@@ -11,7 +11,7 @@ export class SeedResponseDTO {
   ): SeedResponseDTO {
     return {
       pagination,
-      seeds,
+      data: seeds,
     }
   }
 }

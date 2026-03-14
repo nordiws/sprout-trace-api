@@ -3,7 +3,7 @@ import { HarvestDTO } from './harvest.dto'
 
 export class HarvestResponseDTO {
   pagination: PaginationDTO
-  harvests: HarvestDTO[]
+  data: HarvestDTO[]
 
   static mapper(
     harvests: HarvestDTO[],
@@ -11,7 +11,7 @@ export class HarvestResponseDTO {
   ): HarvestResponseDTO {
     return {
       pagination,
-      harvests,
+      data: harvests,
     }
   }
 }

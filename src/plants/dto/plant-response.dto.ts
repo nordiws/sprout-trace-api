@@ -3,7 +3,7 @@ import { PlantItemDTO } from './plant-item.dto'
 
 export class PlantResponseDTO {
   pagination: PaginationDTO
-  plants: PlantItemDTO[]
+  data: PlantItemDTO[]
 
   static mapper(
     plants: PlantItemDTO[],
@@ -11,7 +11,7 @@ export class PlantResponseDTO {
   ): PlantResponseDTO {
     return {
       pagination,
-      plants,
+      data: plants,
     }
   }
 }

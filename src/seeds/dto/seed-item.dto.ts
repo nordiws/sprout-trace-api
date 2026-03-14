@@ -11,6 +11,7 @@ export class SeedItemDTO {
   inscriptionCode: string
   flavorProfile: string | null
   createdAt: Date
+  totalSeeds?: number
 
   static fromEntity(this: void, entity: SeedWithStrain): SeedItemDTO {
     return {
@@ -24,6 +25,7 @@ export class SeedItemDTO {
       inscriptionCode: entity.inscriptionCode,
       flavorProfile: entity.flavorProfile,
       createdAt: entity.createdAt,
+      totalSeeds: entity.totalSeeds
     }
   }
 }
