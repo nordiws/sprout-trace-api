@@ -18,6 +18,7 @@ export class StrainDetailsDTO {
   difficulty?: string
   yield?: string
   preferredEnv?: string
+  dateAdded: Date
 
   static fromEntity(entity: StrainWithPlants): StrainDetailsDTO {
     const dto = new StrainDetailsDTO()
@@ -38,7 +39,7 @@ export class StrainDetailsDTO {
     dto.difficulty = entity.difficulty || undefined
     dto.yield = entity.yield || undefined
     dto.preferredEnv = entity.preferredEnv || undefined
-
+    dto.dateAdded = entity.createdAt
     return dto
   }
 }
