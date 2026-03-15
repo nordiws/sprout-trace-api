@@ -10,7 +10,6 @@ export class StrainDetailsDTO {
   cbd?: string
   floweringTime?: string
   activePlants: number
-  gennetics?: string
   effects?: string
   terpenes?: string
   medicalUses?: string
@@ -18,7 +17,7 @@ export class StrainDetailsDTO {
   breeder?: string
   difficulty?: string
   yield?: string
-  perferredEnv?: string
+  preferredEnv?: string
 
   static fromEntity(entity: StrainWithPlants): StrainDetailsDTO {
     const dto = new StrainDetailsDTO()
@@ -31,7 +30,6 @@ export class StrainDetailsDTO {
     dto.cbd = entity.cbd || undefined
     dto.floweringTime = entity.floweringTime || undefined
     dto.activePlants = entity.plants.filter((plant) => plant.active).length
-    dto.gennetics = entity.gennetics || undefined
     dto.effects = entity.effects || undefined
     dto.terpenes = entity.terpenes || undefined
     dto.medicalUses = entity.medicalUses || undefined
@@ -39,7 +37,7 @@ export class StrainDetailsDTO {
     dto.breeder = entity.breeder || undefined
     dto.difficulty = entity.difficulty || undefined
     dto.yield = entity.yield || undefined
-    dto.perferredEnv = entity.preferredEnv || undefined
+    dto.preferredEnv = entity.preferredEnv || undefined
 
     return dto
   }

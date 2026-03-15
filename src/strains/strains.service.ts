@@ -9,6 +9,7 @@ import { StrainDetailsDTO } from './dto/strain-details.dto'
 import { Strain } from '@prisma/client'
 import { Injectable } from '@nestjs/common'
 import { StrainItemDTO } from './dto/strain-item.dto'
+import { log } from 'console'
 
 @Injectable()
 export class StrainsService {
@@ -31,27 +32,27 @@ export class StrainsService {
     )
   }
 
-  async findOne(userId: string, id: string) {
+  async findOne(userId: string, id: string): Promise<{ data: StrainDetailsDTO }> {
     const strain = await this.strainsRepository.findByIdWithPlants(userId, id)
     if (!strain) {
       throw new Error('Strain not found')
     }
-    return StrainDetailsDTO.fromEntity(strain)
+    return { data: StrainDetailsDTO.fromEntity(strain) }
   }
 
-  async create(userId: string, dto: CreateStrainDTO): Promise<StrainDTO> {
+  async create(userId: string, dto: CreateStrainDTO): Promise<{ data: StrainDTO }> {
     const strain = await this.strainsRepository.create(dto.toEntity(userId))
-    return StrainDTO.fromEntity(strain)
+    return { data: StrainDTO.fromEntity(strain) }
   }
 
   async update(
     userId: string,
     id: string,
     dto: UpdateStrainDTO,
-  ): Promise<StrainDTO> {
+  ): Promise<{ data: StrainDTO }> {
     await this.getStrain(userId, id)
     const updatedStrain = await this.strainsRepository.update(userId, id, dto)
-    return StrainDTO.fromEntity(updatedStrain)
+    return { data: StrainDTO.fromEntity(updatedStrain) }
   }
 
   async softDelete(userId: string, id: string): Promise<void> {

@@ -72,7 +72,7 @@ describe('StrainsController', () => {
   })
 
   it('should call findOne with user id and strain id', async () => {
-    const expectedResult = { id: strainId }
+    const expectedResult = { data: { id: strainId } }
 
     service.findOne.mockResolvedValue(expectedResult as any)
 
@@ -87,7 +87,7 @@ describe('StrainsController', () => {
       name: 'Strain A',
     } as any
 
-    const expectedResult = { id: strainId }
+    const expectedResult = { data: { id: strainId } }
 
     service.create.mockResolvedValue(expectedResult as any)
 
@@ -102,7 +102,7 @@ describe('StrainsController', () => {
       name: 'Updated Strain',
     } as any
 
-    const expectedResult = { id: strainId }
+    const expectedResult = { data: { id: strainId } }
 
     service.update.mockResolvedValue(expectedResult as any)
 

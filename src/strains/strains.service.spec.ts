@@ -74,10 +74,10 @@ describe('StrainsService', () => {
     preferredEnv: null,
     resistance: null,
     growthPattern: null,
-    gennetics: null,
     effects: null,
     terpenes: null,
     medicalUses: null,
+    gennetics: '',
     plants: [plantEntity],
   }
 
@@ -100,10 +100,10 @@ describe('StrainsService', () => {
     breeder: null,
     difficulty: null,
     yield: null,
+    gennetics: '',
     preferredEnv: null,
     resistance: null,
     growthPattern: null,
-    gennetics: null,
     effects: null,
     terpenes: null,
     medicalUses: null,
@@ -178,7 +178,7 @@ describe('StrainsService', () => {
         userId,
         strainId,
       )
-      expect(result.id).toBe(strainId)
+      expect(result.data.id).toBe(strainId)
     })
 
     it('should throw error when strain is not found', async () => {
@@ -198,7 +198,7 @@ describe('StrainsService', () => {
 
       expect(dto.toEntity).toHaveBeenCalledWith(userId)
       expect(strainsRepository.create).toHaveBeenCalled()
-      expect(result.id).toBe(strainId)
+      expect(result.data.id).toBe(strainId)
     })
   })
 
@@ -218,7 +218,7 @@ describe('StrainsService', () => {
         strainId,
         dto,
       )
-      expect(result.name).toBe('Updated Strain')
+      expect(result.data.name).toBe('Updated Strain')
     })
   })
 
