@@ -12,7 +12,7 @@ export class SeedDetailsDTO {
   daysTillHarvest: string | null
   country: string
   inscriptionCode: string
-  flavorProfile: string | null
+  flavor: string | null
   supplier: string | null
   batchNumber: string | null
   feminized: boolean | null
@@ -37,7 +37,7 @@ export class SeedDetailsDTO {
       daysTillHarvest: entity.daysTillHarvest,
       country: entity.country,
       inscriptionCode: entity.inscriptionCode,
-      flavorProfile: entity.flavorProfile,
+      flavor: entity.flavour,
       supplier: entity.supplier,
       batchNumber: entity.batchNumber,
       feminized: entity.feminized,

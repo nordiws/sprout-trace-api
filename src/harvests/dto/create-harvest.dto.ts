@@ -9,8 +9,6 @@ import { EntityCodePrefix } from 'src/common/enums/entity-code-prefix.enum'
 import { generateCode } from 'src/common/utils/string.util'
 
 export class CreateHarvestDTO {
-  @IsString()
-  id: string
 
   @IsString()
   name: string
