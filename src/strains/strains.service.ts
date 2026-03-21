@@ -32,27 +32,27 @@ export class StrainsService {
     )
   }
 
-  async findOne(userId: string, id: string): Promise<{ data: StrainDetailsDTO }> {
+  async findOne(userId: string, id: string): Promise<StrainDetailsDTO> {
     const strain = await this.strainsRepository.findByIdWithPlants(userId, id)
     if (!strain) {
       throw new Error('Strain not found')
     }
-    return { data: StrainDetailsDTO.fromEntity(strain) }
+    return StrainDetailsDTO.fromEntity(strain)
   }
 
-  async create(userId: string, dto: CreateStrainDTO): Promise<{ data: StrainDTO }> {
+  async create(userId: string, dto: CreateStrainDTO): Promise<StrainDTO> {
     const strain = await this.strainsRepository.create(dto.toEntity(userId))
-    return { data: StrainDTO.fromEntity(strain) }
+    return StrainDTO.fromEntity(strain)
   }
 
   async update(
     userId: string,
     id: string,
     dto: UpdateStrainDTO,
-  ): Promise<{ data: StrainDTO }> {
+  ): Promise<StrainDTO> {
     await this.getStrain(userId, id)
     const updatedStrain = await this.strainsRepository.update(userId, id, dto)
-    return { data: StrainDTO.fromEntity(updatedStrain) }
+    return StrainDTO.fromEntity(updatedStrain)
   }
 
   async softDelete(userId: string, id: string): Promise<void> {

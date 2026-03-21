@@ -1,17 +1,11 @@
 import { SeedWithStrain } from '../repository/seeds.repository.types'
+import { SeedItemDTO } from './seed-item.dto'
 
-export class SeedDetailsDTO {
-  id: string
+export class SeedDetailsDTO extends SeedItemDTO {
   code: string
-  name: string
-  cultivarName: string
+
   strain: string
-  totalSeeds: number
-  germinationRate: string | null
   viabilityTest: string | null
-  daysTillHarvest: string | null
-  country: string
-  inscriptionCode: string
   flavor: string | null
   supplier: string | null
   batchNumber: string | null
@@ -20,7 +14,6 @@ export class SeedDetailsDTO {
   parentGeneration: string | null
   collectionMethod: string | null
   processingDate: Date | null
-  createdAt: Date
   expirationDate: Date | null
   storageConditions: string | null
 
@@ -29,8 +22,12 @@ export class SeedDetailsDTO {
       id: entity.id,
       code: entity.code,
       name: entity.name,
-      cultivarName: entity.nombreCultivar,
+      nombreCultivar: entity.nombreCultivar,
       strain: entity.strain.name,
+      strainId: entity.strain.id,
+      strainName: entity.strain.name,
+      harvestYear: entity.harvestYear,
+      flavorProfile: entity.flavour,
       totalSeeds: entity.totalSeeds,
       germinationRate: entity.germinationRate,
       viabilityTest: entity.viabilityTest,

@@ -178,7 +178,7 @@ describe('StrainsService', () => {
         userId,
         strainId,
       )
-      expect(result.data.id).toBe(strainId)
+      expect(result.id).toBe(strainId)
     })
 
     it('should throw error when strain is not found', async () => {
@@ -198,7 +198,7 @@ describe('StrainsService', () => {
 
       expect(dto.toEntity).toHaveBeenCalledWith(userId)
       expect(strainsRepository.create).toHaveBeenCalled()
-      expect(result.data.id).toBe(strainId)
+      expect(result.id).toBe(strainId)
     })
   })
 
@@ -218,7 +218,7 @@ describe('StrainsService', () => {
         strainId,
         dto,
       )
-      expect(result.data.name).toBe('Updated Strain')
+      expect(result.name).toBe('Updated Strain')
     })
   })
 

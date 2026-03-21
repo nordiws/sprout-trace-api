@@ -3,7 +3,9 @@ import { SeedWithStrain } from '../repository/seeds.repository.types'
 export class SeedItemDTO {
   id: string
   name: string
-  strain: string
+  nombreCultivar: string
+  strainId: string
+  strainName: string
   country: string
   harvestYear: string
   daysTillHarvest: string
@@ -17,7 +19,9 @@ export class SeedItemDTO {
     return {
       id: entity.id,
       name: entity.name,
-      strain: entity.strain.name,
+      nombreCultivar: entity.nombreCultivar,
+      strainId: entity.strain.id,
+      strainName: entity.strain.name,
       country: entity.country,
       harvestYear: entity.harvestYear,
       daysTillHarvest: entity.daysTillHarvest,
