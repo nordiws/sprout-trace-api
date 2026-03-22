@@ -3,7 +3,7 @@ import { PlantFiltersDTO } from '../dto/plant-filter.dto'
 import { PlantWithStrainAndLogs } from '../repository/plants.repository.types'
 
 export interface IPlantsRepository {
-  findAll(
+  findAllWithStrainAndLogs(
     userId: string,
     filters: PlantFiltersDTO,
   ): Promise<{ data: Plant[]; total: number }>

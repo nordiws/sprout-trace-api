@@ -1,5 +1,5 @@
 import { StrainType } from '@prisma/client'
-import { StrainWithPlants } from '../repository/strains.repository.types'
+import { StrainWithPlantsHarvests } from '../repository/strains.repository.types'
 
 export class StrainItemDTO {
   id: string
@@ -12,7 +12,7 @@ export class StrainItemDTO {
   activePlants: number
   dateAdded: string
 
-  static fromEntity(this: void, entity: StrainWithPlants): StrainItemDTO {
+  static fromEntity(this: void, entity: StrainWithPlantsHarvests): StrainItemDTO {
     const dto = new StrainItemDTO()
     dto.id = entity.id
     dto.name = entity.name
@@ -21,7 +21,7 @@ export class StrainItemDTO {
     dto.thc = entity.thc
     dto.cbd = entity.cbd
     dto.floweringTime = entity.floweringTime
-    dto.activePlants = entity.plants.length
+    dto.activePlants = entity.plants?.filter((plant) => plant.active).length || 0
     dto.dateAdded = entity.dateAdded.toISOString()
     return dto
   }

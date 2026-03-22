@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { IStrainsRepository } from '../interface/strains-repository.interface'
 import { Prisma, Strain } from '@prisma/client'
 import { StrainFiltersDTO } from '../dto/strain-filter.dto'
-import { StrainWithPlants } from './strains.repository.types'
+import { StrainWithPlantsHarvests } from './strains.repository.types'
 
 @Injectable()
 export class StrainsRepository implements IStrainsRepository {
@@ -11,7 +11,7 @@ export class StrainsRepository implements IStrainsRepository {
   async findAll(
     userId: string,
     filters: StrainFiltersDTO,
-  ): Promise<{ data: StrainWithPlants[]; total: number }> {
+  ): Promise<{ data: StrainWithPlantsHarvests[]; total: number }> {
     const { page = 1, limit = 10, type, search } = filters
 
     const where: Prisma.StrainWhereInput = {
@@ -103,7 +103,7 @@ export class StrainsRepository implements IStrainsRepository {
   findByIdWithPlants(
     userId: string,
     id: string,
-  ): Promise<StrainWithPlants | null> {
+  ): Promise<StrainWithPlantsHarvests | null> {
     return this.prisma.strain.findFirst({
       where: {
         id,

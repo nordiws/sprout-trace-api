@@ -10,7 +10,7 @@ import type { HarvestFiltersDTO } from './dto/harvest-filter.dto'
 import type { CreateHarvestDTO } from './dto/create-harvest.dto'
 import type { UpdateHarvestDTO } from './dto/update-harvest.dto'
 import type { CreateHarvestTimelineDTO } from './dto/create-harvest-timeline.dto'
-import { HarvestWithPlants } from './repository/harvests.repository.types'
+import { HarvestWithPlantsTimeline } from './repository/harvests.repository.types'
 
 describe('HarvestsService', () => {
   let service: HarvestsService
@@ -31,7 +31,7 @@ describe('HarvestsService', () => {
     updatedAt: new Date(),
   } as Harvest
 
-  const harvestWithPlantsEntity: HarvestWithPlants = {
+  const harvestWithPlantsEntity: HarvestWithPlantsTimeline = {
     ...harvestEntity,
     plants: [],
   }

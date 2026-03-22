@@ -1,48 +1,38 @@
 import {
   Harvest,
-  HarvestStatus,
-  HarvestType,
+  HarvestTimeline,
   QualityGrade,
 } from '@prisma/client'
+import { HarvestDTO } from './harvest.dto'
+import { HarvestWithPlantsTimeline } from '../repository/harvests.repository.types'
 
-export class HarvestDetailsDTO {
-  id: string
-  name: string
-  code: string
-  startDate: string
-  endDate?: string
-
-  status: HarvestStatus
-  harvestType: HarvestType
-
-  notes?: string
-
+export class HarvestDetailsDTO extends HarvestDTO {
   harvestMethod?: string
   dryingMethod?: string
   dryingLocation?: string
   curingMethod?: string
   qualityGrade?: QualityGrade
-
   dryingTemperature?: string
   dryingHumidity?: string
   moistureContent?: string
   trimLoss?: string
-
-  active: boolean
   createdAt: string
   updatedAt: string
+  timeline: HarvestTimeline[]
 
-  static fromEntity(entity: Harvest): HarvestDetailsDTO {
+
+  static fromEntity(entity: HarvestWithPlantsTimeline): HarvestDetailsDTO {
     return {
       id: entity.id,
-      name: entity.name,
       code: entity.code,
+      name: entity.name,
       startDate: entity.startDate.toISOString(),
       endDate: entity.endDate?.toISOString(),
-
       status: entity.status,
       harvestType: entity.harvestType,
       notes: entity.notes ?? undefined,
+      totalYield: entity.totalYield ?? undefined,
+      plants: entity.plants.map((plant) => plant.id),
 
       harvestMethod: entity.harvestMethod ?? undefined,
       dryingMethod: entity.dryingMethod ?? undefined,
@@ -55,9 +45,10 @@ export class HarvestDetailsDTO {
       moistureContent: entity.moistureContent ?? undefined,
       trimLoss: entity.trimLoss ?? undefined,
 
-      active: entity.active,
       createdAt: entity.createdAt.toISOString(),
       updatedAt: entity.updatedAt.toISOString(),
+      timeline: entity.timeline
     }
   }
+
 }

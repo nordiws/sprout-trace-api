@@ -9,10 +9,10 @@ import { PlantWithStrainAndLogs } from './plants.repository.types'
 export class PlantsRepository implements IPlantsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(
+  async findAllWithStrainAndLogs(
     userId: string,
     filters: PlantFiltersDTO,
-  ): Promise<{ data: Plant[]; total: number }> {
+  ): Promise<{ data: PlantWithStrainAndLogs[]; total: number }> {
     const {
       page = 1,
       limit = 10,
@@ -63,6 +63,10 @@ export class PlantsRepository implements IPlantsRepository {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          strain: true,
+          growthLogs: true,
+        },
       }),
     ])
 
@@ -79,9 +83,13 @@ export class PlantsRepository implements IPlantsRepository {
     })
   }
 
-  create(data: Prisma.PlantCreateInput): Promise<Plant> {
+  create(data: Prisma.PlantCreateInput): Promise<PlantWithStrainAndLogs> {
     return this.prisma.plant.create({
       data,
+      include: {
+        strain: true,
+        growthLogs: true,
+      },
     })
   }
 
@@ -89,12 +97,16 @@ export class PlantsRepository implements IPlantsRepository {
     userId: string,
     id: string,
     data: Prisma.PlantUpdateInput,
-  ): Promise<Plant> {
+  ): Promise<PlantWithStrainAndLogs> {
     return this.prisma.plant.update({
       where: {
         id,
         userId,
         active: true,
+      },
+      include: {
+        strain: true,
+        growthLogs: true,
       },
       data,
     })

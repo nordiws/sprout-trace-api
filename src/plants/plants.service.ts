@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { PlantsRepository } from './repository/plants.repository'
 import { PlantDetailsDTO } from './dto/plant-details.dto'
 import { PaginationDTO } from 'src/common/dto/pagination.dto'
-import { PlantItemDTO } from './dto/plant-item.dto'
 import { PlantDTO } from './dto/plant.dto'
 import { PlantGrowthLogRepository } from './repository/plants-growth-log.repository'
 import { PlantFiltersDTO } from './dto/plant-filter.dto'
@@ -22,10 +21,10 @@ export class PlantsService {
     userId: string,
     filters: PlantFiltersDTO,
   ): Promise<PlantResponseDTO> {
-    const { data, total } = await this.plantsRepository.findAll(userId, filters)
+    const { data, total } = await this.plantsRepository.findAllWithStrainAndLogs(userId, filters)
     const pagination = PaginationDTO.mapper(filters.page, filters.limit, total)
     return PlantResponseDTO.mapper(
-      data.map(PlantItemDTO.fromEntity),
+      data.map(PlantDTO.fromEntity),
       pagination,
     )
   }

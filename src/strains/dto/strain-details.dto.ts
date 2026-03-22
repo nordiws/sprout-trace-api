@@ -1,36 +1,36 @@
-import { StrainWithPlants } from '../repository/strains.repository.types'
+import { StrainWithPlantsHarvests } from '../repository/strains.repository.types'
+import { StrainDTO } from './strain.dto'
 
-export class StrainDetailsDTO {
-  id: string
-  name: string
-  type?: string
-  description: string
+export class StrainDetailsDTO extends StrainDTO {
+  code?: string
   genetics?: string
-  thc?: string
-  cbd?: string
-  floweringTime?: string
   activePlants: number
-  effects?: string
-  terpenes?: string
-  medicalUses?: string
+  totalHarvests?: number
   origin?: string
   breeder?: string
   difficulty?: string
   yield?: string
   preferredEnv?: string
-  dateAdded: Date
+  resistance?: string
+  growthPattern?: string
+  effects?: string
+  terpenes?: string
+  medicalUses?: string
 
-  static fromEntity(entity: StrainWithPlants): StrainDetailsDTO {
+  static fromEntity(entity: StrainWithPlantsHarvests): StrainDetailsDTO {
     const dto = new StrainDetailsDTO()
     dto.id = entity.id
     dto.name = entity.name
     dto.type = entity.type || undefined
     dto.description = entity.description
-    dto.genetics = entity.genetics || undefined
     dto.thc = entity.thc || undefined
     dto.cbd = entity.cbd || undefined
     dto.floweringTime = entity.floweringTime || undefined
-    dto.activePlants = entity.plants.filter((plant) => plant.active).length
+    dto.dateAdded = entity.createdAt.toISOString()
+    dto.activePlants = entity.plants?.filter((plant) => plant.active).length || 0
+    dto.totalHarvests = entity.harvests?.length || 0
+    dto.code = entity.code || undefined
+    dto.genetics = entity.genetics || undefined
     dto.effects = entity.effects || undefined
     dto.terpenes = entity.terpenes || undefined
     dto.medicalUses = entity.medicalUses || undefined
@@ -39,7 +39,8 @@ export class StrainDetailsDTO {
     dto.difficulty = entity.difficulty || undefined
     dto.yield = entity.yield || undefined
     dto.preferredEnv = entity.preferredEnv || undefined
-    dto.dateAdded = entity.createdAt
+    dto.resistance = entity.resistance || undefined
+    dto.growthPattern = entity.growthPattern || undefined
     return dto
   }
 }

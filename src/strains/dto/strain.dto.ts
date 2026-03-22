@@ -5,10 +5,10 @@ export class StrainDTO {
   name: string
   type: StrainType
   description: string
-  thc: string
-  cbd: string
-  floweringTime: string
-  dateAdded: string
+  thc?: string
+  cbd?: string
+  floweringTime?: string
+  dateAdded?: string
 
   static fromEntity(entity: Strain): StrainDTO {
     const dto = new StrainDTO()

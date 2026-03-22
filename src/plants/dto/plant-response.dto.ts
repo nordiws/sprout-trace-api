@@ -1,12 +1,12 @@
 import { PaginationDTO } from 'src/common/dto/pagination.dto'
-import { PlantItemDTO } from './plant-item.dto'
+import { PlantDTO } from './plant.dto'
 
 export class PlantResponseDTO {
   pagination: PaginationDTO
-  data: PlantItemDTO[]
+  data: PlantDTO[]
 
   static mapper(
-    plants: PlantItemDTO[],
+    plants: PlantDTO[],
     pagination: PaginationDTO,
   ): PlantResponseDTO {
     return {

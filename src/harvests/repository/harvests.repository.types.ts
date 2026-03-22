@@ -1,5 +1,6 @@
-import { Harvest, Plant } from '@prisma/client'
+import { Harvest, HarvestTimeline, Plant } from '@prisma/client'
 
-export type HarvestWithPlants = Harvest & {
+export type HarvestWithPlantsTimeline = Harvest & {
   plants: Plant[]
+  timeline: HarvestTimeline[]
 }

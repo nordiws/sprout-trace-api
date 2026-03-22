@@ -10,6 +10,7 @@ import { HarvestDTO } from './dto/harvest.dto'
 import { CreateHarvestTimelineDTO } from './dto/create-harvest-timeline.dto'
 import { Harvest } from '@prisma/client'
 import { HarvestTimelineRepository } from './repository/harvests-timeline.repository'
+import { HarvestWithPlantsTimeline } from './repository/harvests.repository.types'
 
 @Injectable()
 export class HarvestsService {
@@ -74,8 +75,8 @@ export class HarvestsService {
     return this.harvestTimelineRepository.addEvent(data.toEntity(harvest.id))
   }
 
-  private async getHarvest(userId: string, id: string): Promise<Harvest> {
-    const harvest = await this.harvestsRepository.findOne(userId, id)
+  private async getHarvest(userId: string, id: string): Promise<HarvestWithPlantsTimeline> {
+    const harvest = await this.harvestsRepository.findByIdWithPlantsTimeline(userId, id)
     if (!harvest) {
       throw new NotFoundException(`Harvest with ID ${id} not found`)
     }

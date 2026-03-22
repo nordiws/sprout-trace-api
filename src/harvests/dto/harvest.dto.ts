@@ -1,18 +1,19 @@
 import { HarvestStatus, HarvestType } from '@prisma/client'
-import { HarvestWithPlants } from '../repository/harvests.repository.types'
+import { HarvestWithPlantsTimeline } from '../repository/harvests.repository.types'
 
 export class HarvestDTO {
   id: string
   code: string
   name: string
   startDate: string
+  endDate?: string
   status: HarvestStatus
   harvestType: HarvestType
   notes?: string
   totalYield?: string
   plants: string[]
 
-  static fromEntity(this: void, entity: HarvestWithPlants): HarvestDTO {
+  static fromEntity(this: void, entity: HarvestWithPlantsTimeline): HarvestDTO {
     return {
       id: entity.id,
       code: entity.code,

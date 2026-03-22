@@ -11,6 +11,8 @@ import { EntityCodePrefix } from 'src/common/enums/entity-code-prefix.enum'
 import { generateCode } from 'src/common/utils/string.util'
 
 export class CreatePlantDTO {
+
+  @IsOptional()
   @IsEnum(PlantStatus)
   status: PlantStatus
 
@@ -22,11 +24,17 @@ export class CreatePlantDTO {
   floweringDate?: string
 
   @IsDateString()
-  expectedHarvest: string
+  expectedHarvestDate: string
 
+  @IsOptional()
+  @IsDateString()
+  expectedFloweringDate?: string
+
+  @IsOptional()
   @IsInt()
   height: number
 
+  @IsOptional()
   @IsEnum(PlantHealth)
   health: PlantHealth
 
@@ -53,10 +61,11 @@ export class CreatePlantDTO {
   toEntity(userId: string): Prisma.PlantCreateInput {
     return {
       code: generateCode(EntityCodePrefix.PLANT),
-      status: this.status,
+      status: this.status || PlantStatus.SEEDLING,
       plantedDate: new Date(this.plantedDate),
       floweringDate: this.floweringDate ? new Date(this.floweringDate) : null,
-      expectedHarvest: new Date(this.expectedHarvest),
+      expectedHarvest: new Date(this.expectedHarvestDate),
+      expectedFlowering: this.expectedFloweringDate ? new Date(this.expectedFloweringDate) : null,
       height: this.height,
       health: this.health,
       location: this.location,

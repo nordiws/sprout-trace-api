@@ -209,17 +209,7 @@ model Plant {
   image            String?
 
   // Growth state
-  age               Int?
-  currentWeek       String?
   lightCycle        String?
-  nutrients         String?
-  ph                String?
-  ec                String?
-  temperature       String?
-  humidity          String?
-  training          String?
-  lastWatered       DateTime?
-  nextWatering      DateTime?
   expectedFlowering DateTime?
   potSize           String?
 

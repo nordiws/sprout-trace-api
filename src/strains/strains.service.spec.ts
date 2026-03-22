@@ -6,7 +6,7 @@ import { PaginationDTO } from 'src/common/dto/pagination.dto'
 import type { StrainFiltersDTO } from './dto/strain-filter.dto'
 import { CreateStrainDTO } from './dto/create-strain.dto'
 import { Plant, Strain, StrainType } from '@prisma/client'
-import { StrainWithPlants } from './repository/strains.repository.types'
+import { StrainWithPlantsHarvests } from './repository/strains.repository.types'
 
 describe('StrainsService', () => {
   let service: StrainsService
@@ -52,7 +52,7 @@ describe('StrainsService', () => {
     seedId: '',
   }
 
-  const strainWithPlantsEntity: StrainWithPlants = {
+  const strainWithPlantsEntity: StrainWithPlantsHarvests = {
     id: strainId,
     userId,
     name: 'Strain A',
