@@ -8,9 +8,8 @@ import { UpdateHarvestDTO } from './dto/update-harvest.dto'
 import { PaginationDTO } from 'src/common/dto/pagination.dto'
 import { HarvestDTO } from './dto/harvest.dto'
 import { CreateHarvestTimelineDTO } from './dto/create-harvest-timeline.dto'
-import { Harvest } from '@prisma/client'
 import { HarvestTimelineRepository } from './repository/harvests-timeline.repository'
-import { HarvestWithPlantsTimeline } from './repository/harvests.repository.types'
+import { HarvestWithPlantsStrainsTimeline } from './repository/harvests.repository.types'
 
 @Injectable()
 export class HarvestsService {
@@ -38,7 +37,7 @@ export class HarvestsService {
 
   async findOne(userId: string, id: string): Promise<HarvestDetailsDTO> {
     const harvest = await this.getHarvest(userId, id)
-    return HarvestDetailsDTO.fromEntity(harvest)
+    return HarvestDetailsDTO.fromHarvestWithPlantsStrainsTimeline(harvest)
   }
 
   async create(
@@ -48,7 +47,7 @@ export class HarvestsService {
     const createdHarvest = await this.harvestsRepository.create(
       data.toEntity(userId),
     )
-    return HarvestDetailsDTO.fromEntity(createdHarvest)
+    return HarvestDetailsDTO.fromHarvestWithPlantsStrainsTimeline(createdHarvest)
   }
 
   async update(
@@ -58,7 +57,7 @@ export class HarvestsService {
   ): Promise<HarvestDetailsDTO> {
     await this.getHarvest(userId, id)
     const updatedHarvest = await this.harvestsRepository.update(id, data)
-    return HarvestDetailsDTO.fromEntity(updatedHarvest)
+    return HarvestDetailsDTO.fromHarvestWithPlantsStrainsTimeline(updatedHarvest)
   }
 
   async softDelete(userId: string, id: string): Promise<void> {
@@ -75,8 +74,8 @@ export class HarvestsService {
     return this.harvestTimelineRepository.addEvent(data.toEntity(harvest.id))
   }
 
-  private async getHarvest(userId: string, id: string): Promise<HarvestWithPlantsTimeline> {
-    const harvest = await this.harvestsRepository.findByIdWithPlantsTimeline(userId, id)
+  private async getHarvest(userId: string, id: string): Promise<HarvestWithPlantsStrainsTimeline> {
+    const harvest = await this.harvestsRepository.findByIdWithPlantsStrainsTimeline(userId, id)
     if (!harvest) {
       throw new NotFoundException(`Harvest with ID ${id} not found`)
     }

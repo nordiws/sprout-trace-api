@@ -3,7 +3,7 @@ import { IHarvestsRepository } from '../interface/harvests-repository.interface'
 import { Harvest, Prisma } from '@prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { HarvestFiltersDTO } from '../dto/harvest-filter.dto'
-import { HarvestWithPlantsTimeline } from './harvests.repository.types'
+import { HarvestWithPlantsStrainsTimeline, HarvestWithPlantsTimeline} from './harvests.repository.types'
 
 @Injectable()
 export class HarvestsRepository implements IHarvestsRepository {
@@ -12,7 +12,7 @@ export class HarvestsRepository implements IHarvestsRepository {
   async findAll(
     userId: string,
     filters: HarvestFiltersDTO,
-  ): Promise<{ data: HarvestWithPlantsTimeline[]; total: number }> {
+  ): Promise<{ data: HarvestWithPlantsStrainsTimeline[]; total: number }> {
     const { page = 1, limit = 10, status, harvestType, search } = filters
 
     const where: Prisma.HarvestWhereInput = {
@@ -48,6 +48,9 @@ export class HarvestsRepository implements IHarvestsRepository {
         include: {
           plants: {
             where: { active: true },
+            include: {
+              strain: true,
+            },
           },
           timeline: { 
             orderBy: { date: 'asc' },
@@ -74,7 +77,7 @@ export class HarvestsRepository implements IHarvestsRepository {
     })
   }
 
-  findByIdWithPlantsTimeline(userId: string, id: string): Promise<HarvestWithPlantsTimeline | null> {
+  findByIdWithPlantsStrainsTimeline(userId: string, id: string): Promise<HarvestWithPlantsStrainsTimeline | null> {
     return this.prisma.harvest.findFirst({
       where: {
         id,
@@ -84,7 +87,11 @@ export class HarvestsRepository implements IHarvestsRepository {
       include: {
         plants: {
           where: { active: true },
+          include: {
+            strain: true,
+          },
         },
+      
         timeline: { 
           orderBy: { date: 'asc' },
           },
@@ -92,12 +99,15 @@ export class HarvestsRepository implements IHarvestsRepository {
     })
   }
 
-  create(data: Prisma.HarvestCreateInput): Promise<HarvestWithPlantsTimeline> {
+  create(data: Prisma.HarvestCreateInput): Promise<HarvestWithPlantsStrainsTimeline> {
     return this.prisma.harvest.create({
       data,
       include: {
         plants: {
           where: { active: true },
+          include: {
+            strain: true,
+          },
         },
         timeline: { 
           orderBy: { date: 'asc' },
@@ -106,19 +116,24 @@ export class HarvestsRepository implements IHarvestsRepository {
     })
   }
 
-  update(id: string, data: Prisma.HarvestUpdateInput): Promise<HarvestWithPlantsTimeline> {
-    return this.prisma.harvest.update({
-      where: { id, active: true },
-      data,
-      include: {
-        plants: {
-          where: { active: true },
-        },
-        timeline: { 
-          orderBy: { date: 'asc' },
+  update(id: string, data: Prisma.HarvestUpdateInput): Promise<HarvestWithPlantsStrainsTimeline> {
+    return this.prisma.harvest.update(
+      {
+        where: { id, active: true },
+        data,
+        include: {
+          plants: {
+            where: { active: true },
+            include: {
+              strain: true,
+            },
           },
-      },
-    })
+          timeline: { 
+            orderBy: { date: 'asc' },
+            },
+        },
+      }
+    )
   }
 
   async softDelete(userId: string, id: string): Promise<void> {

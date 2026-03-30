@@ -4,7 +4,8 @@ import {
   QualityGrade,
 } from '@prisma/client'
 import { HarvestDTO } from './harvest.dto'
-import { HarvestWithPlantsTimeline } from '../repository/harvests.repository.types'
+import { HarvestWithPlantsTimeline, HarvestWithPlantsStrainsTimeline } from '../repository/harvests.repository.types'
+import { PlantDTO } from 'src/plants/dto/plant.dto'
 
 export class HarvestDetailsDTO extends HarvestDTO {
   harvestMethod?: string
@@ -20,8 +21,7 @@ export class HarvestDetailsDTO extends HarvestDTO {
   updatedAt: string
   timeline: HarvestTimeline[]
 
-
-  static fromEntity(entity: HarvestWithPlantsTimeline): HarvestDetailsDTO {
+  static fromHarvestWithPlantsStrainsTimeline(entity: HarvestWithPlantsStrainsTimeline): HarvestDetailsDTO {
     return {
       id: entity.id,
       code: entity.code,
@@ -32,7 +32,7 @@ export class HarvestDetailsDTO extends HarvestDTO {
       harvestType: entity.harvestType,
       notes: entity.notes ?? undefined,
       totalYield: entity.totalYield ?? undefined,
-      plants: entity.plants.map((plant) => plant.id),
+      plants: entity.plants.map((plant) => PlantDTO.fromPlantWithStrain(plant)),
 
       harvestMethod: entity.harvestMethod ?? undefined,
       dryingMethod: entity.dryingMethod ?? undefined,

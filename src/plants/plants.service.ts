@@ -24,7 +24,7 @@ export class PlantsService {
     const { data, total } = await this.plantsRepository.findAllWithStrainAndLogs(userId, filters)
     const pagination = PaginationDTO.mapper(filters.page, filters.limit, total)
     return PlantResponseDTO.mapper(
-      data.map(PlantDTO.fromEntity),
+      data.map(PlantDTO.fromPlantWithStrain),
       pagination,
     )
   }
@@ -39,13 +39,13 @@ export class PlantsService {
 
   async create(userId: string, dto: CreatePlantDTO) {
     const plant = await this.plantsRepository.create(dto.toEntity(userId))
-    return PlantDTO.fromEntity(plant)
+    return PlantDTO.fromPlantWithStrain(plant)
   }
 
   async update(userId: string, id: string, dto: UpdatePlantDTO) {
     await this.getPlant(userId, id)
     const updatedPlant = await this.plantsRepository.update(userId, id, dto)
-    return PlantDTO.fromEntity(updatedPlant)
+    return PlantDTO.fromPlantWithStrain(updatedPlant)
   }
 
   async softDelete(userId: string, id: string) {

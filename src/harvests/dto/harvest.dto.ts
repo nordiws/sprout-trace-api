@@ -1,5 +1,6 @@
 import { HarvestStatus, HarvestType } from '@prisma/client'
-import { HarvestWithPlantsTimeline } from '../repository/harvests.repository.types'
+import { HarvestWithPlantsStrainsTimeline } from '../repository/harvests.repository.types'
+import { PlantDTO } from 'src/plants/dto/plant.dto'
 
 export class HarvestDTO {
   id: string
@@ -11,9 +12,9 @@ export class HarvestDTO {
   harvestType: HarvestType
   notes?: string
   totalYield?: string
-  plants: string[]
+  plants: PlantDTO[]
 
-  static fromEntity(this: void, entity: HarvestWithPlantsTimeline): HarvestDTO {
+  static fromEntity(this: void, entity: HarvestWithPlantsStrainsTimeline): HarvestDTO {
     return {
       id: entity.id,
       code: entity.code,
@@ -25,7 +26,7 @@ export class HarvestDTO {
       notes: entity.notes ?? undefined,
       totalYield: entity.totalYield ?? undefined,
 
-      plants: entity.plants.map((plant) => plant.id),
+      plants: entity.plants.map((plant) => PlantDTO.fromPlantWithStrain(plant)),
     }
   }
 }
