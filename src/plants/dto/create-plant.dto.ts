@@ -47,7 +47,7 @@ export class CreatePlantDTO {
 
   @IsOptional()
   @IsString()
-  image?: string
+  imageUrl?: string
 
   @IsString()
   strainId: string
@@ -70,7 +70,7 @@ export class CreatePlantDTO {
       health: this.health,
       location: this.location,
       notes: this.notes,
-      image: this.image,
+      imageUrl: this.imageUrl,
       user: { connect: { id: userId } },
       strain: { connect: { id: this.strainId } },
       harvest: { connect: { id: this.harvestId } },

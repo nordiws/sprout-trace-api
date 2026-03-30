@@ -206,7 +206,7 @@ model Plant {
   health           PlantHealth
   location         String
   notes            String?
-  image            String?
+  imageUrl         String?
 
   // Growth state
   lightCycle        String?

@@ -9,6 +9,7 @@ import { MetadataModule } from './metadata/metadata.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { UserModule } from './users/user.module'
 import { AuthModule } from './auth/auth.module'
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from './auth/auth.module'
     PrismaModule,
     UserModule,
     AuthModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

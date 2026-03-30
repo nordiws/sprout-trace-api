@@ -36,6 +36,7 @@ describe('PlantsService', () => {
     active: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    plantedDate: new Date(),
     expectedHarvest: new Date(),
   } as Plant
 
@@ -74,7 +75,7 @@ describe('PlantsService', () => {
         {
           provide: PlantsRepository,
           useValue: {
-            findAll: jest.fn(),
+            findAllWithStrainAndLogs: jest.fn(),
             findOne: jest.fn(),
             findByIdWithLastLog: jest.fn(),
             create: jest.fn(),
@@ -103,14 +104,17 @@ describe('PlantsService', () => {
         limit: 10,
       }
 
-      plantsRepository.findAll.mockResolvedValue({
-        data: [plantWithStrainEntity],
+      plantsRepository.findAllWithStrainAndLogs.mockResolvedValue({
+        data: [plantWithStrainAndLogs],
         total: 1,
       })
 
       const result = await service.findAll(userId, filters)
 
-      expect(plantsRepository.findAll).toHaveBeenCalledWith(userId, filters)
+      expect(plantsRepository.findAllWithStrainAndLogs).toHaveBeenCalledWith(
+        userId,
+        filters,
+      )
       expect(result.data).toHaveLength(1)
       expect(result.pagination).toEqual(
         PaginationDTO.mapper(filters.page, filters.limit, 1),
@@ -151,7 +155,7 @@ describe('PlantsService', () => {
         }),
       } as unknown as CreatePlantDTO
 
-      plantsRepository.create.mockResolvedValue(plantEntity as any)
+      plantsRepository.create.mockResolvedValue(plantWithStrainEntity as any)
 
       const result = await service.create(userId, dto)
 
@@ -163,22 +167,22 @@ describe('PlantsService', () => {
 
   describe('update', () => {
     it('should update plant after existence check', async () => {
-      const name = 'Updated Plant'
+      const location = 'plant location'
       const dto: UpdatePlantDTO = {
-        notes: name,
+        location: location,
       }
 
-      plantsRepository.findOne.mockResolvedValue(plantEntity as any)
+      plantsRepository.findOne.mockResolvedValue(plantWithStrainEntity as any)
       plantsRepository.update.mockResolvedValue({
-        ...plantEntity,
-        notes: name,
-      })
+        ...plantWithStrainEntity,
+        location: location,
+      } as any)
 
       const result = await service.update(userId, plantId, dto)
 
       expect(plantsRepository.findOne).toHaveBeenCalledWith(userId, plantId)
       expect(plantsRepository.update).toHaveBeenCalledWith(userId, plantId, dto)
-      expect(result.notes).toBe(name)
+      expect(result.location).toBe(location)
     })
   })
 

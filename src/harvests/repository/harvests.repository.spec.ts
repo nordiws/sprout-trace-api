@@ -128,7 +128,20 @@ describe('HarvestsRepository', () => {
 
       const result = await repo.create(data)
 
-      expect(prisma.harvest.create).toHaveBeenCalledWith({ data })
+      expect(prisma.harvest.create).toHaveBeenCalledWith({
+        data,
+        include: {
+          plants: {
+            where: { active: true },
+            include: { strain: true },
+          },
+          timeline: {
+            orderBy: {
+              date: 'asc',
+            },
+          },
+        },
+      })
       expect(result).toEqual({ id: 'h1' })
     })
   })
@@ -142,6 +155,17 @@ describe('HarvestsRepository', () => {
       expect(prisma.harvest.update).toHaveBeenCalledWith({
         where: { id: 'h1', active: true },
         data: { name: 'updated' },
+        include: {
+          plants: {
+            where: { active: true },
+            include: { strain: true },
+          },
+          timeline: {
+            orderBy: {
+              date: 'asc',
+            },
+          },
+        },
       })
 
       expect(result).toEqual({ id: 'h1' })

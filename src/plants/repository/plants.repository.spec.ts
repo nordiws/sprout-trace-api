@@ -32,11 +32,11 @@ describe('PlantsRepository', () => {
     repo = new PlantsRepository(prisma as any)
   })
 
-  describe('findAll', () => {
+  describe('findAllWithStrainAndLogs', () => {
     it('should use default pagination', async () => {
       prisma.$transaction.mockResolvedValue([5, [{ id: 'p1' }]])
 
-      const result = await repo.findAll('user-1', {} as any)
+      const result = await repo.findAllWithStrainAndLogs('user-1', {} as any)
 
       expect(prisma.plant.count).toHaveBeenCalledWith({
         where: { userId: 'user-1', active: true },
@@ -60,7 +60,10 @@ describe('PlantsRepository', () => {
     it('should apply pagination correctly', async () => {
       prisma.$transaction.mockResolvedValue([0, []])
 
-      await repo.findAll('user-1', { page: 3, limit: 20 } as any)
+      await repo.findAllWithStrainAndLogs('user-1', {
+        page: 3,
+        limit: 20,
+      } as any)
 
       expect(prisma.plant.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -73,7 +76,7 @@ describe('PlantsRepository', () => {
     it('should apply filters correctly', async () => {
       prisma.$transaction.mockResolvedValue([0, []])
 
-      await repo.findAll('user-1', {
+      await repo.findAllWithStrainAndLogs('user-1', {
         status: 'VEG',
         health: 'HEALTHY',
         strainId: 'strain-1',
@@ -126,7 +129,13 @@ describe('PlantsRepository', () => {
 
       const result = await repo.create(data)
 
-      expect(prisma.plant.create).toHaveBeenCalledWith({ data })
+      expect(prisma.plant.create).toHaveBeenCalledWith({
+        data,
+        include: {
+          growthLogs: true,
+          strain: true,
+        },
+      })
       expect(result).toEqual({ id: 'p1' })
     })
   })
@@ -144,6 +153,10 @@ describe('PlantsRepository', () => {
           active: true,
         },
         data: { code: 'P002' },
+        include: {
+          growthLogs: true,
+          strain: true,
+        },
       })
 
       expect(result).toEqual({ id: 'p1' })

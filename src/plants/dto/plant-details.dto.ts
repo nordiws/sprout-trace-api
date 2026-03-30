@@ -6,7 +6,7 @@ import { calculateAgeInDays, calculateCurrentWeek } from 'src/common/utils/date.
 export class PlantDetailsDTO extends PlantDTO {
   floweringDate?: string
   notes?: string
-  image?: string
+  imageUrl?: string
   age?: number
   currentWeek?: number
   lightCycle?: string
@@ -37,7 +37,7 @@ export class PlantDetailsDTO extends PlantDTO {
       floweringDate: entity.floweringDate?.toISOString(),
       plantedDate: entity.plantedDate.toISOString(),
       notes: entity.notes ?? undefined,
-      image: entity.image ?? undefined,
+      imageUrl: entity.imageUrl ?? undefined,
       age: calculateAgeInDays(entity.plantedDate),
       strainId: entity.strain.id,
       strainName: entity.strain.name,

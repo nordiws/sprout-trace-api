@@ -10,7 +10,7 @@ import type { HarvestFiltersDTO } from './dto/harvest-filter.dto'
 import type { CreateHarvestDTO } from './dto/create-harvest.dto'
 import type { UpdateHarvestDTO } from './dto/update-harvest.dto'
 import type { CreateHarvestTimelineDTO } from './dto/create-harvest-timeline.dto'
-import { HarvestWithPlantsTimeline } from './repository/harvests.repository.types'
+import { HarvestWithPlantsStrainsTimeline } from './repository/harvests.repository.types'
 
 describe('HarvestsService', () => {
   let service: HarvestsService
@@ -31,9 +31,10 @@ describe('HarvestsService', () => {
     updatedAt: new Date(),
   } as Harvest
 
-  const harvestWithPlantsEntity: HarvestWithPlantsTimeline = {
+  const harvestWithPlantsEntity: HarvestWithPlantsStrainsTimeline = {
     ...harvestEntity,
     plants: [],
+    timeline: [],
   }
 
   beforeEach(async () => {
@@ -44,6 +45,7 @@ describe('HarvestsService', () => {
           provide: HarvestsRepository,
           useValue: {
             findAll: jest.fn(),
+            findByIdWithPlantsStrainsTimeline: jest.fn(),
             findOne: jest.fn(),
             create: jest.fn(),
             update: jest.fn(),
@@ -88,16 +90,22 @@ describe('HarvestsService', () => {
 
   describe('findOne', () => {
     it('should return harvest details when found', async () => {
-      harvestsRepository.findOne.mockResolvedValue(harvestEntity)
+      harvestsRepository.findByIdWithPlantsStrainsTimeline.mockResolvedValue(
+        harvestWithPlantsEntity,
+      )
 
       const result = await service.findOne(userId, harvestId)
 
-      expect(harvestsRepository.findOne).toHaveBeenCalledWith(userId, harvestId)
+      expect(
+        harvestsRepository.findByIdWithPlantsStrainsTimeline,
+      ).toHaveBeenCalledWith(userId, harvestId)
       expect(result.id).toBe(harvestId)
     })
 
     it('should throw NotFoundException when harvest does not exist', async () => {
-      harvestsRepository.findOne.mockResolvedValue(null)
+      harvestsRepository.findByIdWithPlantsStrainsTimeline.mockResolvedValue(
+        null,
+      )
 
       await expect(service.findOne(userId, harvestId)).rejects.toThrow(
         NotFoundException,
@@ -114,7 +122,7 @@ describe('HarvestsService', () => {
         }),
       } as any
 
-      harvestsRepository.create.mockResolvedValue(harvestEntity)
+      harvestsRepository.create.mockResolvedValue(harvestWithPlantsEntity)
 
       const result = await service.create(userId, dto)
 
@@ -131,15 +139,19 @@ describe('HarvestsService', () => {
         name: name,
       } as any
 
-      harvestsRepository.findOne.mockResolvedValue(harvestEntity)
+      harvestsRepository.findByIdWithPlantsStrainsTimeline.mockResolvedValue(
+        harvestWithPlantsEntity,
+      )
       harvestsRepository.update.mockResolvedValue({
-        ...harvestEntity,
+        ...harvestWithPlantsEntity,
         name: name,
       })
 
       const result = await service.update(userId, harvestId, dto)
 
-      expect(harvestsRepository.findOne).toHaveBeenCalledWith(userId, harvestId)
+      expect(
+        harvestsRepository.findByIdWithPlantsStrainsTimeline,
+      ).toHaveBeenCalledWith(userId, harvestId)
       expect(harvestsRepository.update).toHaveBeenCalledWith(harvestId, dto)
       expect(result.name).toBe(name)
     })
@@ -147,12 +159,16 @@ describe('HarvestsService', () => {
 
   describe('softDelete', () => {
     it('should soft delete harvest after existence check', async () => {
-      harvestsRepository.findOne.mockResolvedValue(harvestEntity)
+      harvestsRepository.findByIdWithPlantsStrainsTimeline.mockResolvedValue(
+        harvestWithPlantsEntity,
+      )
       harvestsRepository.softDelete.mockResolvedValue(undefined)
 
       await service.softDelete(userId, harvestId)
 
-      expect(harvestsRepository.findOne).toHaveBeenCalledWith(userId, harvestId)
+      expect(
+        harvestsRepository.findByIdWithPlantsStrainsTimeline,
+      ).toHaveBeenCalledWith(userId, harvestId)
       expect(harvestsRepository.softDelete).toHaveBeenCalledWith(
         userId,
         harvestId,
@@ -169,14 +185,18 @@ describe('HarvestsService', () => {
         }),
       } as any
 
-      harvestsRepository.findOne.mockResolvedValue(harvestEntity)
+      harvestsRepository.findByIdWithPlantsStrainsTimeline.mockResolvedValue(
+        harvestWithPlantsEntity,
+      )
       harvestTimelineRepository.addEvent.mockResolvedValue({
         id: timelineId,
       } as any)
 
       const result = await service.addTimelineEvent(userId, harvestId, dto)
 
-      expect(harvestsRepository.findOne).toHaveBeenCalledWith(userId, harvestId)
+      expect(
+        harvestsRepository.findByIdWithPlantsStrainsTimeline,
+      ).toHaveBeenCalledWith(userId, harvestId)
       expect(dto.toEntity).toHaveBeenCalledWith(harvestId)
       expect(harvestTimelineRepository.addEvent).toHaveBeenCalled()
       expect(result.id).toBe(timelineId)
