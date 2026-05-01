@@ -1,6 +1,6 @@
 import { Plant, Prisma } from '@prisma/client'
 import { PlantFiltersDTO } from '../dto/plant-filter.dto'
-import { PlantWithStrainAndLogs } from '../repository/plants.repository.types'
+import { PlantWithStrainSeedHarvestLogs } from '../repository/plants.repository.types'
 
 export interface IPlantsRepository {
   findAllWithStrainAndLogs(
@@ -18,5 +18,5 @@ export interface IPlantsRepository {
   findByIdWithLastLog(
     userId: string,
     id: string,
-  ): Promise<PlantWithStrainAndLogs | null>
+  ): Promise<PlantWithStrainSeedHarvestLogs | null>
 }

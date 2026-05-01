@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
-import { IMediaProvider, StorageSignature } from '../interface/media-provider.interface';
+import { IMediaProvider, StorageSignatureResponse } from '../interface/media-provider.interface';
 import dotenv from 'dotenv';
 import { MediaFolder } from 'src/common/enums/media.enum';
 
@@ -18,7 +18,7 @@ export class CloudinaryProvider implements IMediaProvider {
     });
   }
 
-  async generateSignature(folder: MediaFolder): Promise<StorageSignature> {
+  async generateSignature(folder: MediaFolder): Promise<StorageSignatureResponse> {
     const timestamp = Math.round(new Date().getTime() / 1000);
     
     const paramsToSign = { timestamp, folder };
@@ -32,9 +32,8 @@ export class CloudinaryProvider implements IMediaProvider {
       signature,
       timestamp,
       folder,
-      apiKey: process.env.CLOUDINARY_API_KEY || '',
-      cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
-      uploadUrl: process.env.CLOUDINARY_IMAGE_URL || '',
+      uploadUrl: process.env.CLOUDINARY_IMAGE_URL,
+      apiKey: process.env.CLOUDINARY_API_KEY
     };
   }
 }

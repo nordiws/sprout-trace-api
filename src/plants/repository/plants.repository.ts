@@ -3,7 +3,8 @@ import { Plant, Prisma } from '@prisma/client'
 import { IPlantsRepository } from '../interface/plants-repository.interface'
 import { PlantFiltersDTO } from '../dto/plant-filter.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { PlantWithStrainAndLogs } from './plants.repository.types'
+import { PlantWithStrainSeedHarvestLogs } from './plants.repository.types'
+import { UpdatePlantDTO } from '../dto/update-plant.dto'
 
 @Injectable()
 export class PlantsRepository implements IPlantsRepository {
@@ -12,7 +13,7 @@ export class PlantsRepository implements IPlantsRepository {
   async findAllWithStrainAndLogs(
     userId: string,
     filters: PlantFiltersDTO,
-  ): Promise<{ data: PlantWithStrainAndLogs[]; total: number }> {
+  ): Promise<{ data: PlantWithStrainSeedHarvestLogs[]; total: number }> {
     const {
       page = 1,
       limit = 10,
@@ -65,6 +66,8 @@ export class PlantsRepository implements IPlantsRepository {
         },
         include: {
           strain: true,
+          seed: true,
+          harvest: true,
           growthLogs: true,
         },
       }),
@@ -83,35 +86,62 @@ export class PlantsRepository implements IPlantsRepository {
     })
   }
 
-  create(data: Prisma.PlantCreateInput): Promise<PlantWithStrainAndLogs> {
+  create(data: Prisma.PlantCreateInput): Promise<PlantWithStrainSeedHarvestLogs> {
     return this.prisma.plant.create({
       data,
       include: {
         strain: true,
+        seed: true,
+        harvest: true,
         growthLogs: true,
       },
     })
   }
 
-  update(
-    userId: string,
-    id: string,
-    data: Prisma.PlantUpdateInput,
-  ): Promise<PlantWithStrainAndLogs> {
-    return this.prisma.plant.update({
-      where: {
-        id,
-        userId,
-        active: true,
-      },
-      include: {
-        strain: true,
-        growthLogs: true,
-      },
-      data,
-    })
-  }
+async update(
+  userId: string,
+  id: string,
+  data: UpdatePlantDTO,
+): Promise<PlantWithStrainSeedHarvestLogs> {
+  return this.prisma.plant.update({
+    where: {
+      id,
+      userId,
+      active: true,
+    },
+    include: {
+      strain: true,
+      seed: true,
+      harvest: true,
+      growthLogs: true,
+    },
+    data: {
+      // Handle standard fields
+      location: data.location,
+      notes: data.notes,
+      imageUrl: data.imageUrl,
+      status: data.status,
+      health: data.health,
+      height: data.height,
+      
+      // Map Dates properly (Prisma needs Date objects, not strings)
+      plantedDate: data.plantedDate ? new Date(data.plantedDate) : undefined,
+      floweringDate: data.floweringDate ? new Date(data.floweringDate) : undefined,
+      expectedHarvest: data.expectedHarvestDate ? new Date(data.expectedHarvestDate) : undefined,
+      expectedFlowering: data.expectedFloweringDate ? new Date(data.expectedFloweringDate) : undefined,
 
+      // Handle relations using connect
+      strain: data.strainId ? { connect: { id: data.strainId } } : undefined,
+      seed: data.seedId ? { connect: { id: data.seedId } } : undefined,
+      harvest: data.harvestId ? { connect: { id: data.harvestId } } : undefined,
+
+      // Handle the weight/quality fields from the UpdatePlantDTO
+      wetWeight: data.wetWeight,
+      dryWeight: data.dryWeight,
+      quality: data.quality,
+    },
+  });
+}
   async softDelete(userId: string, id: string): Promise<void> {
     await this.prisma.plant.update({
       where: {
@@ -128,11 +158,13 @@ export class PlantsRepository implements IPlantsRepository {
   findByIdWithLastLog(
     userId: string,
     id: string,
-  ): Promise<PlantWithStrainAndLogs | null> {
+  ): Promise<PlantWithStrainSeedHarvestLogs | null> {
     return this.prisma.plant.findUnique({
       where: { id, userId, active: true },
       include: {
         strain: true,
+        seed: true,
+        harvest: true,
         growthLogs: {
           orderBy: { date: 'desc' },
           take: 1,

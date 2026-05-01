@@ -1,12 +1,11 @@
 import { PlantGrowthLog, PlantGrowthLogType, QualityGrade } from '@prisma/client'
-import { PlantWithStrainAndLogs } from '../repository/plants.repository.types'
+import { PlantWithStrainSeedHarvestLogs } from '../repository/plants.repository.types'
 import { PlantDTO } from './plant.dto'
 import { calculateAgeInDays, calculateCurrentWeek } from 'src/common/utils/date.util'
 
 export class PlantDetailsDTO extends PlantDTO {
   floweringDate?: string
   notes?: string
-  imageUrl?: string
   age?: number
   currentWeek?: number
   lightCycle?: string
@@ -25,7 +24,7 @@ export class PlantDetailsDTO extends PlantDTO {
   quality?: QualityGrade;
   growthLogs?: PlantGrowthLog[];
 
-  static fromEntity(entity: PlantWithStrainAndLogs): PlantDetailsDTO {
+  static fromEntity(entity: PlantWithStrainSeedHarvestLogs): PlantDetailsDTO {
     return {
       id: entity.id,
       code: entity.code,
@@ -41,6 +40,10 @@ export class PlantDetailsDTO extends PlantDTO {
       age: calculateAgeInDays(entity.plantedDate),
       strainId: entity.strain.id,
       strainName: entity.strain.name,
+      seedId: entity.seed?.id ?? undefined,
+      seedName: entity.seed?.name ?? undefined,
+      harvestId: entity.harvest?.id ?? undefined,
+      harvestName: entity.harvest?.name ?? undefined,
       currentWeek: calculateCurrentWeek(entity.plantedDate),
       lightCycle: entity.lightCycle ?? undefined,
       nutrients: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.NUTRIENTS).map((log) => log.notes).join(', ') ?? undefined,

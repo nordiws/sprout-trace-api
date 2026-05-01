@@ -12,6 +12,7 @@ export class StrainItemDTO {
   activePlants: number
   dateAdded: string
   genetics?: string
+  code?: string
 
   static fromEntity(this: void, entity: StrainWithPlantsHarvests): StrainItemDTO {
     const dto = new StrainItemDTO()
@@ -25,6 +26,7 @@ export class StrainItemDTO {
     dto.activePlants = entity.plants?.filter((plant) => plant.active).length || 0
     dto.dateAdded = entity.dateAdded.toISOString()
     dto.genetics = entity.genetics
+    dto.code = entity.code
     return dto
   }
 }

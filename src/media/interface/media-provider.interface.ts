@@ -1,14 +1,13 @@
 import { MediaFolder } from "src/common/enums/media.enum";
 
-export interface StorageSignature {
+export interface StorageSignatureResponse {
   signature: string;
   timestamp: number;
-  apiKey: string;
-  cloudName?: string;
   folder: MediaFolder;
-  uploadUrl: string;
+  uploadUrl?: string;
+  apiKey?: string;
 }
 
 export interface IMediaProvider {
-  generateSignature(folder: MediaFolder): Promise<StorageSignature>;
+  generateSignature(folder: MediaFolder): Promise<StorageSignatureResponse>;
 }

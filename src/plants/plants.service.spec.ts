@@ -17,7 +17,7 @@ import {
 import { UpdatePlantDTO } from './dto/update-plant.dto'
 import {
   PlantWithStrain,
-  PlantWithStrainAndLogs,
+  PlantWithStrainSeedHarvestLogs,
 } from './repository/plants.repository.types'
 
 describe('PlantsService', () => {
@@ -62,7 +62,7 @@ describe('PlantsService', () => {
     plantId: plantId,
   } as PlantGrowthLog
 
-  const plantWithStrainAndLogs: PlantWithStrainAndLogs = {
+  const plantWithStrainAndLogs: PlantWithStrainSeedHarvestLogs = {
     ...plantEntity,
     strain: strainEntity,
     growthLogs: [plantGrowthLogEntity],

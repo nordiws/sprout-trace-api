@@ -1,10 +1,12 @@
-import { Strain, Plant } from '@prisma/client'
+import { Strain, Plant, Seed, Harvest, PlantGrowthLog } from '@prisma/client'
 
 export type PlantWithStrain = Plant & {
   strain: Strain
 }
 
-export type PlantWithStrainAndLogs = Plant & {
+export type PlantWithStrainSeedHarvestLogs = Plant & {
   strain: Strain
-  growthLogs: Array<import('@prisma/client').PlantGrowthLog>
+  seed: Seed
+  harvest: Harvest
+  growthLogs: Array<PlantGrowthLog>
 }
