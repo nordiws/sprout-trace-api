@@ -56,6 +56,18 @@ export class CreateStrainDTO {
   @IsString()
   growthPattern?: string
 
+  @IsOptional()
+  @IsString()
+  effects?: string
+
+  @IsOptional()
+  @IsString()
+  terpenes?: string
+
+  @IsOptional()
+  @IsString()
+  medicalUses?: string
+
   toEntity(userId: string): Prisma.StrainCreateInput {
     return {
       code: generateCode(EntityCodePrefix.STRAIN),

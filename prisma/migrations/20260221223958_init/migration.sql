@@ -103,7 +103,7 @@ CREATE TABLE "Seed" (
     "country" TEXT NOT NULL,
     "harvestYear" TEXT NOT NULL,
     "inscriptionCode" TEXT NOT NULL,
-    "flavour" TEXT NOT NULL,
+    "flavor" TEXT NOT NULL,
     "daysTillHarvest" TEXT NOT NULL,
     "dateAdded" TIMESTAMP(3) NOT NULL,
     "totalSeeds" INTEGER NOT NULL,

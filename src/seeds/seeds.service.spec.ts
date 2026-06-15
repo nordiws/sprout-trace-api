@@ -22,7 +22,7 @@ describe('SeedsService', () => {
     country: 'Country Y',
     harvestYear: '2023',
     inscriptionCode: 'INSCODE123',
-    flavour: 'Flavour A',
+    flavor: 'Flavor A',
     daysTillHarvest: '100',
     dateAdded: new Date(),
     totalSeeds: 100,

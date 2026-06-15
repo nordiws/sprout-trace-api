@@ -6,40 +6,29 @@ datasource db {
   provider = "postgresql"
 }
 
-//////////////////////
-// USER
-//////////////////////
-
 model User {
-  id        String   @id @default(uuid())
-  externalId  String   @unique  
-  email     String?  @unique
-  telephone String?
-  name      String?
-
-  strains   Strain[]
-  seeds     Seed[]
-  plants    Plant[]
-  harvests  Harvest[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  active    Boolean  @default(true)
+  id         String    @id @default(uuid())
+  externalId String    @unique
+  email      String?   @unique
+  telephone  String?
+  name       String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  active     Boolean   @default(true)
+  harvests   Harvest[]
+  plants     Plant[]
+  seeds      Seed[]
+  strains    Strain[]
 
   @@index([id])
   @@index([email])
-  @@index([externalId ])
+  @@index([externalId])
   @@index([active])
 }
 
-
-//////////////////////
-// STRAINS (CATALOG)
-//////////////////////
-
 model Strain {
-  id            String @id @default(uuid())
-  code          String @unique                // EXTERNAL (ST-001-0001)
+  id            String          @id @default(uuid())
+  code          String          @unique
   name          String
   type          StrainType
   genetics      String
@@ -48,7 +37,6 @@ model Strain {
   floweringTime String
   description   String
   dateAdded     DateTime
-
   origin        String?
   breeder       String?
   difficulty    GrowDifficulty?
@@ -60,65 +48,53 @@ model Strain {
   effects       String?
   terpenes      String?
   medicalUses   String?
-
   userId        String
-  user          User       @relation(fields: [userId], references: [id])
-
-  seeds         Seed[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  active        Boolean         @default(true)
   plants        Plant[]
+  seeds         Seed[]
+  user          User            @relation(fields: [userId], references: [id])
 
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  active        Boolean  @default(true)
-
+  @@unique([userId, name])
   @@index([code])
   @@index([userId])
-  @@unique([userId, name])
   @@index([userId, active])
 }
 
-//////////////////////
-// SEEDS
-//////////////////////
-
 model Seed {
-  id                 String @id @default(uuid())
-  code               String @unique                // EXTERNAL (SD-001-0001)
-  name               String
-  nombreCultivar     String
-  country            String
-  harvestYear        String
-  inscriptionCode    String
-  flavour            String
-  daysTillHarvest    String
-  dateAdded          DateTime
-  totalSeeds         Int
-
-  germinationRate    String?
-  germinated         Int?
-  supplier           String?
-  batchNumber        String?
-  feminized          Boolean?
-  autoflowering      Boolean?
-  viabilityTest      String?
-  storageConditions  String?
-  expirationDate     DateTime?
-  parentGeneration   String?
-  collectionMethod   String?
-  processingDate     DateTime?
-  flavorProfile      String?
-
+  id                String    @id @default(uuid())
+  code              String    @unique
+  name              String
+  nombreCultivar    String
+  country           String
+  harvestYear       String
+  inscriptionCode   String
+  flavor            String
+  daysTillHarvest   String
+  dateAdded         DateTime
+  totalSeeds        Int
+  germinationRate   String?
+  supplier          String?
+  batchNumber       String?
+  feminized         Boolean?
+  autoflowering     Boolean?
+  viabilityTest     String?
+  storageConditions String?
+  expirationDate    DateTime?
+  parentGeneration  String?
+  collectionMethod  String?
+  processingDate    DateTime?
+  flavorProfile     String?
   strainId          String
-  strain            Strain   @relation(fields: [strainId], references: [id])
-
   userId            String
-  user              User     @relation(fields: [userId], references: [id])
-
-  plants             Plant[]
-
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  active            Boolean  @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  active            Boolean   @default(true)
+  germinated        Int?
+  plants            Plant[]
+  strain            Strain    @relation(fields: [strainId], references: [id])
+  user              User      @relation(fields: [userId], references: [id])
 
   @@index([code])
   @@index([userId])
@@ -126,116 +102,79 @@ model Seed {
   @@index([userId, active])
 }
 
-//////////////////////
-// HARVESTS (GROW CYCLES / BATCHES)
-//////////////////////
-
 model Harvest {
-  id           String @id @default(uuid())
-  code         String @unique                // EXTERNAL (HV-001-0001)
-  name         String
-
-  // Lifecycle
-  startDate    DateTime
-  endDate      DateTime?
-  status       HarvestStatus
-  harvestType  HarvestType
-  notes        String?
-
-  // Processing details
+  id                String            @id @default(uuid())
+  code              String            @unique
+  name              String
+  startDate         DateTime
+  endDate           DateTime?
+  status            HarvestStatus
+  harvestType       HarvestType
+  notes             String?
   harvestMethod     String?
   dryingMethod      String?
   dryingLocation    String?
   curingMethod      String?
   qualityGrade      QualityGrade?
   totalYield        String?
-
-  // Environmental conditions
   dryingTemperature String?
   dryingHumidity    String?
   moistureContent   String?
   trimLoss          String?
-
-  // Ownership
-  userId        String
-  user          User           @relation(fields: [userId], references: [id])
-
-  // Relations
-  plants        Plant[]
-  timeline      HarvestTimeline[]
-
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  active        Boolean  @default(true)
+  userId            String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  active            Boolean           @default(true)
+  user              User              @relation(fields: [userId], references: [id])
+  timeline          HarvestTimeline[]
+  plants            Plant[]
 
   @@index([code])
   @@index([userId])
   @@index([userId, active, createdAt])
 }
 
-//////////////////////
-// HARVEST TIMELINE
-//////////////////////
-
 model HarvestTimeline {
-  id          String @id @default(uuid())
+  id          String               @id @default(uuid())
   date        DateTime
   event       HarvestTimelineEvent
   description String?
-
   harvestId   String
-  harvest     Harvest  @relation(fields: [harvestId], references: [id])
+  harvest     Harvest              @relation(fields: [harvestId], references: [id])
 
   @@index([harvestId])
 }
 
-
-
-//////////////////////
-// PLANTS
-//////////////////////
-
 model Plant {
-  id               String @id @default(uuid())
-  code             String @unique                // EXTERNAL (PL-001-0001)
-  status           PlantStatus
-  plantedDate      DateTime
-  floweringDate    DateTime?
-  expectedHarvest  DateTime
-  height           Int?
-  health           PlantHealth
-  location         String
-  notes            String?
-  imageUrl         String?
-
-  // Growth state
+  id                String           @id @default(uuid())
+  code              String           @unique
+  status            PlantStatus
+  plantedDate       DateTime
+  floweringDate     DateTime?
+  expectedHarvest   DateTime
+  height            Int?
+  health            PlantHealth
+  location          String
+  notes             String?
   lightCycle        String?
   expectedFlowering DateTime?
   potSize           String?
-
-  // Harvest outcome (belongs to the plant)
   wetWeight         String?
   dryWeight         String?
   quality           QualityGrade?
-
-  // Relations
   strainId          String
-  strain            Strain        @relation(fields: [strainId], references: [id])
-
   harvestId         String
-  harvest           Harvest       @relation(fields: [harvestId], references: [id])
-
   userId            String
-  user              User          @relation(fields: [userId], references: [id])
-
-  seedId           String
-  seed             Seed @relation(fields: [seedId], references: [id])
-
+  seedId            String
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  active            Boolean          @default(true)
+  imageUrl          String?
+  harvest           Harvest          @relation(fields: [harvestId], references: [id])
+  seed              Seed             @relation(fields: [seedId], references: [id])
+  strain            Strain           @relation(fields: [strainId], references: [id])
+  user              User             @relation(fields: [userId], references: [id])
   growthLogs        PlantGrowthLog[]
-
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  active            Boolean  @default(true)
 
   @@index([code])
   @@index([userId])
@@ -245,28 +184,20 @@ model Plant {
   @@index([userId, active])
 }
 
-//////////////////////
-// PLANT GROWTH LOGS
-//////////////////////
-
 model PlantGrowthLog {
-  id          String @id @default(uuid())
-  date        DateTime
-  type        PlantGrowthLogType
-  phase       PlantPhase
-
-  notes       String?
-
-  plantId     String
-  plant       Plant @relation(fields: [plantId], references: [id])
-
-  nutrientLog   NutrientLog?
-  treatmentLog  TreatmentLog?
-  pestLog       PestLog?
-  trainingLog   TrainingLog?
-  measurement   GrowthMeasurement?
-
-  createdAt   DateTime @default(now())
+  id           String             @id @default(uuid())
+  date         DateTime
+  type         PlantGrowthLogType
+  phase        PlantPhase
+  notes        String?
+  plantId      String
+  createdAt    DateTime           @default(now())
+  measurement  GrowthMeasurement?
+  nutrientLog  NutrientLog?
+  pestLog      PestLog?
+  plant        Plant              @relation(fields: [plantId], references: [id])
+  trainingLog  TrainingLog?
+  treatmentLog TreatmentLog?
 
   @@index([plantId])
   @@index([type])
@@ -274,75 +205,64 @@ model PlantGrowthLog {
 }
 
 model GrowthMeasurement {
-  id              String @id @default(uuid())
-  heightCm        Int?
-  widthCm         Int?
-  nodeCount       Int?
-  leafColor       String?
-  vigorScore      Int? // 1–10
-
-  temperature     String?
-  humidity        String?
-  ph              String?
-  ec              String?
-
-  logId           String @unique
-  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+  id          String         @id @default(uuid())
+  heightCm    Int?
+  widthCm     Int?
+  nodeCount   Int?
+  leafColor   String?
+  vigorScore  Int?
+  temperature String?
+  humidity    String?
+  ph          String?
+  ec          String?
+  logId       String         @unique
+  log         PlantGrowthLog @relation(fields: [logId], references: [id])
 }
 
 model NutrientLog {
-  id              String @id @default(uuid())
-  nutrientName    String
-  brand           String?
-  dosage          String
-  method          NutrientApplicationMethod
-  phAdjusted      Boolean?
-  ecValue         String?
-  runoffObserved  Boolean?
-
-  logId           String @unique
-  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+  id             String                    @id @default(uuid())
+  nutrientName   String
+  brand          String?
+  dosage         String
+  method         NutrientApplicationMethod
+  phAdjusted     Boolean?
+  ecValue        String?
+  runoffObserved Boolean?
+  logId          String                    @unique
+  log            PlantGrowthLog            @relation(fields: [logId], references: [id])
 }
 
 model TreatmentLog {
-  id              String @id @default(uuid())
-  treatmentType   TreatmentType
-  productName     String?
-  reason          String
-  dosage          String?
-  appliedBy       String?
-
-  logId           String @unique
-  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+  id            String         @id @default(uuid())
+  treatmentType TreatmentType
+  productName   String?
+  reason        String
+  dosage        String?
+  appliedBy     String?
+  logId         String         @unique
+  log           PlantGrowthLog @relation(fields: [logId], references: [id])
 }
 
 model PestLog {
-  id              String @id @default(uuid())
-  pestType        PestType
-  severity        PestSeverity
-  affectedArea    String?
-  symptoms        String
-  actionTaken     String?
-
-  resolved        Boolean @default(false)
-
-  logId           String @unique
-  log             PlantGrowthLog @relation(fields: [logId], references: [id])
+  id           String         @id @default(uuid())
+  pestType     PestType
+  severity     PestSeverity
+  affectedArea String?
+  symptoms     String
+  actionTaken  String?
+  resolved     Boolean        @default(false)
+  logId        String         @unique
+  log          PlantGrowthLog @relation(fields: [logId], references: [id])
 }
 
 model TrainingLog {
-  id              String @id @default(uuid())
-  technique        TrainingTechnique
-  intensity        TrainingIntensity?
-  description      String?
-
-  logId            String @unique
-  log              PlantGrowthLog @relation(fields: [logId], references: [id])
+  id          String             @id @default(uuid())
+  technique   TrainingTechnique
+  intensity   TrainingIntensity?
+  description String?
+  logId       String             @unique
+  log         PlantGrowthLog     @relation(fields: [logId], references: [id])
 }
-
-//////////////////////
-// ENUMS
-//////////////////////
 
 enum NutrientApplicationMethod {
   SOIL
@@ -398,7 +318,6 @@ enum PlantGrowthLogType {
   PEST_ISSUE
   TRAINING
 }
-
 
 enum PlantStatus {
   SEEDLING
@@ -460,17 +379,12 @@ enum YieldLevel {
 }
 
 enum HarvestTimelineEvent {
-  // Pre-harvest / growing
   SEED_PLANTED
   PLANTED_IN_POT
   MOVED_TO_SOIL
   VEGETATIVE_STARTED
   FLOWERING_STARTED
-
-  // Harvest phase
   HARVEST_STARTED
-
-  // Processing
   WET_TRIM_COMPLETE
   DRYING_STARTED
   DRYING_COMPLETE

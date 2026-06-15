@@ -53,7 +53,7 @@ export class PlantsController {
     return this.plantsService.softDelete(user.id, id)
   }
 
-  @Post(':id/growth-log')
+  @Post(':id/growth-logs')
   addGrowthLog(
     @CurrentUser() user: CurrentUserContext,
     @Param('id') plantId: string,

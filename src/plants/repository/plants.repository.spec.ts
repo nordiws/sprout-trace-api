@@ -132,8 +132,10 @@ describe('PlantsRepository', () => {
       expect(prisma.plant.create).toHaveBeenCalledWith({
         data,
         include: {
-          growthLogs: true,
           strain: true,
+          seed: true,
+          harvest: true,
+          growthLogs: true,
         },
       })
       expect(result).toEqual({ id: 'p1' })
@@ -143,8 +145,9 @@ describe('PlantsRepository', () => {
   describe('update', () => {
     it('should update plant scoped by user', async () => {
       prisma.plant.update.mockResolvedValue({ id: 'p1' })
+      const updateData = { notes: 'Updated notes' } as any
 
-      const result = await repo.update('user-1', 'p1', { code: 'P002' } as any)
+      const result = await repo.update('user-1', 'p1', updateData)
 
       expect(prisma.plant.update).toHaveBeenCalledWith({
         where: {
@@ -152,10 +155,14 @@ describe('PlantsRepository', () => {
           userId: 'user-1',
           active: true,
         },
-        data: { code: 'P002' },
+        data: expect.objectContaining({
+          notes: 'Updated notes',
+        }),
         include: {
-          growthLogs: true,
           strain: true,
+          seed: true,
+          harvest: true,
+          growthLogs: true,
         },
       })
 
@@ -190,6 +197,8 @@ describe('PlantsRepository', () => {
         where: { id: 'p1', userId: 'user-1', active: true },
         include: {
           strain: true,
+          seed: true,
+          harvest: true,
           growthLogs: {
             orderBy: { date: 'desc' },
             take: 1,

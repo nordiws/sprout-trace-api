@@ -27,7 +27,7 @@ export class CreateSeedDTO {
   inscriptionCode: string
 
   @IsString()
-  flavour: string
+  flavor: string
 
   @IsString()
   daysTillHarvest: string
@@ -39,6 +39,10 @@ export class CreateSeedDTO {
   @IsInt()
   @Min(0)
   germinated?: number
+
+  @IsOptional()
+  @IsString()
+  germinationRate?: string
 
   @IsInt()
   @Min(0)
@@ -95,10 +99,11 @@ export class CreateSeedDTO {
       country: this.country,
       harvestYear: this.harvestYear,
       inscriptionCode: this.inscriptionCode,
-      flavour: this.flavour,
+      flavor: this.flavor,
       daysTillHarvest: this.daysTillHarvest,
       dateAdded: new Date(this.dateAdded),
       germinated: this.germinated || 0,
+      germinationRate: this.germinationRate,
       totalSeeds: this.totalSeeds,
       supplier: this.supplier,
       batchNumber: this.batchNumber,
