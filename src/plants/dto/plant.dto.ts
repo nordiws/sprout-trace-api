@@ -13,10 +13,12 @@ export class PlantDTO {
   status: PlantStatus
   plantedDate?: string
   expectedHarvestDate?: string
+  expectedFloweringDate?: string
   height?: number
   health?: string
   location?: string
   imageUrl?: string
+  lightCycle?: string
   
   static fromPlantWithStrainSeedHarvestLogs(entity: PlantWithStrainSeedHarvestLogs): PlantDTO {
     return {
@@ -34,7 +36,9 @@ export class PlantDTO {
       health: entity.health,
       location: entity.location ?? undefined,
       expectedHarvestDate: entity.expectedHarvest.toISOString(),
+      expectedFloweringDate: entity.expectedFlowering?.toISOString(),
       imageUrl: entity.imageUrl ?? undefined,
+      lightCycle: entity.lightCycle ?? undefined
     }
   }
 

@@ -58,6 +58,11 @@ export class CreatePlantDTO {
   @IsString()
   seedId: string
 
+  @IsOptional()
+  @IsString()
+  lightCycle?: string
+
+
   toEntity(userId: string): Prisma.PlantCreateInput {
     return {
       code: generateCode(EntityCodePrefix.PLANT),
@@ -71,6 +76,7 @@ export class CreatePlantDTO {
       location: this.location,
       notes: this.notes,
       imageUrl: this.imageUrl,
+      lightCycle: this.lightCycle,
       user: { connect: { id: userId } },
       strain: { connect: { id: this.strainId } },
       harvest: { connect: { id: this.harvestId } },

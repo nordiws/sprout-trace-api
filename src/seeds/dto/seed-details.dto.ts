@@ -29,6 +29,7 @@ export class SeedDetailsDTO extends SeedItemDTO {
       harvestYear: entity.harvestYear,
       flavorProfile: entity.flavor,
       totalSeeds: entity.totalSeeds,
+      germinated: entity.germinated,
       germinationRate: entity.germinationRate,
       viabilityTest: entity.viabilityTest,
       daysTillHarvest: entity.daysTillHarvest,

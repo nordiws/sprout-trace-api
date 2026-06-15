@@ -8,7 +8,6 @@ export class PlantDetailsDTO extends PlantDTO {
   notes?: string
   age?: number
   currentWeek?: number
-  lightCycle?: string
   nutrients?: string
   ph?: string
   ec?: string
@@ -17,7 +16,6 @@ export class PlantDetailsDTO extends PlantDTO {
   training?: string
   lastWatered?: string;
   nextWatering?: string;
-  expectedFlowering?: string;
   potSize?: string;
   wetWeight?: string;
   dryWeight?: string;
@@ -33,6 +31,7 @@ export class PlantDetailsDTO extends PlantDTO {
       health: entity.health ?? undefined,
       location: entity.location ?? undefined,
       expectedHarvestDate: entity.expectedHarvest.toISOString(),
+      expectedFloweringDate: entity.expectedFlowering?.toISOString(),
       floweringDate: entity.floweringDate?.toISOString(),
       plantedDate: entity.plantedDate.toISOString(),
       notes: entity.notes ?? undefined,
@@ -46,13 +45,14 @@ export class PlantDetailsDTO extends PlantDTO {
       harvestName: entity.harvest?.name ?? undefined,
       currentWeek: calculateCurrentWeek(entity.plantedDate),
       lightCycle: entity.lightCycle ?? undefined,
-      nutrients: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.NUTRIENTS).map((log) => log.notes).join(', ') ?? undefined,
-      ph: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.MEASUREMENT).map((log) => log.notes).join(', ') ?? undefined,
-      ec: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.MEASUREMENT).map((log) => log.notes).join(', ') ?? undefined,
-      temperature: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.MEASUREMENT).map((log) => log.notes).join(', ') ?? undefined,
-      humidity: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.MEASUREMENT).map((log) => log.notes).join(', ') ?? undefined,
-      training: entity.growthLogs.filter((log) => log.type === PlantGrowthLogType.TRAINING).map((log) => log.notes).join(', ') ?? undefined,
-      expectedFlowering: entity.expectedFlowering?.toISOString(),
+      nutrients: entity.nutrients ?? undefined,
+      ph: entity.ph ?? undefined,
+      ec: entity.ec ?? undefined,
+      temperature: entity.temperature ?? undefined,
+      humidity: entity.humidity ?? undefined,
+      training: entity.training ?? undefined,
+      lastWatered: entity.lastWatered ?? undefined,
+      nextWatering: entity.nextWatering ?? undefined,
       potSize: entity.potSize ?? undefined,
       wetWeight: entity.wetWeight ?? undefined,
       dryWeight: entity.dryWeight ?? undefined,

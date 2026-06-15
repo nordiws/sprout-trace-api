@@ -6,6 +6,10 @@ import { QualityGrade } from '@prisma/client'
 export class UpdatePlantDTO extends PartialType(CreatePlantDTO) {
   @IsOptional()
   @IsString()
+  potSize?: string
+
+  @IsOptional()
+  @IsString()
   wetWeight?: string
 
   @IsOptional()
@@ -15,4 +19,36 @@ export class UpdatePlantDTO extends PartialType(CreatePlantDTO) {
   @IsOptional()
   @IsEnum(QualityGrade)
   quality?: QualityGrade
+
+  @IsOptional()
+  @IsString()
+  ph?: string
+
+  @IsOptional()
+  @IsString()
+  ec?: string
+
+  @IsOptional()
+  @IsString()
+  temperature?: string
+
+  @IsOptional()
+  @IsString()
+  humidity?: string
+
+  @IsOptional()
+  @IsString()
+  nutrients?: string
+
+  @IsOptional()
+  @IsString()
+  training?: string
+
+  @IsOptional()
+  @IsString()
+  lastWatered?: string
+
+  @IsOptional()
+  @IsString()
+  nextWatering?: string
 }

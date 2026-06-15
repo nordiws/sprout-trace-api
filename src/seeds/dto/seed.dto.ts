@@ -6,6 +6,7 @@ export class SeedDTO {
   name: string
   cultivarName: string
   totalSeeds: number
+  germinated: number | null
   germinationRate: string | null
   viabilityTest: string | null
   daysTillHarvest: string | null
@@ -31,6 +32,7 @@ export class SeedDTO {
       cultivarName: entity.nombreCultivar,
       totalSeeds: entity.totalSeeds,
       germinationRate: entity.germinationRate,
+      germinated: entity.germinated,
       viabilityTest: entity.viabilityTest,
       daysTillHarvest: entity.daysTillHarvest,
       country: entity.country,

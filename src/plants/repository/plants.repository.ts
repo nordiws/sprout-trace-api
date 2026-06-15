@@ -123,6 +123,8 @@ async update(
       status: data.status,
       health: data.health,
       height: data.height,
+      lightCycle: data.lightCycle,
+      potSize: data.potSize,
       
       // Map Dates properly (Prisma needs Date objects, not strings)
       plantedDate: data.plantedDate ? new Date(data.plantedDate) : undefined,
@@ -139,6 +141,14 @@ async update(
       wetWeight: data.wetWeight,
       dryWeight: data.dryWeight,
       quality: data.quality,
+      ph: data.ph,
+      ec: data.ec,
+      temperature: data.temperature,
+      humidity: data.humidity,
+      nutrients: data.nutrients,
+      training: data.training,
+      lastWatered: data.lastWatered,
+      nextWatering: data.nextWatering,
     },
   });
 }
